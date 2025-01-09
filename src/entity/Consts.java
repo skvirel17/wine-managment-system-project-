@@ -55,12 +55,12 @@ public class Consts {
                 decoded = decoded.substring(0, decoded.lastIndexOf('/'));
                 System.out.println(decoded);
 
-                return decoded + "/database/Tirgul01_north2000.accdb";}
+                return decoded + "/database/database.accdb";}
             else {
                 decoded = decoded.substring(0, decoded.lastIndexOf('/'));
                 //System.out.println(decoded);
 
-                return decoded + "/entity/Tirgul01_north2000.accdb";}
+                return decoded + "/entity/database.accdb";}
 
 
         } catch (Exception e) {
