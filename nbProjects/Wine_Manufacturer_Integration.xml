@@ -1,0 +1,35 @@
+<?xml version='1.0' encoding='utf-8'?>
+<DataIntegration>
+    <Manufacturers>
+        <Manufacturer id="501">
+            <Name>Netanya Foods
+            </Name>
+            <PhoneNumber>525678901
+            </PhoneNumber>
+            <City>Netanya
+            </City>
+            <Street>Herzog
+            </Street>
+            <Building>15
+            </Building>
+            <Email>orders@netanyafoods.com
+            </Email>
+        </Manufacturer>
+    </Manufacturers>
+    <Wines>
+        <Wine catalogNumber="3001">
+            <Name>Cabernet Sauvignon
+            </Name>
+            <Description>Full-bodied red wine
+            </Description>
+            <ProductionYear>2019
+            </ProductionYear>
+            <PricePerBottle>26
+            </PricePerBottle>
+            <SweetnessLevel>1
+            </SweetnessLevel>
+            <ManufacturerID>501
+            </ManufacturerID>
+        </Wine>
+    </Wines>
+</DataIntegration>
