@@ -1,0 +1,10 @@
+<component name="libraryTable">
+  <library name="UCanAccess-5.0.1 2">
+    <CLASSES>
+      <root url="file://$PROJECT_DIR$/lib/UCanAccess-5.0.1 2.bin" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+    <jarDirectory url="file://$PROJECT_DIR$/lib/UCanAccess-5.0.1 2.bin" recursive="false" />
+  </library>
+</component>
