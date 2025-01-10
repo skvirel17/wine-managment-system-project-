@@ -38,6 +38,24 @@ public class AccessDataBase {
             e.printStackTrace();
         }
 
+    }
+
+    public static void query(String query, Connection connection) {
+        try {
+            Statement statement = connection.createStatement();
+            ResultSet resultSet = statement.executeQuery(query);
+
+            while (resultSet.next()) {
+                int id = resultSet.getInt("wineCatalogNumber");
+                String name = resultSet.getString("wineName");
+                System.out.println("id = " + id + "," + " name = " + name);
+            }
+
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
 
     }
 }
