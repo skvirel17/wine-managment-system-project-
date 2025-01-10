@@ -3,16 +3,18 @@ package entity;
 import enums.SweetnessLevel;
 import enums.WineType;
 
+import java.util.Objects;
+
 public class Wine {
-    public static String catalogNumber;
-    public static int manifactureNumber;
-    public static String name;
-    public static String description;
-    public static int productionYear;
-    public static float pricePerBottle;
-    public static SweetnessLevel sweetnessLevel;
-    public static String productImage;
-    public static WineType wineType;
+    public String catalogNumber;
+    public int manifactureNumber;
+    public String name;
+    public String description;
+    public int productionYear;
+    public float pricePerBottle;
+    public SweetnessLevel sweetnessLevel;
+    public String productImage;
+    public WineType wineType;
 
     public Wine(String catalogNumber, int manifactureNumber, String name, String description, int productionYear, float pricePerBottle,
                 SweetnessLevel sweetnessLevel, String productImage,  WineType wineType) {
@@ -27,80 +29,103 @@ public class Wine {
         this.wineType = wineType;
     }
 
-    public static String getCatalogNumber() {
+    public String getCatalogNumber() {
         return catalogNumber;
     }
 
-    public static void setCatalogNumber(String catalogNumber) {
-        Wine.catalogNumber = catalogNumber;
+    public void setCatalogNumber(String catalogNumber) {
+        this.catalogNumber = catalogNumber;
     }
 
-    public static int getManifactureNumber() {
+    public int getManifactureNumber() {
         return manifactureNumber;
     }
 
-    public static void setManifactureNumber(int manifactureNumber) {
-        Wine.manifactureNumber = manifactureNumber;
+    public void setManifactureNumber(int manifactureNumber) {
+        this.manifactureNumber = manifactureNumber;
     }
 
-    public static String getName() {
+    public String getName() {
         return name;
     }
 
-    public static void setName(String name) {
-        Wine.name = name;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public static String getDescription() {
+    public String getDescription() {
         return description;
     }
 
-    public static void setDescription(String description) {
-        Wine.description = description;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
-    public static int getProductionYear() {
+    public int getProductionYear() {
         return productionYear;
     }
 
-    public static void setProductionYear(int productionYear) {
-        Wine.productionYear = productionYear;
+    public void setProductionYear(int productionYear) {
+        this.productionYear = productionYear;
     }
 
-    public static float getPricePerBottle() {
+    public float getPricePerBottle() {
         return pricePerBottle;
     }
 
-    public static void setPricePerBottle(float pricePerBottle) {
-        Wine.pricePerBottle = pricePerBottle;
+    public void setPricePerBottle(float pricePerBottle) {
+        this.pricePerBottle = pricePerBottle;
     }
 
-    public static SweetnessLevel getSweetnessLevel() {
+    public SweetnessLevel getSweetnessLevel() {
         return sweetnessLevel;
     }
 
-    public static void setSweetnessLevel(SweetnessLevel sweetnessLevel) {
-        Wine.sweetnessLevel = sweetnessLevel;
+    public void setSweetnessLevel(SweetnessLevel sweetnessLevel) {
+        this.sweetnessLevel = sweetnessLevel;
     }
 
-    public static String getProductImage() {
+    public String getProductImage() {
         return productImage;
     }
 
-    public static void setProductImage(String productImage) {
-        Wine.productImage = productImage;
+    public void setProductImage(String productImage) {
+        this.productImage = productImage;
     }
 
-    public static WineType getWineTypeId() {
+    public WineType getWineTypeId() {
         return wineType;
     }
 
-    public static void setWineTypeId(WineType wineTypeId) {
-        Wine.wineType = wineTypeId;
+    public void setWineTypeId(WineType wineTypeId) {
+        this.wineType = wineTypeId;
     }
 
     @Override
     public String toString() {
-        return "Wine{}";
+        return "Wine{" +
+                "catalogNumber='" + catalogNumber + '\'' +
+                ", manifactureNumber=" + manifactureNumber +
+                ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", productionYear=" + productionYear +
+                ", pricePerBottle=" + pricePerBottle +
+                ", sweetnessLevel=" + sweetnessLevel +
+                ", productImage='" + productImage + '\'' +
+                ", wineType=" + wineType +
+                '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Wine wine = (Wine) o;
+        return manifactureNumber == wine.manifactureNumber && productionYear == wine.productionYear && Float.compare(pricePerBottle, wine.pricePerBottle) == 0 && Objects.equals(catalogNumber, wine.catalogNumber) && Objects.equals(name, wine.name) && Objects.equals(description, wine.description) && sweetnessLevel == wine.sweetnessLevel && Objects.equals(productImage, wine.productImage) && wineType == wine.wineType;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(catalogNumber, manifactureNumber, name, description, productionYear, pricePerBottle, sweetnessLevel, productImage, wineType);
     }
 }

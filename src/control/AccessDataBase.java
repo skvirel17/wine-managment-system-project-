@@ -20,7 +20,6 @@ public class AccessDataBase {
             e.printStackTrace();
         }
 
-
     }
 
     public static void query(String query, Connection connection) {
