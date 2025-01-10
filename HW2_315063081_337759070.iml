@@ -8,7 +8,52 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" exported="" name="lib" level="project" />
-    <orderEntry type="library" exported="" name="UCanAccess-5.0.1 2" level="project" />
+    <orderEntry type="library" name="UCanAccess-5.0.1 2" level="project" />
     <orderEntry type="library" name="lib (2)" level="project" />
+    <orderEntry type="library" exported="" name="lib (3)" level="project" />
+    <orderEntry type="library" exported="" name="lib (4)" level="project" />
+    <orderEntry type="module-library" exported="">
+      <library>
+        <CLASSES>
+          <root url="file://$MODULE_DIR$/lib/UCanAccess-5.0.1.bin" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+        <jarDirectory url="file://$MODULE_DIR$/lib/UCanAccess-5.0.1.bin" recursive="false" />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library" exported="">
+      <library>
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/lib/guava-19.0.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library" exported="">
+      <library>
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/lib/jcalendar-1.4.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library" exported="">
+      <library>
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/lib/UCanAccess-5.0.1.bin/lib/commons-lang3-3.8.1.jar!/" />
+          <root url="jar://$MODULE_DIR$/lib/UCanAccess-5.0.1.bin/lib/commons-logging-1.2.jar!/" />
+          <root url="jar://$MODULE_DIR$/lib/UCanAccess-5.0.1.bin/lib/hsqldb-2.5.0.jar!/" />
+          <root url="jar://$MODULE_DIR$/lib/UCanAccess-5.0.1.bin/lib/jackcess-3.0.1.jar!/" />
+          <root url="file://$MODULE_DIR$" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES>
+          <root url="file://$MODULE_DIR$/src" />
+        </SOURCES>
+      </library>
+    </orderEntry>
   </component>
 </module>
