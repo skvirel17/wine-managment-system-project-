@@ -14,7 +14,7 @@ import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
 import com.toedter.calendar.JDateChooser;
-import entity.Manifacture;
+import entity.Manufacture;
 
 
 import javax.swing.JComboBox;
@@ -27,8 +27,8 @@ import java.awt.SystemColor;
 
 public class FrmManufacture extends RootLayout {
 
-	private ArrayList<entity.Manifacture> manifacturesArray;
-	ArrayList<Manifacture> manifactures = new ArrayList<Manifacture>();
+	private ArrayList<Manufacture> manifacturesArray;
+	ArrayList<Manufacture> manufactures = new ArrayList<Manufacture>();
 	private Integer currentOrder;
 	private boolean inAddMode;
 

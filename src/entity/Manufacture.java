@@ -2,14 +2,14 @@ package entity;
 
 import java.util.Objects;
 
-public class Manifacture {
+public class Manufacture {
     public String manifactureNumber;
     public String fullName;
     public int phoneNumber;
     public String addressManifacture;
     public String email;
 
-    public Manifacture(String manifactureNumber, String fullName, int phoneNumber, String addressManifacture,  String email){
+    public Manufacture(String manifactureNumber, String fullName, int phoneNumber, String addressManifacture, String email){
         this.manifactureNumber = manifactureNumber;
         this.fullName = fullName;
         this.phoneNumber = phoneNumber;
@@ -73,7 +73,7 @@ public class Manifacture {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Manifacture that = (Manifacture) o;
+        Manufacture that = (Manufacture) o;
         return phoneNumber == that.phoneNumber && Objects.equals(manifactureNumber, that.manifactureNumber) && Objects.equals(fullName, that.fullName) && Objects.equals(addressManifacture, that.addressManifacture) && Objects.equals(email, that.email);
     }
 

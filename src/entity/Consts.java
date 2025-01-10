@@ -22,7 +22,7 @@ public class Consts {
 //    public static final String SQL_UPD_EMPLOYEE =
 //            "{ call qryUpdEmployee(?,?,?,?,?,?,?,?,?,?,?,?) }";
 //
-//    public static final String SQL_SEL_ORDERS = "SELECT * FROM TblOrders";
+   public static final String SQL_SEL_MANUFACTURES = "SELECT * FROM TblManufactures";
 //    public static final String SQL_UPD_ORDER =
 //            "{ call qryUpdOrder(?,?,?,?,?,?,?,?,?,?) }";
 //    public static final String SQL_ADD_ORDER =
@@ -31,8 +31,8 @@ public class Consts {
 //            "{ call qryDelOrder(?) }";
 //
 //
-//    public static final String SQL_DEL_ORDER_DETAILS =
-//            "{ call qryDelOrderDetails(?) }";
+   public static final String SQL_SEL_MANUFACTURES_DETAILS =
+            "{ call qryDelOrderDetails(?) }";
 //    public static final String SQL_DEL_ORDER_DETAILS_PRODUCT =
 //            "{ call qryDelOrderDetailProduct(?,?) }";
 //

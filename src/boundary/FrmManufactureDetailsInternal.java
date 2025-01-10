@@ -1,6 +1,9 @@
 package boundary;
 
 
+import control.ManufactureLogic;
+import entity.ManufactureDetails;
+
 import java.util.ArrayList;
 import java.util.Vector;
 import javax.swing.*;
@@ -32,9 +35,9 @@ public class FrmManufactureDetailsInternal extends JPanel {
 	private  JTextField tfQuantity= new JTextField();
 	private  JTextField tfDiscount= new JTextField();
 	private  JTextField tfTotal= new JTextField();
-	private long orderID;
+	private String manifactureNumber;
 //	private static ArrayList<Product> products = new ArrayList<Product>();
-//	private ArrayList<OrderDetails> orders = new ArrayList<OrderDetails>();
+	private ArrayList<ManufactureDetails> manufactures = new ArrayList<ManufactureDetails>();
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // This method is being used in order to launch the internal form.
@@ -160,16 +163,16 @@ public class FrmManufactureDetailsInternal extends JPanel {
 //This method is been used by the primary form when user browse between orders
 //This method clear table rows and selections and set data according to order selected in primary form
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
-		public void refreshComp(long orderId){
-			setOrderID(orderId);
+		public void refreshComp(String manifactureNumber){
+			setManifactureNumber(manifactureNumber);
 			refreshDataButtons();
 			initTableData();
 		}
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //This method set the order to be displayed
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	public void setOrderID(long orderID) {
-		this.orderID = orderID;
+	public void setManifactureNumber(String manifactureNumber) {
+		this.manifactureNumber = manifactureNumber;
 	}
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -210,21 +213,21 @@ private void initTableData(){
 	tableModel.setRowCount(0);
 
 	//Following code gets all orders details for selected order id and updates table rows
-	orders = OrderLogic.getInstance().getOrderDetails(this.orderID);
+	manufactures = ManufactureLogic.getInstance().getManufactureDetails(this.manifactureNumber);
 	int i=0;
- 	while (i<orders.size()){
-    Vector<Object> data = new Vector<Object>();
-    data.add(orders.get(i).getProductID());
-    data.add(orders.get(i).getProductName());
-    data.add(orders.get(i).getUnitPrice());
-    data.add(orders.get(i).getQuantity());
-    	//Add percent format for cell
-	    NumberFormat numberFormat=NumberFormat.getPercentInstance();
-	    Object value = numberFormat.format(orders.get(i).getDiscount());
-	    data.add(value);
-    data.add(orders.get(i).getLinePrice());
-    i++;
-    tableModel.addRow(data);}
+// 	while (i<manufactures.size()){
+//    Vector<Object> data = new Vector<Object>();
+//    data.add(manufactures.get(i).getManifactureNumber());
+//    data.add(manufactures.get(i).getCatalogNumber());
+//    data.add(manufactures.get(i).getUnitPrice());
+//    data.add(manufactures.get(i).getQuantity());
+//    	//Add percent format for cell
+//	    NumberFormat numberFormat=NumberFormat.getPercentInstance();
+//	    Object value = numberFormat.format(orders.get(i).getDiscount());
+//	    data.add(value);
+//    data.add(orders.get(i).getLinePrice());
+//    i++;
+//    tableModel.addRow(data);}
  	//-------------------
 
  	// 	Add empty Row
@@ -254,135 +257,135 @@ private void initTableData(){
 //This method set product name column to present combo-box component with all products list
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 public void setUpProductNameColumnComboBox(JTable table,TableColumn columnNum) {
-
-		//Set combo-box item list data - get product id and name
-		products = OrderLogic.getInstance().getProducts();
-		Vector<Item> combomodel = new Vector<Item>();
-			
-			for (int i =0 ;i<products.size();i++)
-			{
-				Item item = new Item(Long.toString(products.get(i).getProductID()), products.get(i).getProductName());
-				combomodel.addElement( item );
-				;i++;
-				
-			}
-			comboBoxProductName = new JComboBox( combomodel );
-
-		//Set action when value change update table row according to new selected product and enable saving changes button
-		comboBoxProductName.addActionListener(new ActionListener() {
-	        	public void actionPerformed(ActionEvent e) {
-	        		refreshProductIdOnNameChange(e);
-	        		btnSaveOrderDetails.setEnabled(true);
-	        		//if last row is been edited add one more row
-	        		if (table.getSelectedRow()==table.getRowCount()-1){
-						addEmptyRow();
-					}
-
-	         	}
-	    });
-
-		//Set up the editor (combo-box) for the product-name cells.
-		columnNum.setCellEditor(new DefaultCellEditor(comboBoxProductName));
-		comboBoxProductName.putClientProperty("JComboBox.isTableCellEditor", Boolean.TRUE);
-
-
-		//Set up tool tips for the the product-name cells.
-		DefaultTableCellRenderer renderer =
-		new DefaultTableCellRenderer();
-		renderer.setToolTipText("Click for combo box");
-		columnNum.setCellRenderer(renderer);
+//
+//		//Set combo-box item list data - get product id and name
+//		products = OrderLogic.getInstance().getProducts();
+//		Vector<Item> combomodel = new Vector<Item>();
+//
+//			for (int i =0 ;i<products.size();i++)
+//			{
+//				Item item = new Item(Long.toString(products.get(i).getProductID()), products.get(i).getProductName());
+//				combomodel.addElement( item );
+//				;i++;
+//
+//			}
+//			comboBoxProductName = new JComboBox( combomodel );
+//
+//		//Set action when value change update table row according to new selected product and enable saving changes button
+//		comboBoxProductName.addActionListener(new ActionListener() {
+//	        	public void actionPerformed(ActionEvent e) {
+//	        		refreshProductIdOnNameChange(e);
+//	        		btnSaveOrderDetails.setEnabled(true);
+//	        		//if last row is been edited add one more row
+//	        		if (table.getSelectedRow()==table.getRowCount()-1){
+//						addEmptyRow();
+//					}
+//
+//	         	}
+//	    });
+//
+//		//Set up the editor (combo-box) for the product-name cells.
+//		columnNum.setCellEditor(new DefaultCellEditor(comboBoxProductName));
+//		comboBoxProductName.putClientProperty("JComboBox.isTableCellEditor", Boolean.TRUE);
+//
+//
+//		//Set up tool tips for the the product-name cells.
+//		DefaultTableCellRenderer renderer =
+//		new DefaultTableCellRenderer();
+//		renderer.setToolTipText("Click for combo box");
+//		columnNum.setCellRenderer(renderer);
 			}
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //This method set columns to present text field component in order to control its data changes events
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 public void setUpTextEditor(JTable table,int colIndex,JTextField cell) {
-	TableColumn columnNum = table.getColumnModel().getColumn(colIndex);
-	columnNum.setCellEditor(new DefaultCellEditor(cell));
-	cell.putClientProperty("JTextField.isTableCellEditor", Boolean.TRUE);
-
-		if (colIndex == 0)//Following code update row data when user change row product id item and enable save button
-		{
-
-					cell.addKeyListener(new KeyAdapter() {
-						public void keyTyped(KeyEvent e) {
-							btnSaveOrderDetails.setEnabled(true);
-						}
-						public void keyReleased(KeyEvent arg0) {
-							//Get product selected for combo-box by its Id
-							int index = (cell.getText().length()>0) ? products.indexOf(new Product(Long.parseLong(cell.getText()))): -1;
-							if (index <= products.size() && index > -1) {
-								String name = products.get(index).getProductName();
-								//Retrieve object item (id+name) for combo-box selection
-								Item object = new Item(cell.getText(), name);
-								table.setValueAt(object, table.getSelectedRow(),1);
-							//Update row according to product selection
-								updateRowNewProduct(Long.parseLong(object.getId()));
-								getOrderSubTotal();
-							//If no empty row add new one
-								if (table.getSelectedRow()==table.getRowCount()-1){
-									addEmptyRow();
-								}
-
-							} else {
-								//If product not found set combo to present instruction for user
-								Item object = new Item(null, "please select valid product");
-								table.setValueAt(object, table.getSelectedRow(),1);
-							}
-
-						}
-					});
-	   }
-
-	   else //Following code update totals when one of the cells changed and enable saving its changes
-		{
-		cell.addKeyListener(new KeyAdapter() {
-			public void keyTyped(KeyEvent e) {
-
-				btnSaveOrderDetails.setEnabled(true);
-			}
-			public void keyReleased(KeyEvent arg0) {
-
-				if (cell.getText()!=null && cell.getText().length() >0 )
-				{
-					String value =cell.getText();
-					if(colIndex==4){
-						if (value.charAt(value.length() - 1) != '%')
-						{
-							 NumberFormat numberFormat=NumberFormat.getPercentInstance();
-							  value = numberFormat.format(Float.parseFloat(value)/100);
-							  cell.setText(value);
-							  cell.setCaretPosition(value.length()-1);
-						}
-					}
-					else {cell.setText(value);
-					  }
-
-				table.setValueAt(value, table.getSelectedRow(),table.getSelectedColumn());
-				updateRowTotal(table.getSelectedRow());
-				getOrderSubTotal();
-				}
-			}
-		}
-		);
-
-
-		//Set text field courser before % when updating discount
-		if(colIndex==4){
-			cell.addFocusListener(new FocusAdapter() {
-		    	@Override
-		    	public void focusGained(FocusEvent arg0) {
-		    		String value =cell.getText();
-		    		cell.setCaretPosition(value.length()-1);
-		    	}
-		    });
-		}
-	}
-
-	//Set up tool tips
-	DefaultTableCellRenderer renderer = new DefaultTableCellRenderer();
-	renderer.setToolTipText("Click for Edit");
-	columnNum.setCellRenderer(renderer);
+//	TableColumn columnNum = table.getColumnModel().getColumn(colIndex);
+//	columnNum.setCellEditor(new DefaultCellEditor(cell));
+//	cell.putClientProperty("JTextField.isTableCellEditor", Boolean.TRUE);
+//
+//		if (colIndex == 0)//Following code update row data when user change row product id item and enable save button
+//		{
+//
+//					cell.addKeyListener(new KeyAdapter() {
+//						public void keyTyped(KeyEvent e) {
+//							btnSaveOrderDetails.setEnabled(true);
+//						}
+//						public void keyReleased(KeyEvent arg0) {
+//							//Get product selected for combo-box by its Id
+//							int index = (cell.getText().length()>0) ? products.indexOf(new Product(Long.parseLong(cell.getText()))): -1;
+//							if (index <= products.size() && index > -1) {
+//								String name = products.get(index).getProductName();
+//								//Retrieve object item (id+name) for combo-box selection
+//								Item object = new Item(cell.getText(), name);
+//								table.setValueAt(object, table.getSelectedRow(),1);
+//							//Update row according to product selection
+//								updateRowNewProduct(Long.parseLong(object.getId()));
+//								getOrderSubTotal();
+//							//If no empty row add new one
+//								if (table.getSelectedRow()==table.getRowCount()-1){
+//									addEmptyRow();
+//								}
+//
+//							} else {
+//								//If product not found set combo to present instruction for user
+//								Item object = new Item(null, "please select valid product");
+//								table.setValueAt(object, table.getSelectedRow(),1);
+//							}
+//
+//						}
+//					});
+//	   }
+//
+//	   else //Following code update totals when one of the cells changed and enable saving its changes
+//		{
+//		cell.addKeyListener(new KeyAdapter() {
+//			public void keyTyped(KeyEvent e) {
+//
+//				btnSaveOrderDetails.setEnabled(true);
+//			}
+//			public void keyReleased(KeyEvent arg0) {
+//
+//				if (cell.getText()!=null && cell.getText().length() >0 )
+//				{
+//					String value =cell.getText();
+//					if(colIndex==4){
+//						if (value.charAt(value.length() - 1) != '%')
+//						{
+//							 NumberFormat numberFormat=NumberFormat.getPercentInstance();
+//							  value = numberFormat.format(Float.parseFloat(value)/100);
+//							  cell.setText(value);
+//							  cell.setCaretPosition(value.length()-1);
+//						}
+//					}
+//					else {cell.setText(value);
+//					  }
+//
+//				table.setValueAt(value, table.getSelectedRow(),table.getSelectedColumn());
+//				updateRowTotal(table.getSelectedRow());
+//				getOrderSubTotal();
+//				}
+//			}
+//		}
+//		);
+//
+//
+//		//Set text field courser before % when updating discount
+//		if(colIndex==4){
+//			cell.addFocusListener(new FocusAdapter() {
+//		    	@Override
+//		    	public void focusGained(FocusEvent arg0) {
+//		    		String value =cell.getText();
+//		    		cell.setCaretPosition(value.length()-1);
+//		    	}
+//		    });
+//		}
+//	}
+//
+//	//Set up tool tips
+//	DefaultTableCellRenderer renderer = new DefaultTableCellRenderer();
+//	renderer.setToolTipText("Click for Edit");
+//	columnNum.setCellRenderer(renderer);
 
 }
 
@@ -421,14 +424,14 @@ public void setUpTextEditor(JTable table,int colIndex,JTextField cell) {
 
 
 	public void updateRowNewProduct(long id){
-		products = OrderLogic.getInstance().getProducts();
-	    int productArrayIndex= products.indexOf(new Product(id));
-	    BigDecimal unitPrice = products.get(productArrayIndex).getUnitPrice();
-     	table.setValueAt(unitPrice, table.getSelectedRow(),2);
-     	table.setValueAt(new Integer (1), table.getSelectedRow(),3);
-     	table.setValueAt(NumberFormat.getPercentInstance().format(new Float(0.0)), table.getSelectedRow(),4);
-     	table.setValueAt(calculateTotalPerRow(table.getSelectedRow()), table.getSelectedRow(),5);
-     	getOrderSubTotal();
+//		products = OrderLogic.getInstance().getProducts();
+//	    int productArrayIndex= products.indexOf(new Product(id));
+//	    BigDecimal unitPrice = products.get(productArrayIndex).getUnitPrice();
+//     	table.setValueAt(unitPrice, table.getSelectedRow(),2);
+//     	table.setValueAt(new Integer (1), table.getSelectedRow(),3);
+//     	table.setValueAt(NumberFormat.getPercentInstance().format(new Float(0.0)), table.getSelectedRow(),4);
+//     	table.setValueAt(calculateTotalPerRow(table.getSelectedRow()), table.getSelectedRow(),5);
+//     	getOrderSubTotal();
 	 }
 	 private void updateRowTotal(int selectedRow) {
 
@@ -468,96 +471,96 @@ public void setUpTextEditor(JTable table,int colIndex,JTextField cell) {
 
 	}
 	 private Boolean btnSaveOnClick(ActionEvent evt) {//GEN-FIRST:event_btnSaveOnClick
-
-
-		table.getColumnModel().getColumn(0).getCellEditor().stopCellEditing();
-    	table.getColumnModel().getColumn(1).getCellEditor().stopCellEditing();
-		table.getColumnModel().getColumn(2).getCellEditor().stopCellEditing();
-		table.getColumnModel().getColumn(3).getCellEditor().stopCellEditing();
-		table.getColumnModel().getColumn(4).getCellEditor().stopCellEditing();
-		table.getColumnModel().getColumn(5).getCellEditor().stopCellEditing();
-
-
-	    		int rowIndex =0 ;
-	    		while (rowIndex<table.getRowCount()) {
-
-	    			if ((rowIndex)+1==table.getRowCount()){
-	    				if (table.getValueAt(rowIndex,0).toString().length() <=0) break;
-	    			}
-
-	    			if (!inputValid(rowIndex)) {
-	    				btnSaveOrderDetails.setEnabled(false);
-	    				return false;}
-	    			rowIndex++;
-	    			}
-
-	    		Boolean success = true;
-	    		try {
-	    			rowIndex =0 ;
-					while (rowIndex<table.getRowCount()) {
-							if (table.getValueAt(rowIndex,0).toString().length() <=0) break;
-							int orderDetailArrayIndex= orders.indexOf(new OrderDetails(orderID,Long.parseLong(table.getValueAt(rowIndex,0).toString())));
-							if (orderDetailArrayIndex>-1){//update
-
-								String pecentFormated = table.getValueAt(rowIndex,4).toString();
-								if (pecentFormated.charAt(pecentFormated.length() - 1) == '%')
-									pecentFormated = pecentFormated.substring(0, pecentFormated.length() - 1);
-								if (pecentFormated.length()<=0)pecentFormated="0";
-								Float newdiscount=(float) (Float.parseFloat(pecentFormated)/100.00);
-
-
-								success=OrderLogic.getInstance().editOrderDetails(orderID,Long.parseLong(table.getValueAt(rowIndex,0).toString()),Integer.parseInt(table.getValueAt(rowIndex,3).toString()),formatpercentToFloat(table.getValueAt(rowIndex,4).toString()));
-
-
-							}
-							if (orderDetailArrayIndex==-1){//add
-								success=true;
-								success=OrderLogic.getInstance().addOrderDetails(orderID,Long.parseLong(table.getValueAt(rowIndex,0).toString()),Integer.parseInt(table.getValueAt(rowIndex,3).toString()),formatpercentToFloat(table.getValueAt(rowIndex,4).toString()));
-
-							}
-							rowIndex++;
-							}
-
-
-					int ArrayIndex = 0;
-					while (ArrayIndex<orders.size()) {
-
-
-							rowIndex =0 ;
-							Boolean found = false;
-							while (rowIndex<table.getRowCount()) {
-
-
-								if (table.getValueAt(rowIndex,0).toString().length()>0){
-								if(Long.parseLong(table.getValueAt(rowIndex,0).toString()) == orders.get(ArrayIndex).getProductID())
-								{
-									found = true;
-									break;
-								}}
-								rowIndex++;
-							}
-
-							if (found == false){
-								success=OrderLogic.getInstance().removeOrderDetail(orderID,orders.get(ArrayIndex).getProductID());
-
-							}
-
-							ArrayIndex++;
-					}
-
-					}
-	    		catch (NumberFormatException e) {
-	    			e.printStackTrace();
-	    			return false;
-						}
-	    			refreshDataButtons();
-	    			initTableData();
-
-
-
-
-	    		return null;
-
+//
+//
+//		table.getColumnModel().getColumn(0).getCellEditor().stopCellEditing();
+//    	table.getColumnModel().getColumn(1).getCellEditor().stopCellEditing();
+//		table.getColumnModel().getColumn(2).getCellEditor().stopCellEditing();
+//		table.getColumnModel().getColumn(3).getCellEditor().stopCellEditing();
+//		table.getColumnModel().getColumn(4).getCellEditor().stopCellEditing();
+//		table.getColumnModel().getColumn(5).getCellEditor().stopCellEditing();
+//
+//
+//	    		int rowIndex =0 ;
+//	    		while (rowIndex<table.getRowCount()) {
+//
+//	    			if ((rowIndex)+1==table.getRowCount()){
+//	    				if (table.getValueAt(rowIndex,0).toString().length() <=0) break;
+//	    			}
+//
+//	    			if (!inputValid(rowIndex)) {
+//	    				btnSaveOrderDetails.setEnabled(false);
+//	    				return false;}
+//	    			rowIndex++;
+//	    			}
+//
+//	    		Boolean success = true;
+//	    		try {
+//	    			rowIndex =0 ;
+//					while (rowIndex<table.getRowCount()) {
+//							if (table.getValueAt(rowIndex,0).toString().length() <=0) break;
+//							int orderDetailArrayIndex= orders.indexOf(new OrderDetails(orderID,Long.parseLong(table.getValueAt(rowIndex,0).toString())));
+//							if (orderDetailArrayIndex>-1){//update
+//
+//								String pecentFormated = table.getValueAt(rowIndex,4).toString();
+//								if (pecentFormated.charAt(pecentFormated.length() - 1) == '%')
+//									pecentFormated = pecentFormated.substring(0, pecentFormated.length() - 1);
+//								if (pecentFormated.length()<=0)pecentFormated="0";
+//								Float newdiscount=(float) (Float.parseFloat(pecentFormated)/100.00);
+//
+//
+//								success=OrderLogic.getInstance().editOrderDetails(orderID,Long.parseLong(table.getValueAt(rowIndex,0).toString()),Integer.parseInt(table.getValueAt(rowIndex,3).toString()),formatpercentToFloat(table.getValueAt(rowIndex,4).toString()));
+//
+//
+//							}
+//							if (orderDetailArrayIndex==-1){//add
+//								success=true;
+//								success=OrderLogic.getInstance().addOrderDetails(orderID,Long.parseLong(table.getValueAt(rowIndex,0).toString()),Integer.parseInt(table.getValueAt(rowIndex,3).toString()),formatpercentToFloat(table.getValueAt(rowIndex,4).toString()));
+//
+//							}
+//							rowIndex++;
+//							}
+//
+//
+//					int ArrayIndex = 0;
+//					while (ArrayIndex<orders.size()) {
+//
+//
+//							rowIndex =0 ;
+//							Boolean found = false;
+//							while (rowIndex<table.getRowCount()) {
+//
+//
+//								if (table.getValueAt(rowIndex,0).toString().length()>0){
+//								if(Long.parseLong(table.getValueAt(rowIndex,0).toString()) == orders.get(ArrayIndex).getProductID())
+//								{
+//									found = true;
+//									break;
+//								}}
+//								rowIndex++;
+//							}
+//
+//							if (found == false){
+//								success=OrderLogic.getInstance().removeOrderDetail(orderID,orders.get(ArrayIndex).getProductID());
+//
+//							}
+//
+//							ArrayIndex++;
+//					}
+//
+//					}
+//	    		catch (NumberFormatException e) {
+//	    			e.printStackTrace();
+//	    			return false;
+//						}
+//	    			refreshDataButtons();
+//	    			initTableData();
+//
+//
+//
+//
+		return null;
+//
 
 	    }//GEN-LAST:event_btnSaveOnClick
 
