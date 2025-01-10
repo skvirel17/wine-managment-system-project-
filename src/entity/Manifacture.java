@@ -1,11 +1,13 @@
 package entity;
 
+import java.util.Objects;
+
 public class Manifacture {
-    public static String manifactureNumber;
-    public static String fullName;
-    public static int phoneNumber;
-    public static String addressManifacture;
-    public static String email;
+    public String manifactureNumber;
+    public String fullName;
+    public int phoneNumber;
+    public String addressManifacture;
+    public String email;
 
     public Manifacture(String manifactureNumber, String fullName, int phoneNumber, String addressManifacture,  String email){
         this.manifactureNumber = manifactureNumber;
@@ -15,48 +17,68 @@ public class Manifacture {
         this.email = email;
     }
 
-    public static String getManifactureNumber() {
+    public String getManifactureNumber() {
         return manifactureNumber;
     }
 
-    public static void setManifactureNumber(String manifactureNumber) {
-        Manifacture.manifactureNumber = manifactureNumber;
+    public void setManifactureNumber(String manifactureNumber) {
+        this.manifactureNumber = manifactureNumber;
     }
 
-    public static String getFullName() {
+    public String getFullName() {
         return fullName;
     }
 
-    public static void setFullName(String fullName) {
-        Manifacture.fullName = fullName;
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
     }
 
-    public static int getPhoneNumber() {
+    public int getPhoneNumber() {
         return phoneNumber;
     }
 
-    public static void setPhoneNumber(int phoneNumber) {
-        Manifacture.phoneNumber = phoneNumber;
+    public void setPhoneNumber(int phoneNumber) {
+        this.phoneNumber = phoneNumber;
     }
 
-    public static String getAddressManifacture() {
+    public String getAddressManifacture() {
         return addressManifacture;
     }
 
-    public static void setAddressManifacture(String addressManifacture) {
-        Manifacture.addressManifacture = addressManifacture;
+    public void setAddressManifacture(String addressManifacture) {
+        this.addressManifacture = addressManifacture;
     }
 
-    public static String getEmail() {
+    public String getEmail() {
         return email;
     }
 
-    public static void setEmail(String email) {
-        Manifacture.email = email;
+    public void setEmail(String email) {
+        this.email = email;
     }
+
 
     @Override
     public String toString() {
-        return "Manifacture{}";
+        return "Manifacture{" +
+                "manifactureNumber='" + manifactureNumber + '\'' +
+                ", fullName='" + fullName + '\'' +
+                ", phoneNumber=" + phoneNumber +
+                ", addressManifacture='" + addressManifacture + '\'' +
+                ", email='" + email + '\'' +
+                '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Manifacture that = (Manifacture) o;
+        return phoneNumber == that.phoneNumber && Objects.equals(manifactureNumber, that.manifactureNumber) && Objects.equals(fullName, that.fullName) && Objects.equals(addressManifacture, that.addressManifacture) && Objects.equals(email, that.email);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(manifactureNumber, fullName, phoneNumber, addressManifacture, email);
     }
 }
