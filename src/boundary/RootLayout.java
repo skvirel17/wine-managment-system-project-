@@ -143,13 +143,11 @@ public class RootLayout extends JFrame {
 	 public void updateMenuSelectionHome() {
 		 mnHome.setOpaque(true);
 		 mnHome.setBackground(SystemColor.activeCaption);
-	 
 	 }
 	 
-	 public void updateMenuSelectionOrders() {
-		 //mnOrders.setOpaque(true);
-		 //mnOrders.setBackground(SystemColor.activeCaption);
-
+	 public void updateMenuSelectionManufactures() {
+		 mnManufactures.setOpaque(true);
+		 mnManufactures.setBackground(SystemColor.activeCaption);
 	 }
 
 	 public void updateMenuSelectionEmployee() {

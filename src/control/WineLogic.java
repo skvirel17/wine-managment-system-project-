@@ -1,4 +1,5 @@
 package control;
+import entity.Consts;
 import entity.Wine;
 import enums.SweetnessLevel;
 import enums.WineType;
@@ -14,16 +15,13 @@ import java.sql.Statement;
 import java.sql.ResultSet;
 
 
-
-
-
 public class WineLogic {
 
     public static List<Wine> getWineInfoByManufacturer(String manufactureNumber) {
         List<Wine> wineList = new ArrayList<>();
 
         // Путь к вашей базе данных Access
-        String dbURL = "jdbc:ucanaccess://C:/database.accdb"; // Замените на правильный путь
+        String dbURL = Consts.CONN_STR; // Замените на правильный путь
 
         try {
             // Подключение к базе данных
@@ -31,7 +29,14 @@ public class WineLogic {
             Statement stmt = conn.createStatement();
 
             // SQL-запрос для получения данных о винах производителя
-            String query = "SELECT TblWines.wineCatalogNumber, TblWines.wineManufactureNumber, TblWines.wineName, TblWines.wineDescription, TblWines.wineProductionYear, TblWines.winePricePerBootle, sl.SweetnessLevel as level, wt.wineTypeName as wineType, TblWines.wineProductImage FROM TblWines LEFT JOIN TbtEnumSweetnessLevels sl ON sl.ID = TblWines.wineSweetnessLevel LEFT JOIN TblWineTypes wt ON wt.wineTypeSerialNumber = TblWines.wineType WHERE TblWines.wineManufactureNumber = '" + manufactureNumber + "'";
+            String query = """
+                SELECT TblWines.wineCatalogNumber, TblWines.wineManufactureNumber, TblWines.wineName, 
+                    TblWines.wineDescription, TblWines.wineProductionYear, TblWines.winePricePerBootle, 
+                    sl.SweetnessLevel as level, wt.wineTypeName as wineType, TblWines.wineProductImage 
+                FROM TblWines 
+                LEFT JOIN TbtEnumSweetnessLevels sl ON sl.ID = TblWines.wineSweetnessLevel 
+                LEFT JOIN TblWineTypes wt ON wt.wineTypeSerialNumber = TblWines.wineType 
+                WHERE TblWines.wineManufactureNumber = """ + manufactureNumber;
             ResultSet rs = stmt.executeQuery(query);
 
             // Чтение данных из базы и создание объектов Wine
@@ -49,7 +54,8 @@ public class WineLogic {
                 byte[] productImage = null;//rs.getBytes("wineProductImage");
 
                 // Создание объекта Wine и добавление в список
-                Wine wine = new Wine(catalogNumber, manufacturyNumber, name, description, productionYear, pricePerBottle, sweetnessLevel, productImage ,wineType);
+                Wine wine = new Wine(catalogNumber, manufacturyNumber, name, description, productionYear,
+                        pricePerBottle, sweetnessLevel, productImage ,wineType);
                 wineList.add(wine);
             }
 
