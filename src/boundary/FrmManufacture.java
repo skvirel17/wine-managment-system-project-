@@ -14,6 +14,7 @@ import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
 import com.toedter.calendar.JDateChooser;
+import control.ManufactureLogic;
 import entity.Manufacture;
 
 
@@ -27,9 +28,8 @@ import java.awt.SystemColor;
 
 public class FrmManufacture extends RootLayout {
 
-	private ArrayList<Manufacture> manifacturesArray;
-	ArrayList<Manufacture> manufactures = new ArrayList<Manufacture>();
-	private Integer currentOrder;
+	private ArrayList<Manufacture> manufacturesArray;
+	private Integer currentManufacture;
 	private boolean inAddMode;
 
 	/**
@@ -54,8 +54,8 @@ public class FrmManufacture extends RootLayout {
 	 */
 	public FrmManufacture() {
 		initComponents();
-		//fetchAndRefresh();
-		//createEvents();
+		fetchAndRefresh();
+		createEvents();
 	}
 
 	private void initComponents() {
@@ -140,7 +140,7 @@ public class FrmManufacture extends RootLayout {
 //
 		}
 //
-//	private void createEvents() {
+	private void createEvents() {
 //		 btnRemove.addActionListener(new ActionListener() {
 //	        	public void actionPerformed(ActionEvent e) {
 //	        		btnRemoveOnClick(e);
@@ -292,7 +292,7 @@ public class FrmManufacture extends RootLayout {
 //        	}
 //        });
 //
-//	}
+	}
 //
 //	///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //	// This method initializing the design structure
@@ -436,48 +436,45 @@ public class FrmManufacture extends RootLayout {
 //	///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //	// fetches primary form data - orders , and refreshes controls.
 //	///////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//	private void fetchAndRefresh() {
-//		ordersArray = OrderLogic.getInstance().getOrders();
-//		currentOrder = (!ordersArray.isEmpty()) ? 1 : null;
-//		inAddMode = (ordersArray == null);
-//		refreshControls();
-//	}
-//
-//	   private void refreshControls() {
-//	        refreshNavigation();
-//	        refreshOrderFields();
-//	        refreshDataButtons();
-//
-//	    }
-//	   private void refreshNavigation() {
-//	        tfNavigation.setText((!inAddMode) ?
-//	                "" + currentOrder + " of " + ordersArray.size() :
-//	                "" + (ordersArray.size() + 1) + " of " + (ordersArray.size() + 1));
-//
-//	        btnFirst.setEnabled(currentOrder != null && currentOrder > 1);
-//	        btnPrev.setEnabled(currentOrder != null && currentOrder > 1);
-//	        btnNext.setEnabled(currentOrder != null && currentOrder < ordersArray.size());
-//	        btnLast.setEnabled(currentOrder != null && currentOrder < ordersArray.size());
-//	    }
+	private void fetchAndRefresh() {
+		manufacturesArray = ManufactureLogic.getInstance().getManufactures();
+		currentManufacture = (!manufacturesArray.isEmpty()) ? 1 : null;
+		inAddMode = (manufacturesArray == null);
+		refreshControls();
+	}
+
+	   private void refreshControls() {
+	        refreshNavigation();
+	        refreshManufactureFields();
+	        refreshDataButtons();
+
+	    }
+	   private void refreshNavigation() {
+	        tfNavigation.setText((!inAddMode) ?
+	                "" + currentManufacture + " of " + manufacturesArray.size() :
+	                "" + (manufacturesArray.size() + 1) + " of " + (manufacturesArray.size() + 1));
+
+	        btnFirst.setEnabled(currentManufacture != null && currentManufacture > 1);
+	        btnPrev.setEnabled(currentManufacture != null && currentManufacture > 1);
+	        btnNext.setEnabled(currentManufacture != null && currentManufacture < manufacturesArray.size());
+	        btnLast.setEnabled(currentManufacture != null && currentManufacture < manufacturesArray.size());
+	    }
 //	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //	// Updates the various order manipulation buttons,
 //	// according to form state
 //	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//
-//	   private void refreshDataButtons() {
-//	    	 btnSave.setEnabled(inAddMode);
-//	         btnAdd.setEnabled(!inAddMode);
-//	         btnRemove.setEnabled(!inAddMode);
-//	         tfSearch.setEnabled(!inAddMode);
-//
-//
-//
-//	    }
+
+	   private void refreshDataButtons() {
+	    	 btnSave.setEnabled(inAddMode);
+	         btnAdd.setEnabled(!inAddMode);
+	         btnRemove.setEnabled(!inAddMode);
+	         tfSearch.setEnabled(!inAddMode);
+	    }
 //	    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //		// updates the empArray controls with a given employee's information.
 //		///////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//	    private void refreshOrderFields() {
-//	    	Order order = (!inAddMode) ? ordersArray.get(currentOrder - 1) : null;
+	    private void refreshManufactureFields() {
+	    	Manufacture manufacture = (!inAddMode) ? manufacturesArray.get(currentManufacture - 1) : null;
 //
 //	        tfOrderID.setText((order != null) ? ("" + order.getOrderID()) : "(NEW)");
 //	        tfManifactureName.setText((order != null) ?  (order.getCustomerID()): null);
@@ -496,16 +493,8 @@ public class FrmManufacture extends RootLayout {
 //	        refreshEmpComBoxSelectedByID();
 //	        refreshShipViaComBoxSelectedByID();
 //
-//
-//
-//
-//	        panel.refreshComp((order != null) ? (order.getOrderID()) : 0);
-//
-//
-//
-//
-//
-//	    }
+	        panel.refreshComp((manufacture != null) ? (manufacture.getManifactureNumber()):"0");
+	    }
 //	    private void refreshCustomerComBoxSelectedByID ()
 //	    {
 //	    	if (!inAddMode)

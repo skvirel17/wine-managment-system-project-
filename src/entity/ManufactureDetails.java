@@ -1,92 +1,48 @@
 package entity;
 
+import control.WineLogic;
+
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 
 public class ManufactureDetails {
 
-	public String manifactureNumber;
-	public String fullName;
-	public int phoneNumber;
-	public String addressManifacture;
-	public String email;
+	public String manufactureNumber;
 
 
-	public static final int MAX_PRODUCT_ID = 10;
-    public static final int MAX_QUANTITY = 10;
-    public static final int MAX_DISCOUNT = 3;
 
+	public ManufactureDetails(String manifactureNumber){
+		this.manufactureNumber = manifactureNumber;
 
-	public ManufactureDetails(String manifactureNumber, String fullName, int phoneNumber, String addressManifacture, String email){
-		this.manifactureNumber = manifactureNumber;
-		this.fullName = fullName;
-		this.phoneNumber = phoneNumber;
-		this.addressManifacture = addressManifacture;
-		this.email = email;
 	}
 
 
 	public String getManifactureNumber() {
-		return manifactureNumber;
+		return manufactureNumber;
 	}
 
 	public void setManifactureNumber(String manifactureNumber) {
-		this.manifactureNumber = manifactureNumber;
+		this.manufactureNumber = manifactureNumber;
 	}
 
-	public String getFullName() {
-		return fullName;
+
+
+
+	public List<Wine> getWinesByManufactureNumber() {
+		// Получаем список всех вин (вы можете реализовать собственный метод получения данных)
+		List<Wine> allWines = WineLogic.getInstance().getAllWines();
+
+		// Фильтруем вина, которые принадлежат данному производителю
+		List<Wine> winesByManufacture = new ArrayList<>();
+		for (Wine wine : allWines) {
+			if (wine.getManufactureNumber().equals(this.manufactureNumber)) {
+				winesByManufacture.add(wine);
+			}
+		}
+		return winesByManufacture;
 	}
 
-	public void setFullName(String fullName) {
-		this.fullName = fullName;
-	}
-
-	public int getPhoneNumber() {
-		return phoneNumber;
-	}
-
-	public void setPhoneNumber(int phoneNumber) {
-		this.phoneNumber = phoneNumber;
-	}
-
-	public String getAddressManifacture() {
-		return addressManifacture;
-	}
-
-	public void setAddressManifacture(String addressManifacture) {
-		this.addressManifacture = addressManifacture;
-	}
-
-	public String getEmail() {
-		return email;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
-	}
-
-	@Override
-	public boolean equals(Object o) {
-		if (o == null || getClass() != o.getClass()) return false;
-		ManufactureDetails that = (ManufactureDetails) o;
-		return Objects.equals(manifactureNumber, that.manifactureNumber);
-	}
-
-	@Override
-	public int hashCode() {
-		return Objects.hashCode(manifactureNumber);
-	}
-
-	@Override
-	public String toString() {
-		return "ManufactureDetails{" +
-				"manifactureNumber='" + manifactureNumber + '\'' +
-				", fullName='" + fullName + '\'' +
-				", phoneNumber=" + phoneNumber +
-				", addressManifacture='" + addressManifacture + '\'' +
-				", email='" + email + '\'' +
-				'}';
-	}
 }

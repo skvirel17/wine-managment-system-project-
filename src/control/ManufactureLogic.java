@@ -6,10 +6,13 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Vector;
 
 import entity.Consts;
 import entity.Manufacture;
 import entity.ManufactureDetails;
+import entity.Wine;
 //import entity.Order ;
 //import entity.ManufactureDetails ;
 //import entity.Product;
@@ -273,8 +276,8 @@ public class ManufactureLogic {
 //
 //
 //
-    public ArrayList <ManufactureDetails> getManufactureDetails(String manifactureNumber) {
-   	 ArrayList<ManufactureDetails> results = new ArrayList<ManufactureDetails>();
+    public ArrayList <Manufacture> getManufactureDetails(String manifactureNumber) {
+   	 ArrayList<Manufacture> results = new ArrayList<Manufacture>();
 
 	        try {
 	            Class.forName("net.ucanaccess.jdbc.UcanaccessDriver");
@@ -287,7 +290,7 @@ public class ManufactureLogic {
 	            	ResultSet rs = stmt.executeQuery();
 	                while (rs.next()) {
 	                    int i = 1;
-	                    results.add(new ManufactureDetails(rs.getString(i++), rs.getString(i++),
+	                    results.add(new Manufacture(rs.getString(i++), rs.getString(i++),
 								rs.getInt(i++), rs.getString(i++), rs.getString(i++)));
 
 
@@ -386,5 +389,10 @@ public class ManufactureLogic {
 //        }
 //        return false;
 //    }
+public static List<Wine> getWineInfoByManufacturer(String manufactureNumber) {
+	List<Wine> wineInfo = new ArrayList<Wine>();
+	 return wineInfo;
+}
+
 
 }

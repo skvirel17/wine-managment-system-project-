@@ -18,7 +18,9 @@
           <root url="file://$MODULE_DIR$/lib/UCanAccess-5.0.1.bin" />
         </CLASSES>
         <JAVADOC />
-        <SOURCES />
+        <SOURCES>
+          <root url="jar://$USER_HOME$/.ideaLibSources/ucanaccess-5.0.1-sources.jar!/" />
+        </SOURCES>
         <jarDirectory url="file://$MODULE_DIR$/lib/UCanAccess-5.0.1.bin" recursive="false" />
       </library>
     </orderEntry>

@@ -3,14 +3,14 @@ package entity;
 import java.util.Objects;
 
 public class Manufacture {
-    public String manifactureNumber;
+    public String manufactureNumber;
     public String fullName;
     public int phoneNumber;
     public String addressManifacture;
     public String email;
 
     public Manufacture(String manifactureNumber, String fullName, int phoneNumber, String addressManifacture, String email){
-        this.manifactureNumber = manifactureNumber;
+        this.manufactureNumber = manifactureNumber;
         this.fullName = fullName;
         this.phoneNumber = phoneNumber;
         this.addressManifacture = addressManifacture;
@@ -18,11 +18,11 @@ public class Manufacture {
     }
 
     public String getManifactureNumber() {
-        return manifactureNumber;
+        return manufactureNumber;
     }
 
     public void setManifactureNumber(String manifactureNumber) {
-        this.manifactureNumber = manifactureNumber;
+        this.manufactureNumber = manifactureNumber;
     }
 
     public String getFullName() {
@@ -61,7 +61,7 @@ public class Manufacture {
     @Override
     public String toString() {
         return "Manifacture{" +
-                "manifactureNumber='" + manifactureNumber + '\'' +
+                "manifactureNumber='" + manufactureNumber + '\'' +
                 ", fullName='" + fullName + '\'' +
                 ", phoneNumber=" + phoneNumber +
                 ", addressManifacture='" + addressManifacture + '\'' +
@@ -74,11 +74,11 @@ public class Manufacture {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Manufacture that = (Manufacture) o;
-        return phoneNumber == that.phoneNumber && Objects.equals(manifactureNumber, that.manifactureNumber) && Objects.equals(fullName, that.fullName) && Objects.equals(addressManifacture, that.addressManifacture) && Objects.equals(email, that.email);
+        return phoneNumber == that.phoneNumber && Objects.equals(manufactureNumber, that.manufactureNumber) && Objects.equals(fullName, that.fullName) && Objects.equals(addressManifacture, that.addressManifacture) && Objects.equals(email, that.email);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(manifactureNumber, fullName, phoneNumber, addressManifacture, email);
+        return Objects.hash(manufactureNumber, fullName, phoneNumber, addressManifacture, email);
     }
 }

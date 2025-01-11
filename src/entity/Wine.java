@@ -7,19 +7,19 @@ import java.util.Objects;
 
 public class Wine {
     public String catalogNumber;
-    public int manifactureNumber;
+    public String manufactureNumber;
     public String name;
     public String description;
     public int productionYear;
     public float pricePerBottle;
     public SweetnessLevel sweetnessLevel;
-    public String productImage;
+    public byte[] productImage;
     public WineType wineType;
 
-    public Wine(String catalogNumber, int manifactureNumber, String name, String description, int productionYear, float pricePerBottle,
-                SweetnessLevel sweetnessLevel, String productImage,  WineType wineType) {
+    public Wine(String catalogNumber, String manufactureNumber, String name, String description, int productionYear, float pricePerBottle,
+                SweetnessLevel sweetnessLevel, byte[] productImage,  WineType wineType) {
         this.catalogNumber = catalogNumber;
-        this.manifactureNumber = manifactureNumber;
+        this.manufactureNumber = manufactureNumber;
         this.name = name;
         this.description = description;
         this.productionYear = productionYear;
@@ -37,12 +37,12 @@ public class Wine {
         this.catalogNumber = catalogNumber;
     }
 
-    public int getManifactureNumber() {
-        return manifactureNumber;
+    public String getManufactureNumber() {
+        return manufactureNumber;
     }
 
-    public void setManifactureNumber(int manifactureNumber) {
-        this.manifactureNumber = manifactureNumber;
+    public void setManufactureNumber(String manufactureNumber) {
+        this.manufactureNumber = manufactureNumber;
     }
 
     public String getName() {
@@ -85,11 +85,11 @@ public class Wine {
         this.sweetnessLevel = sweetnessLevel;
     }
 
-    public String getProductImage() {
+    public byte[] getProductImage() {
         return productImage;
     }
 
-    public void setProductImage(String productImage) {
+    public void setProductImage(byte[] productImage) {
         this.productImage = productImage;
     }
 
@@ -105,7 +105,7 @@ public class Wine {
     public String toString() {
         return "Wine{" +
                 "catalogNumber='" + catalogNumber + '\'' +
-                ", manifactureNumber=" + manifactureNumber +
+                ", manufactureNumber=" + manufactureNumber +
                 ", name='" + name + '\'' +
                 ", description='" + description + '\'' +
                 ", productionYear=" + productionYear +
@@ -121,11 +121,12 @@ public class Wine {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Wine wine = (Wine) o;
-        return manifactureNumber == wine.manifactureNumber && productionYear == wine.productionYear && Float.compare(pricePerBottle, wine.pricePerBottle) == 0 && Objects.equals(catalogNumber, wine.catalogNumber) && Objects.equals(name, wine.name) && Objects.equals(description, wine.description) && sweetnessLevel == wine.sweetnessLevel && Objects.equals(productImage, wine.productImage) && wineType == wine.wineType;
+        return manufactureNumber == wine.manufactureNumber && productionYear == wine.productionYear && Float.compare(pricePerBottle, wine.pricePerBottle) == 0 && Objects.equals(catalogNumber, wine.catalogNumber) && Objects.equals(name, wine.name) && Objects.equals(description, wine.description) && sweetnessLevel == wine.sweetnessLevel && Objects.equals(productImage, wine.productImage) && wineType == wine.wineType;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(catalogNumber, manifactureNumber, name, description, productionYear, pricePerBottle, sweetnessLevel, productImage, wineType);
+        return Objects.hash(catalogNumber, manufactureNumber, name, description, productionYear, pricePerBottle, sweetnessLevel, productImage, wineType);
     }
+
 }

@@ -2,7 +2,10 @@ package boundary;
 
 
 import control.ManufactureLogic;
+import control.WineLogic;
+import entity.Manufacture;
 import entity.ManufactureDetails;
+import entity.Wine;
 
 import java.util.ArrayList;
 import java.util.Vector;
@@ -14,6 +17,8 @@ import java.awt.event.KeyAdapter;
 import java.math.BigDecimal;
 import java.text.NumberFormat;
 import javax.swing.event.*;
+import java.util.List;
+import java.util.ArrayList;
 
 
 
@@ -21,285 +26,260 @@ public class FrmManufactureDetailsInternal extends JPanel {
 
 
 	private static final long serialVersionUID = 1L;
-	private  int iteration;
-	private static  JTable table;
-	private  JScrollPane scrollPane;
+	private int iteration;
+	private static JTable table;
+	private JScrollPane scrollPane;
 	private static DefaultTableModel tableModel;
 	private static JComboBox<Item> comboBoxProductName;
 	private JButton btnSaveOrderDetails = new JButton("Save");
 	private JButton btnDeleteOrderDetails;
 	private JLabel lblTotalOrderPrice;
 	private JTextField tfTotalOrderPrice;
-	private  JTextField tfProductId= new JTextField();
-	private  JTextField tfUnitPrice= new JTextField();
-	private  JTextField tfQuantity= new JTextField();
-	private  JTextField tfDiscount= new JTextField();
-	private  JTextField tfTotal= new JTextField();
+	private JTextField tfCatalogNumber = new JTextField();
+	private JTextField tfName = new JTextField();
+	private JTextField tfDescription = new JTextField();
+	private JTextField tfProductionYear = new JTextField();
+	private JTextField tfPricePerBottle = new JTextField();
+	private JTextField tfSweetnessLevel = new JTextField();
+	private JTextField tfProductImage = new JTextField();
+	private JTextField tfWineType = new JTextField();
 	private String manifactureNumber;
-//	private static ArrayList<Product> products = new ArrayList<Product>();
-	private ArrayList<ManufactureDetails> manufactures = new ArrayList<ManufactureDetails>();
+	private static ArrayList<Wine> wines = new ArrayList<Wine>();
+	private ArrayList<Manufacture> manufactures = new ArrayList<Manufacture>();
+
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // This method is being used in order to launch the internal form.
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////
-		public FrmManufactureDetailsInternal() {
 
-			iteration=0;
-			initComponents();
-			createEvents();
-		}
+	/// ////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	public FrmManufactureDetailsInternal() {
+
+		iteration = 0;
+		initComponents();
+		createEvents();
+	}
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // This method initializing the design structure
 // of form left fields
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////
-		public void initComponents(){
 
-			//Create table according to data structure
-			table = new JTable(){ public boolean isCellEditable(int rowIndex, int colIndex) {
-				if (colIndex==2 ||colIndex==5)return false; //Disallow the editing of product price and total cells
-				 return true;
-			}};
+	/// ////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	public void initComponents() {
 
-			tableModel = new DefaultTableModel();
-		    String header[] = new String[] { "Product ID", "Product Name", "Unit Price", "Quantity", "Discount","Total" };
-		    tableModel.setColumnIdentifiers(header);
-		    table.setModel(tableModel);
-		    table.setRowHeight(25);
+		//Create table according to data structure
+		table = new JTable() {
+			public boolean isCellEditable(int rowIndex, int colIndex) {
+				if (colIndex == 2 || colIndex == 5)
+					return false; //Disallow the editing of product price and total cells
+				return true;
+			}
+		};
+
+		tableModel = new DefaultTableModel();
+		String header[] = new String[]{"catalog Number", " Name", "description", "production Year", "price PerBottle","sweetness Level","productI mage","wine Type"};
+		tableModel.setColumnIdentifiers(header);
+		table.setModel(tableModel);
+		table.setRowHeight(25);
 
 
-		  //Create the scroll pane and add the table to it.
-		    scrollPane = new JScrollPane(table);
-		    scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
-		    scrollPane.setPreferredSize(new Dimension(500, 125));
-		    scrollPane.setMaximumSize(new Dimension(450, 20000));
-		    add(scrollPane);
+		//Create the scroll pane and add the table to it.
+		scrollPane = new JScrollPane(table);
+		scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+		scrollPane.setPreferredSize(new Dimension(500, 125));
+		scrollPane.setMaximumSize(new Dimension(450, 20000));
+		add(scrollPane);
 
-		    //Set table dimensions
-		    TableColumnModel columnModel = table.getColumnModel();
-		    columnModel.getColumn(0).setPreferredWidth(250);
-		    columnModel.getColumn(1).setPreferredWidth(1500);
-		    columnModel.getColumn(2).setPreferredWidth(300);
-		    columnModel.getColumn(3).setPreferredWidth(250);
-		    columnModel.getColumn(4).setPreferredWidth(250);
-		    columnModel.getColumn(5).setPreferredWidth(250);
+		//Set table dimensions
+		TableColumnModel columnModel = table.getColumnModel();
+		columnModel.getColumn(0).setPreferredWidth(250);
+		columnModel.getColumn(1).setPreferredWidth(1500);
+		columnModel.getColumn(2).setPreferredWidth(300);
+		columnModel.getColumn(3).setPreferredWidth(250);
+		columnModel.getColumn(4).setPreferredWidth(250);
+		columnModel.getColumn(5).setPreferredWidth(250);
 
-		   //add save and delete button
-		    btnSaveOrderDetails.setHorizontalAlignment(SwingConstants.LEFT);
-		    add(btnSaveOrderDetails);
-		    btnDeleteOrderDetails = new JButton("Delete");
-		    btnDeleteOrderDetails.setHorizontalAlignment(SwingConstants.LEFT);
-		    add(btnDeleteOrderDetails);
+		//add save and delete button
+		btnSaveOrderDetails.setHorizontalAlignment(SwingConstants.LEFT);
+		add(btnSaveOrderDetails);
+		btnDeleteOrderDetails = new JButton("Delete");
+		btnDeleteOrderDetails.setHorizontalAlignment(SwingConstants.LEFT);
+		add(btnDeleteOrderDetails);
 
-		  //add total order component
-		    lblTotalOrderPrice = new JLabel("Total Order Price:");
-		    add(lblTotalOrderPrice);
-		    tfTotalOrderPrice = new JTextField();
-		    tfTotalOrderPrice.setText("0");
-		    tfTotalOrderPrice.setEditable(false);
-		    add(tfTotalOrderPrice);
-		    tfTotalOrderPrice.setColumns(10);
+		//add total order component
+		lblTotalOrderPrice = new JLabel("Total Order Price:");
+		add(lblTotalOrderPrice);
+		tfTotalOrderPrice = new JTextField();
+		tfTotalOrderPrice.setText("0");
+		tfTotalOrderPrice.setEditable(false);
+		add(tfTotalOrderPrice);
+		tfTotalOrderPrice.setColumns(10);
 	}
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // This method contain all the code for creating events
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////
-		private void createEvents() {
 
-			//Save button action - update/add/remove products in order according to table
+	/// ////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	private void createEvents() {
 
-			btnSaveOrderDetails.addActionListener(new ActionListener() {
-		    	public void actionPerformed(ActionEvent e) {
-		    		btnSaveOnClick(e);
+		//Save button action - update/add/remove products in order according to table
 
-		    	}
-		    });
-			// -----------------------------------
+		btnSaveOrderDetails.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				btnSaveOnClick(e);
 
-			//Delete button action - delete selected rows
-		    btnDeleteOrderDetails.addActionListener(new ActionListener() {
-		    	public void actionPerformed(ActionEvent arg0) {
-		    		removeSelectedRows(table);
-		    		btnDeleteOrderDetails.setEnabled(false);
-		    		btnSaveOrderDetails.setEnabled(true);
-		    		getOrderSubTotal();
-		    	}
-		    });
-		    // -----------------------------------
+			}
+		});
+		// -----------------------------------
 
-		    //add selected row listener to enable delete button when row selected
-		    table.getSelectionModel().addListSelectionListener(new ListSelectionListener(){
-		        public void valueChanged(ListSelectionEvent event) {
-		        	if (table.getSelectedRow()>0)btnDeleteOrderDetails.setEnabled(true);
-		        }
-		    });
+		//Delete button action - delete selected rows
+		btnDeleteOrderDetails.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				removeSelectedRows(table);
+				btnDeleteOrderDetails.setEnabled(false);
+				btnSaveOrderDetails.setEnabled(true);
 
-		    //-----------------------------------
-		    //add delete key action to table row
+			}
+		});
+		// -----------------------------------
 
-		    InputMap im = table.getInputMap(JTable.WHEN_FOCUSED);
-		    ActionMap am = table.getActionMap();
+		//add selected row listener to enable delete button when row selected
+		table.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+			public void valueChanged(ListSelectionEvent event) {
+				if (table.getSelectedRow() > 0) btnDeleteOrderDetails.setEnabled(true);
+			}
+		});
 
-		    Action deleteAction = new AbstractAction() {
-		        @Override
-		        public void actionPerformed(ActionEvent e) {
-		        	removeSelectedRows(table);
-		        	btnDeleteOrderDetails.setEnabled(false);
-		        	btnSaveOrderDetails.setEnabled(true);
-		        	getOrderSubTotal();
-		        }
+		//-----------------------------------
+		//add delete key action to table row
 
-		    };
-		    im.put(KeyStroke.getKeyStroke(KeyEvent.VK_DELETE, 0), "Delete");
-		    im.put(KeyStroke.getKeyStroke(KeyEvent.VK_BACK_SPACE, 0), "Delete");
-		    am.put("Delete", deleteAction);
+		InputMap im = table.getInputMap(JTable.WHEN_FOCUSED);
+		ActionMap am = table.getActionMap();
 
-		    // -----------------------------------
+		Action deleteAction = new AbstractAction() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				removeSelectedRows(table);
+				btnDeleteOrderDetails.setEnabled(false);
+				btnSaveOrderDetails.setEnabled(true);
+
+			}
+
+		};
+		im.put(KeyStroke.getKeyStroke(KeyEvent.VK_DELETE, 0), "Delete");
+		im.put(KeyStroke.getKeyStroke(KeyEvent.VK_BACK_SPACE, 0), "Delete");
+		am.put("Delete", deleteAction);
+
+		// -----------------------------------
 
 
-		}
+	}
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //This method is been used by the primary form when user browse between orders
 //This method clear table rows and selections and set data according to order selected in primary form
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////
-		public void refreshComp(String manifactureNumber){
-			setManifactureNumber(manifactureNumber);
-			refreshDataButtons();
-			initTableData();
-		}
+
+	/// ////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	public void refreshComp(String manifactureNumber) {
+		setManifactureNumber(manifactureNumber);
+		refreshDataButtons();
+		initTableData();
+	}
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //This method set the order to be displayed
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+	/// ////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	public void setManifactureNumber(String manifactureNumber) {
 		this.manifactureNumber = manifactureNumber;
 	}
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //This method set the save/delete buttons to be disabled
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	 private void refreshDataButtons() {
-		 btnSaveOrderDetails.setEnabled(false);
-		 btnDeleteOrderDetails.setEnabled(false);
+
+	/// ////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	private void refreshDataButtons() {
+		btnSaveOrderDetails.setEnabled(false);
+		btnDeleteOrderDetails.setEnabled(false);
 
 
-
-
-    }
+	}
 
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //This method set data to be presented on table according to order id
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////
-private void initTableData(){
+
+	/// ////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	private void initTableData() {
 
 
-	//Following code stop cell editing in case table is been edited -its important while user try to browse between orders without saving its edited values
-	if (iteration ==0) {
-	 	iteration++;
-		}
-	    else{
+		//Following code stop cell editing in case table is been edited -its important while user try to browse between orders without saving its edited values
+		if (iteration == 0) {
+			iteration++;
+		} else {
 
-	    	table.getColumnModel().getColumn(0).getCellEditor().stopCellEditing();
-	    	table.getColumnModel().getColumn(1).getCellEditor().stopCellEditing();
+			table.getColumnModel().getColumn(0).getCellEditor().stopCellEditing();
+			table.getColumnModel().getColumn(1).getCellEditor().stopCellEditing();
 			table.getColumnModel().getColumn(2).getCellEditor().stopCellEditing();
 			table.getColumnModel().getColumn(3).getCellEditor().stopCellEditing();
 			table.getColumnModel().getColumn(4).getCellEditor().stopCellEditing();
 			table.getColumnModel().getColumn(5).getCellEditor().stopCellEditing();
-	    }
+		}
 
-	//Following code clear table (used while browsing between orders)
-	tableModel =(DefaultTableModel) table.getModel();
-	tableModel.setRowCount(0);
+		//Following code clear table (used while browsing between orders)
+		tableModel = (DefaultTableModel) table.getModel();
+		tableModel.setRowCount(0);
 
-	//Following code gets all orders details for selected order id and updates table rows
-	manufactures = ManufactureLogic.getInstance().getManufactureDetails(this.manifactureNumber);
-	int i=0;
-// 	while (i<manufactures.size()){
-//    Vector<Object> data = new Vector<Object>();
-//    data.add(manufactures.get(i).getManifactureNumber());
-//    data.add(manufactures.get(i).getCatalogNumber());
-//    data.add(manufactures.get(i).getUnitPrice());
-//    data.add(manufactures.get(i).getQuantity());
-//    	//Add percent format for cell
-//	    NumberFormat numberFormat=NumberFormat.getPercentInstance();
-//	    Object value = numberFormat.format(orders.get(i).getDiscount());
-//	    data.add(value);
-//    data.add(orders.get(i).getLinePrice());
-//    i++;
-//    tableModel.addRow(data);}
- 	//-------------------
+		//Following code gets all orders details for selected order id and updates table ro
 
- 	// 	Add empty Row
- 	addEmptyRow();
-    //-------------------
 
- 	// 	First row is been focused and selected by default
-    table.changeSelection(0, 0, false, false);
-    table.requestFocus();
+		// מה שהיה
+		List <Wine> wine = WineLogic.getWineInfoByManufacturer(this.manifactureNumber);
 
-    //set column components
-    setUpProductNameColumnComboBox(table, table.getColumnModel().getColumn(1));
- 	setUpTextEditor(table, 0,tfProductId);
- 	setUpTextEditor(table, 2,tfUnitPrice);
- 	setUpTextEditor(table, 3,tfQuantity);
- 	setUpTextEditor(table, 4,tfDiscount);
- 	setUpTextEditor(table, 5,tfTotal);
+		int i = 0;
+		while (i < wine.size()) {
+			Vector<Object> data = new Vector<Object>();
+			System.out.println(wine.get(i).catalogNumber+"try");
+			data.add(wine.get(i).catalogNumber);
+			data.add(wine.get(i).name);
+			data.add(wine.get(i).description);
+			data.add(wine.get(i).productionYear);
+			data.add(wine.get(i).pricePerBottle);
+			data.add(wine.get(i).sweetnessLevel);
+			data.add(wine.get(i).productImage);
+			data.add(wine.get(i).wineType);
+			i++;
+			tableModel.addRow(data);
+		}
+		//-------------------
 
- 	//Notifies all listeners that all cell values in the table's rows may have changed.
- 	tableModel.fireTableDataChanged();
+		// 	Add empty Row
+		addEmptyRow();
+		//-------------------
 
- 	//Update total order price according to rows line price sum
- 	getOrderSubTotal();
-}
+		// 	First row is been focused and selected by default
+		table.changeSelection(0, 0, false, false);
+		table.requestFocus();
 
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//This method set product name column to present combo-box component with all products list
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////
-public void setUpProductNameColumnComboBox(JTable table,TableColumn columnNum) {
-//
-//		//Set combo-box item list data - get product id and name
-//		products = OrderLogic.getInstance().getProducts();
-//		Vector<Item> combomodel = new Vector<Item>();
-//
-//			for (int i =0 ;i<products.size();i++)
-//			{
-//				Item item = new Item(Long.toString(products.get(i).getProductID()), products.get(i).getProductName());
-//				combomodel.addElement( item );
-//				;i++;
-//
-//			}
-//			comboBoxProductName = new JComboBox( combomodel );
-//
-//		//Set action when value change update table row according to new selected product and enable saving changes button
-//		comboBoxProductName.addActionListener(new ActionListener() {
-//	        	public void actionPerformed(ActionEvent e) {
-//	        		refreshProductIdOnNameChange(e);
-//	        		btnSaveOrderDetails.setEnabled(true);
-//	        		//if last row is been edited add one more row
-//	        		if (table.getSelectedRow()==table.getRowCount()-1){
-//						addEmptyRow();
-//					}
-//
-//	         	}
-//	    });
-//
-//		//Set up the editor (combo-box) for the product-name cells.
-//		columnNum.setCellEditor(new DefaultCellEditor(comboBoxProductName));
-//		comboBoxProductName.putClientProperty("JComboBox.isTableCellEditor", Boolean.TRUE);
-//
-//
-//		//Set up tool tips for the the product-name cells.
-//		DefaultTableCellRenderer renderer =
-//		new DefaultTableCellRenderer();
-//		renderer.setToolTipText("Click for combo box");
-//		columnNum.setCellRenderer(renderer);
-			}
+		//set column components
+		setUpTextEditor(table, 0, tfCatalogNumber);
+		setUpTextEditor(table, 1, tfName);
+		setUpTextEditor(table, 2, tfDescription);
+		setUpTextEditor(table, 3, tfProductionYear);
+		setUpTextEditor(table, 4, tfPricePerBottle);
+		setUpTextEditor(table, 5, tfSweetnessLevel);
+		setUpTextEditor(table, 6, tfProductImage);
+		setUpTextEditor(table, 7, tfWineType);
+
+		//Notifies all listeners that all cell values in the table's rows may have changed.
+		tableModel.fireTableDataChanged();
+
+		//Update total order price according to rows line price sum
+
+	}
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //This method set columns to present text field component in order to control its data changes events
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
-public void setUpTextEditor(JTable table,int colIndex,JTextField cell) {
+		public void setUpTextEditor (JTable table,int colIndex, JTextField cell){
 //	TableColumn columnNum = table.getColumnModel().getColumn(colIndex);
 //	columnNum.setCellEditor(new DefaultCellEditor(cell));
 //	cell.putClientProperty("JTextField.isTableCellEditor", Boolean.TRUE);
@@ -387,43 +367,43 @@ public void setUpTextEditor(JTable table,int colIndex,JTextField cell) {
 //	renderer.setToolTipText("Click for Edit");
 //	columnNum.setCellRenderer(renderer);
 
-}
+		}
 
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //This method refresh Product-Id cell value when user change selection on combo-box
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	private void refreshProductIdOnNameChange (ActionEvent e) {
-		JComboBox comboBox = (JComboBox)e.getSource();
-		if (comboBox.getSelectedItem() != "please select valid product"){
-	Item item = (Item)comboBox.getSelectedItem();
-	if (item!=null){
-		table.setValueAt(item.getId(), table.getSelectedRow(),0);
-	}
-	updateRowNewProduct(Long.parseLong(item.getId()));
+		private void refreshProductIdOnNameChange (ActionEvent e){
+			JComboBox comboBox = (JComboBox) e.getSource();
+			if (comboBox.getSelectedItem() != "please select valid product") {
+				Item item = (Item) comboBox.getSelectedItem();
+				if (item != null) {
+					table.setValueAt(item.getId(), table.getSelectedRow(), 0);
+				}
+				updateRowNewProduct(Long.parseLong(item.getId()));
+			}
 		}
-	}
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //This method add Empty Row in order to allow adding new items
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	private void addEmptyRow(){
+		private void addEmptyRow () {
 
-	 	Vector<Object> data = new Vector<Object>();
-	    data.add("");
-	    data.add("");
-	    data.add("");
-	    data.add("");
-	    data.add("");
-	    data.add("");
-		tableModel =(DefaultTableModel) table.getModel();
-	    tableModel.addRow(data);
-	    //-------------------
+			Vector<Object> data = new Vector<Object>();
+			data.add("");
+			data.add("");
+			data.add("");
+			data.add("");
+			data.add("");
+			data.add("");
+			tableModel = (DefaultTableModel) table.getModel();
+			tableModel.addRow(data);
+			//-------------------
 
-	}
+		}
 
 
-	public void updateRowNewProduct(long id){
+		public void updateRowNewProduct ( long id){
 //		products = OrderLogic.getInstance().getProducts();
 //	    int productArrayIndex= products.indexOf(new Product(id));
 //	    BigDecimal unitPrice = products.get(productArrayIndex).getUnitPrice();
@@ -432,45 +412,45 @@ public void setUpTextEditor(JTable table,int colIndex,JTextField cell) {
 //     	table.setValueAt(NumberFormat.getPercentInstance().format(new Float(0.0)), table.getSelectedRow(),4);
 //     	table.setValueAt(calculateTotalPerRow(table.getSelectedRow()), table.getSelectedRow(),5);
 //     	getOrderSubTotal();
-	 }
-	 private void updateRowTotal(int selectedRow) {
+		}
+		private void updateRowTotal ( int selectedRow){
 
-		 table.setValueAt(calculateTotalPerRow(selectedRow), selectedRow,5);
+			table.setValueAt(calculateTotalPerRow(selectedRow), selectedRow, 5);
 
 
 		}
-	 public static final int getComponentIndex(Component component) {
-	    if (component != null && component.getParent() != null) {
+		public static final int getComponentIndex (Component component){
+			if (component != null && component.getParent() != null) {
 
-	      Container c = component.getParent();
-	      for (int i = 0; i < c.getComponentCount(); i++) {
-	        if (c.getComponent(i) == component)
-	          return i;
-	      }
-	    }
+				Container c = component.getParent();
+				for (int i = 0; i < c.getComponentCount(); i++) {
+					if (c.getComponent(i) == component)
+						return i;
+				}
+			}
 
-	    return -1;
-	  }
-	 public static  BigDecimal calculateTotalPerRow(int row){
+			return -1;
+		}
+		public static BigDecimal calculateTotalPerRow ( int row){
 
-		BigDecimal price = (BigDecimal)table.getValueAt(row,2);
-		int qty=(table.getValueAt(row,3)!=null)? (Integer.parseInt(table.getValueAt(row,3).toString())):1;
-
-
-		String pecentFormated = table.getValueAt(row,4).toString();
-
-		if (pecentFormated.charAt(pecentFormated.length() - 1) == '%')
-			pecentFormated = pecentFormated.substring(0, pecentFormated.length() - 1);
-
-		if (pecentFormated.length()<=0)pecentFormated="0";
-		BigDecimal discount=new BigDecimal(Float.parseFloat(pecentFormated)/100.00);
+			BigDecimal price = (BigDecimal) table.getValueAt(row, 2);
+			int qty = (table.getValueAt(row, 3) != null) ? (Integer.parseInt(table.getValueAt(row, 3).toString())) : 1;
 
 
-		BigDecimal total =  new BigDecimal(price.floatValue() *qty *(1-discount.floatValue()));
-		return total.setScale(2, BigDecimal.ROUND_HALF_UP);
+			String pecentFormated = table.getValueAt(row, 4).toString();
 
-	}
-	 private Boolean btnSaveOnClick(ActionEvent evt) {//GEN-FIRST:event_btnSaveOnClick
+			if (pecentFormated.charAt(pecentFormated.length() - 1) == '%')
+				pecentFormated = pecentFormated.substring(0, pecentFormated.length() - 1);
+
+			if (pecentFormated.length() <= 0) pecentFormated = "0";
+			BigDecimal discount = new BigDecimal(Float.parseFloat(pecentFormated) / 100.00);
+
+
+			BigDecimal total = new BigDecimal(price.floatValue() * qty * (1 - discount.floatValue()));
+			return total.setScale(2, BigDecimal.ROUND_HALF_UP);
+
+		}
+		private Boolean btnSaveOnClick (ActionEvent evt){//GEN-FIRST:event_btnSaveOnClick
 //
 //
 //		table.getColumnModel().getColumn(0).getCellEditor().stopCellEditing();
@@ -559,111 +539,92 @@ public void setUpTextEditor(JTable table,int colIndex,JTextField cell) {
 //
 //
 //
-		return null;
+			return null;
 //
 
-	    }//GEN-LAST:event_btnSaveOnClick
+		}//GEN-LAST:event_btnSaveOnClick
 
-	 private boolean inputValid(int rowIndex) {
+		private boolean inputValid ( int rowIndex){
 
-		boolean valid = true;
+			boolean valid = true;
 
-		try {
-		        int quantity = Integer.parseInt(table.getValueAt(rowIndex,3).toString());
+			try {
+				int quantity = Integer.parseInt(table.getValueAt(rowIndex, 3).toString());
 
-		        if (quantity<=0)
-		        	{
-		        	msgbox("Quantity grater than zero");
-		        	return false;}
-	    	}
-		catch(NumberFormatException e) {
-			msgbox("Quantity must be integer");
-			table.getValueAt(rowIndex,0);}
+				if (quantity <= 0) {
+					msgbox("Quantity grater than zero");
+					return false;
+				}
+			} catch (NumberFormatException e) {
+				msgbox("Quantity must be integer");
+				table.getValueAt(rowIndex, 0);
+			}
 
-		try {
-			Float discount = Float.parseFloat(table.getValueAt(rowIndex,3).toString());
+			try {
+				Float discount = Float.parseFloat(table.getValueAt(rowIndex, 3).toString());
 
-	        if (discount<0)
-	        	{
-		        	msgbox("Discount must be positive number");
-		        	return false;
-	        	}
-		    }
-		catch(NumberFormatException e) {
-			msgbox("Discount must be decimal number");
-			table.getValueAt(rowIndex,0);}
-
-
-			if (table.getValueAt(rowIndex,0).toString().length() <=0)
-			{
-				msgbox("Product Id must be set");
-				table.getValueAt(rowIndex,0);
+				if (discount < 0) {
+					msgbox("Discount must be positive number");
+					return false;
+				}
+			} catch (NumberFormatException e) {
+				msgbox("Discount must be decimal number");
+				table.getValueAt(rowIndex, 0);
 			}
 
 
+			if (table.getValueAt(rowIndex, 0).toString().length() <= 0) {
+				msgbox("Product Id must be set");
+				table.getValueAt(rowIndex, 0);
+			}
 
-			int i =0;
-			while (i<table.getRowCount()) {
-				if( i!=rowIndex)
-				{
 
-					if (table.getValueAt(rowIndex,0).toString().equals( table.getValueAt(i,0).toString()))
-					{
+			int i = 0;
+			while (i < table.getRowCount()) {
+				if (i != rowIndex) {
+
+					if (table.getValueAt(rowIndex, 0).toString().equals(table.getValueAt(i, 0).toString())) {
 						msgbox("Duplicated productes not not allowed!");
 
-												return false;
+						return false;
 					}
 				}
 				i++;
 			}
 
 
-
-
-
-        return valid;
-    }
-
-	 private void getOrderSubTotal(){
-
-		 Float total = (float) 0;
-	    for (int i = 0; i < table.getRowCount()-1; i++){
-	    	Float amount = ((BigDecimal) table.getValueAt(i, 5)).floatValue();
-	        total += amount;
-	    }
-
-	   	    tfTotalOrderPrice.setText(new BigDecimal(total).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
-
-	 }
-
-
-	 public void removeSelectedRows(JTable table){
-		   DefaultTableModel model = (DefaultTableModel) table.getModel();
-		   int[] rows = table.getSelectedRows();
-		   for(int i=0;i<rows.length;i++){
-			   if(rows[i]!=table.getRowCount()-1){
-		     model.removeRow(rows[i]-i);}
-		   }
+			return valid;
 		}
-	 private void msgbox(String s){
-  	   JOptionPane.showMessageDialog(this, s);
-  	}
 
-	 private float formatpercentToFloat(String pecentFormated){
+
+
+
+		public void removeSelectedRows (JTable table){
+			DefaultTableModel model = (DefaultTableModel) table.getModel();
+			int[] rows = table.getSelectedRows();
+			for (int i = 0; i < rows.length; i++) {
+				if (rows[i] != table.getRowCount() - 1) {
+					model.removeRow(rows[i] - i);
+				}
+			}
+		}
+		private void msgbox (String s){
+			JOptionPane.showMessageDialog(this, s);
+		}
+
+		private float formatpercentToFloat (String pecentFormated){
 
 
 			if (pecentFormated.charAt(pecentFormated.length() - 1) == '%')
 				pecentFormated = pecentFormated.substring(0, pecentFormated.length() - 1);
-			if (pecentFormated.length()<=0)pecentFormated="0";
-			Float newdiscount=(float) (Float.parseFloat(pecentFormated)/100.00);
+			if (pecentFormated.length() <= 0) pecentFormated = "0";
+			Float newdiscount = (float) (Float.parseFloat(pecentFormated) / 100.00);
 
 			return newdiscount;
 
-	 }
+		}
 
 
 //
 
-}
-
-
+	}
