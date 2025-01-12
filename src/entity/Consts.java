@@ -48,7 +48,7 @@ public class Consts {
 //    public static final String  SQL_SEL_PRODUCTS= "SELECT TblProducts.* FROM TblProducts;";
     private static String getDBPath() {
         try {
-            String path = Consts.class.getProtectionDomain().getCodeSource().getLocation().getPath();
+            String path = Consts.class.getClassLoader().getResource("entity/database/database.accdb").getPath();
             String decoded = URLDecoder.decode(path, "UTF-8");
 
             if (decoded.contains(".jar"))
