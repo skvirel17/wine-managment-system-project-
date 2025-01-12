@@ -113,7 +113,7 @@ public class ManufactureLogic {
 
 	        try {
 	            Class.forName("net.ucanaccess.jdbc.UcanaccessDriver");
-	            try (Connection conn = DriverManager.getConnection("jdbc:ucanaccess://C://database.accdb");
+	            try (Connection conn = DriverManager.getConnection(Consts.CONN_STR);
 	                    PreparedStatement stmt =
 	                            conn.prepareStatement(Consts.SQL_SEL_MANUFACTURES);
 	                    ResultSet rs = stmt.executeQuery()) {

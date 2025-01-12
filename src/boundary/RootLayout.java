@@ -18,15 +18,15 @@ import javax.swing.event.MenuEvent;
 import javax.swing.filechooser.FileFilter;
 
 public class RootLayout extends JFrame {
-
 	private JPanel contentPane;
 	static RootLayout frame;
 	private FrmManufacture ordersPanel;
 
-	private JMenu mnHome;
+ 	private JMenu mnHome;
 	private JMenu mnManufactures;
 	private JMenu mnEmployees;
 	private JMenu mnExport;
+	private JMenu mnImportWeekly;
 
 	/**
 	 * Launch the application.
@@ -51,131 +51,135 @@ public class RootLayout extends JFrame {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 753, 521);
 
-		createMenuBar() ;
-		
+		createMenuBar();
 
 	}
 	
-	 public void createMenuBar() {
+	public void createMenuBar() {
 
-	        JMenuBar menuBar = new JMenuBar();
-	        ImageIcon icon = new ImageIcon("exit.png");
+		JMenuBar menuBar = new JMenuBar();
+		ImageIcon icon = new ImageIcon("exit.png");
 
-	        JMenu file = new JMenu("File");
+		JMenu file = new JMenu("File");
 
-	        file.setMnemonic(KeyEvent.VK_F);
+		file.setMnemonic(KeyEvent.VK_F);
 
-	        JMenuItem eMenuItem = new JMenuItem("Exit", icon);
-	        eMenuItem.setMnemonic(KeyEvent.VK_E);
-	        eMenuItem.setToolTipText("Exit application");
-	        eMenuItem.addActionListener((ActionEvent event) -> {
-	            System.exit(0);
-	            //System.out.println("in");
-	        });
+		JMenuItem eMenuItem = new JMenuItem("Exit", icon);
+		eMenuItem.setMnemonic(KeyEvent.VK_E);
+		eMenuItem.setToolTipText("Exit application");
+		eMenuItem.addActionListener((ActionEvent event) -> {
+			System.exit(0);
+			//System.out.println("in");
+		});
 
-	        file.add(eMenuItem);
+		file.add(eMenuItem);
 
-	        menuBar.add(file);
-
-
-	        mnHome = new JMenu("Home");
-			menuBar.add(mnHome);
-			mnHome.addMenuListener(new MenuListener() {
-				public void menuCanceled(MenuEvent e) {
-				}
-				public void menuDeselected(MenuEvent e) {
-				}
-				public void menuSelected(MenuEvent e) {
-					new MainMenu().setVisible(true);
-					JFrame f1 = (JFrame) SwingUtilities.windowForComponent(menuBar);
-					f1.dispose();
-				}
-			});
+		menuBar.add(file);
 
 
-			mnManufactures = new JMenu("Manufactures");
-		    mnManufactures.addMenuListener(new MenuListener() {
-				public void menuCanceled(MenuEvent e) {
-				}
-				public void menuDeselected(MenuEvent e) {
-				}
-				public void menuSelected(MenuEvent e) {
-					new FrmManufacture().setVisible(true);
-					JFrame f1 = (JFrame) SwingUtilities.windowForComponent(menuBar);
-					f1.dispose();
-				}
-			});
-			mnManufactures.addActionListener((ActionEvent event) -> {
-	            System.exit(0);
-	        });
+		mnHome = new JMenu("Home");
+		menuBar.add(mnHome);
+		mnHome.addMenuListener(new MenuListener() {
+			public void menuCanceled(MenuEvent e) {
+			}
+			public void menuDeselected(MenuEvent e) {
+			}
+			public void menuSelected(MenuEvent e) {
+				new MainMenu().setVisible(true);
+				JFrame f1 = (JFrame) SwingUtilities.windowForComponent(menuBar);
+				f1.dispose();
+			}
+		});
 
 
-			menuBar.add(mnManufactures);
+		mnManufactures = new JMenu("Manufactures");
+		mnManufactures.addMenuListener(new MenuListener() {
+			public void menuCanceled(MenuEvent e) {
+			}
+			public void menuDeselected(MenuEvent e) {
+			}
+			public void menuSelected(MenuEvent e) {
+				new FrmManufacture().setVisible(true);
+				JFrame f1 = (JFrame) SwingUtilities.windowForComponent(menuBar);
+				f1.dispose();
+			}
+		});
+		mnManufactures.addActionListener((ActionEvent event) -> {
+			System.exit(0);
+		});
 
-			mnExport = new JMenu("Export data");
-			mnExport.addMenuListener(new MenuListener() {
-				@Override
-				public void menuSelected(MenuEvent e) {
-					JFileChooser fileChooser = new JFileChooser();
+		menuBar.add(mnManufactures);
 
-					fileChooser.setFileFilter(new FileFilter() {
-						@Override
-						public boolean accept(File file) {
+		mnExport = new JMenu("Import data");
+		mnExport.addMenuListener(new MenuListener() {
+			@Override
+			public void menuSelected(MenuEvent e) {
+				JFileChooser fileChooser = new JFileChooser();
 
-							return file.isDirectory() || file.getName().toLowerCase().endsWith(".xml");
-						}
+				fileChooser.setFileFilter(new FileFilter() {
+					@Override
+					public boolean accept(File file) {
 
-						@Override
-						public String getDescription() {
-							return "XML Files (*.xml)";
-						}
-					});
-
-					int result = fileChooser.showOpenDialog(frame);
-
-
-					if (result == JFileChooser.APPROVE_OPTION) {
-						File selectedFile = fileChooser.getSelectedFile();
-						FileImporter fileImporter = new FileImporter();
-						List<Wine> wines = fileImporter.importXML(selectedFile);
-
-						WineLogic.getInstance().addNewData(wines);
-						JOptionPane.showMessageDialog(frame, "File chosen: " + selectedFile.getAbsolutePath());
-					} else {
-						JOptionPane.showMessageDialog(frame, "File canceled.");
+						return file.isDirectory() || file.getName().toLowerCase().endsWith(".xml");
 					}
+
+					@Override
+					public String getDescription() {
+						return "XML Files (*.xml)";
+					}
+				});
+
+				int result = fileChooser.showOpenDialog(frame);
+
+
+				if (result == JFileChooser.APPROVE_OPTION) {
+					File selectedFile = fileChooser.getSelectedFile();
+					FileImporter fileImporter = new FileImporter();
+					List<Wine> wines = fileImporter.importXML(selectedFile);
+
+					WineLogic.getInstance().addNewData(wines);
+					JOptionPane.showMessageDialog(frame, "File chosen: " + selectedFile.getAbsolutePath());
+				} else {
+					JOptionPane.showMessageDialog(frame, "File canceled.");
 				}
+			}
 
-				@Override
-				public void menuDeselected(MenuEvent e) {
-				}
+			@Override
+			public void menuDeselected(MenuEvent e) {
+			}
 
-				@Override
-				public void menuCanceled(MenuEvent e) {
-				}
-			});
+			@Override
+			public void menuCanceled(MenuEvent e) {
+			}
+		});
+		mnExport.addActionListener((ActionEvent event) -> {
+			System.exit(0);
+		});
 
-			menuBar.add(mnExport);
+		menuBar.add(mnExport);
 
 
-//			mnEmployees = new JMenu("Employees");
-//			mnEmployees.addMenuListener(new MenuListener() {
-//				public void menuCanceled(MenuEvent e) {
-//				}
-//				public void menuDeselected(MenuEvent e) {
-//				}
-//				public void menuSelected(MenuEvent e) {
-//					mngEmployees = new FrmEmployees();
-//					mngEmployees.setVisible(true);
-//					JFrame f1 = (JFrame) SwingUtilities.windowForComponent(menuBar);
-//					f1.dispose();
-//
-//				}
-//			});
-//			menuBar.add(mnEmployees);
-//
-	        setJMenuBar(menuBar);
-	    }
+	 	mnImportWeekly = new JMenu("Import weekly report");
+		mnImportWeekly.addMenuListener(new MenuListener() {
+			 @Override
+			 public void menuSelected(MenuEvent e) {
+			 }
+
+			 @Override
+			 public void menuDeselected(MenuEvent e) {
+			 }
+
+			 @Override
+			 public void menuCanceled(MenuEvent e) {
+			 }
+	 	});
+		mnImportWeekly.addActionListener((ActionEvent event) -> {
+			System.exit(0);
+		});
+		menuBar.add(mnImportWeekly);
+
+	 	setJMenuBar(menuBar);
+	}
 	 
 	 private void changePanel(JPanel panel) {
 		    getContentPane().removeAll();

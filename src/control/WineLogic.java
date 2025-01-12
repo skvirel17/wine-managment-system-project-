@@ -19,7 +19,7 @@ public class WineLogic {
         List<Wine> wineList = new ArrayList<>();
 
 
-        String dbURL = "jdbc:ucanaccess://C://database.accdb";
+        String dbURL = Consts.CONN_STR;//"jdbc:ucanaccess://C://database.accdb";
 
         try {
 
@@ -72,7 +72,7 @@ public class WineLogic {
         List<Wine> wineList = new ArrayList<>();
 
 
-        String dbURL = "jdbc:ucanaccess://C://database.accdb";
+        String dbURL = Consts.CONN_STR;//"jdbc:ucanaccess://C://database.accdb";
 
         try {
 
@@ -124,9 +124,9 @@ public class WineLogic {
     public void addNewData(List<Wine> wines) {
         for (Wine wine : wines) {
             if (getWines().contains(wine)) {
-                //if(ManufactureLogic.getInstance().getManufactures().contains(new Manufacture(wine.getManufactureNumber()))) {
+                if(ManufactureLogic.getInstance().getManufactures().contains(new Manufacture(wine.getManufactureNumber()))) {
                     updateWine(wine);
-                //} else {
+                } else {
                     JOptionPane.showMessageDialog(
                             null,
                             "It is not possible to add the wine because the manufacturer data is missing." +
@@ -135,7 +135,7 @@ public class WineLogic {
                             "Error",
                             JOptionPane.ERROR_MESSAGE
                     );
-                //}
+                }
             } else {
                 addWine(wine);
             }
@@ -143,17 +143,17 @@ public class WineLogic {
     }
 
     private void addWine(Wine wine) {
-        String dbURL = "jdbc:ucanaccess://C://database.accdb";
+        String dbURL = Consts.CONN_STR;//"jdbc:ucanaccess://C://database.accdb";
 
         try {
             Connection conn = DriverManager.getConnection(dbURL);
 
             String query = """
             INSERT INTO TblWines
-            VALUES (?, ?, ?, ?, ?, ?,
+            VALUES (?, ?, ?, ?, ?,
             (SELECT wineTypeSerialNumber FROM TblWineTypes WHERE LOWER(wineTypeName) = LOWER(?)),
-                (SELECT ID FROM TbtEnumSweetnessLevels WHERE LOWER(SweetnessLevel) = LOWER(?),
-                ?)
+                (SELECT ID FROM TbtEnumSweetnessLevels WHERE LOWER(SweetnessLevel) = LOWER(?)),
+                ?, ?)
         """;
 
             PreparedStatement pstmt = conn.prepareStatement(query);
@@ -180,36 +180,35 @@ public class WineLogic {
     }
 
     private void updateWine(Wine wine) {
-        String dbURL = "jdbc:ucanaccess://C://database.accdb";
+        String dbURL = Consts.CONN_STR;//"jdbc:ucanaccess://C://database.accdb";
         boolean isUpdated = false;
 
         try {
             Connection conn = DriverManager.getConnection(dbURL);
 
-            String query = "UPDATE TblWines Set wineName = ? where wineCatalogNumber = ?";
-//            String query = """
-//            UPDATE TblWines
-//            SET //wineManufactureNumber = ?,
-//                wineName = ?//,
-//                //wineDescription = ?,
-//                //wineProductionYear = ?,
-//                //winePricePerBootle = ?,
-//                //wineSweetnessLevel = (SELECT ID FROM TbtEnumSweetnessLevels WHERE SweetnessLevel = ?),
-//                //wineType = (SELECT wineTypeSerialNumber FROM TblWineTypes WHERE wineTypeName = ?)
-//            WHERE wineCatalogNumber = ?
-//        """;
+            String query = """
+                UPDATE TblWines
+                    SET wineManufactureNumber = ?,
+                        wineName = ?,
+                        wineDescription = ?,
+                        wineProductionYear = ?,
+                        winePricePerBootle = ?,
+                        wineSweetnessLevel = (SELECT ID FROM TbtEnumSweetnessLevels WHERE SweetnessLevel = ?),
+                        wineType = (SELECT wineTypeSerialNumber FROM TblWineTypes WHERE wineTypeName = ?)
+                WHERE wineCatalogNumber = ?
+            """;
 
             PreparedStatement pstmt = conn.prepareStatement(query);
 
 
-           // pstmt.setString(1, wine.getManufactureNumber());
-            pstmt.setString(1, wine.getName());
-//            pstmt.setString(3, wine.getDescription());
-//            pstmt.setInt(4, wine.getProductionYear());
-//            pstmt.setFloat(5, wine.getPricePerBottle());
-//            pstmt.setString(6, wine.getSweetnessLevel().toString());
-//            pstmt.setString(7, wine.getWineTypeId().toString());
-              pstmt.setString(2, wine.getCatalogNumber());
+            pstmt.setString(1, wine.getManufactureNumber());
+            pstmt.setString(2, wine.getName());
+            pstmt.setString(3, wine.getDescription());
+            pstmt.setInt(4, wine.getProductionYear());
+            pstmt.setFloat(5, wine.getPricePerBottle());
+            pstmt.setString(6, wine.getSweetnessLevel().toString());
+            pstmt.setString(7, wine.getWineTypeId().toString());
+            pstmt.setString(8, wine.getCatalogNumber());
 
 
             int rowsAffected = pstmt.executeUpdate();

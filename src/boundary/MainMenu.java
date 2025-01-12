@@ -43,14 +43,14 @@ public class MainMenu extends RootLayout {
 	 */
 	public MainMenu() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 450, 300);
+		setBounds(100, 100, 650, 500);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		updateMenuSelectionHome();
 		
 		JLabel lblNewLabel = new JLabel("");
-		lblNewLabel.setIcon(new ImageIcon(MainMenu.class.getResource("/boundary/images/logo.png")));
+		lblNewLabel.setIcon(new ImageIcon(MainMenu.class.getResource("/boundary/images/logo_.png")));
 		
 		JButton btnNewButton_1 = new JButton("Print sales Report");
 		btnNewButton_1.setEnabled(false);
