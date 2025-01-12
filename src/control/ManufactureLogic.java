@@ -113,14 +113,19 @@ public class ManufactureLogic {
 
 	        try {
 	            Class.forName("net.ucanaccess.jdbc.UcanaccessDriver");
-	            try (Connection conn = DriverManager.getConnection(Consts.CONN_STR);
+	            try (Connection conn = DriverManager.getConnection("jdbc:ucanaccess://C://database.accdb");
 	                    PreparedStatement stmt =
 	                            conn.prepareStatement(Consts.SQL_SEL_MANUFACTURES);
 	                    ResultSet rs = stmt.executeQuery()) {
 	                while (rs.next()) {
 	                    int i = 1;
-	                    results.add(new Manufacture(rs.getString(i++), rs.getString(i++),
-	                            rs.getInt(i++), rs.getString(i++), rs.getString(i++)));
+	                    results.add(new Manufacture(rs.getString("manufactureId"),
+								rs.getString("manufactureFullName"),
+	                            rs.getInt("manufacturePhoneNumber"),
+								(rs.getString("manufactureAddressCity") + " " +
+								rs.getString("manufactureAddressStreet") + " " +
+								rs.getString("manufactureAddressBulding")),
+								rs.getString("manufactureEmail")));
 	                }
 	            } catch (SQLException e) {
 	                e.printStackTrace();

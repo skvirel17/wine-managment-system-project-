@@ -121,7 +121,7 @@ public class Wine {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Wine wine = (Wine) o;
-        return manufactureNumber == wine.manufactureNumber && productionYear == wine.productionYear && Float.compare(pricePerBottle, wine.pricePerBottle) == 0 && Objects.equals(catalogNumber, wine.catalogNumber) && Objects.equals(name, wine.name) && Objects.equals(description, wine.description) && sweetnessLevel == wine.sweetnessLevel && Objects.equals(productImage, wine.productImage) && wineType == wine.wineType;
+        return Objects.equals(catalogNumber, wine.catalogNumber);
     }
 
     @Override

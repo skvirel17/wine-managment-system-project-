@@ -1,20 +1,21 @@
 package boundary;
 
+import control.FileImporter;
+import control.WineLogic;
+import entity.Wine;
+
 import java.awt.EventQueue;
 import java.awt.SystemColor;
 import java.awt.event.ActionEvent;
 
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.SwingUtilities;
-import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
-import javax.swing.JMenu;
-import javax.swing.ImageIcon;
+import javax.swing.*;
 
 import java.awt.event.KeyEvent;
+import java.io.File;
+import java.util.List;
 import javax.swing.event.MenuListener;
 import javax.swing.event.MenuEvent;
+import javax.swing.filechooser.FileFilter;
 
 public class RootLayout extends JFrame {
 
@@ -25,6 +26,7 @@ public class RootLayout extends JFrame {
 	private JMenu mnHome;
 	private JMenu mnManufactures;
 	private JMenu mnEmployees;
+	private JMenu mnExport;
 
 	/**
 	 * Launch the application.
@@ -91,7 +93,6 @@ public class RootLayout extends JFrame {
 			});
 
 
-
 			mnManufactures = new JMenu("Manufactures");
 		    mnManufactures.addMenuListener(new MenuListener() {
 				public void menuCanceled(MenuEvent e) {
@@ -110,6 +111,51 @@ public class RootLayout extends JFrame {
 
 
 			menuBar.add(mnManufactures);
+
+			mnExport = new JMenu("Export data");
+			mnExport.addMenuListener(new MenuListener() {
+				@Override
+				public void menuSelected(MenuEvent e) {
+					JFileChooser fileChooser = new JFileChooser();
+
+					fileChooser.setFileFilter(new FileFilter() {
+						@Override
+						public boolean accept(File file) {
+
+							return file.isDirectory() || file.getName().toLowerCase().endsWith(".xml");
+						}
+
+						@Override
+						public String getDescription() {
+							return "XML Files (*.xml)";
+						}
+					});
+
+					int result = fileChooser.showOpenDialog(frame);
+
+
+					if (result == JFileChooser.APPROVE_OPTION) {
+						File selectedFile = fileChooser.getSelectedFile();
+						FileImporter fileImporter = new FileImporter();
+						List<Wine> wines = fileImporter.importXML(selectedFile);
+
+						WineLogic.getInstance().addNewData(wines);
+						JOptionPane.showMessageDialog(frame, "File chosen: " + selectedFile.getAbsolutePath());
+					} else {
+						JOptionPane.showMessageDialog(frame, "File canceled.");
+					}
+				}
+
+				@Override
+				public void menuDeselected(MenuEvent e) {
+				}
+
+				@Override
+				public void menuCanceled(MenuEvent e) {
+				}
+			});
+
+			menuBar.add(mnExport);
 
 
 //			mnEmployees = new JMenu("Employees");

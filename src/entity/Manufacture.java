@@ -16,6 +16,9 @@ public class Manufacture {
         this.addressManifacture = addressManifacture;
         this.email = email;
     }
+    public Manufacture(String manufactureNumber){
+        this.manufactureNumber = manufactureNumber;
+    }
 
     public String getManifactureNumber() {
         return manufactureNumber;
@@ -74,7 +77,7 @@ public class Manufacture {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Manufacture that = (Manufacture) o;
-        return phoneNumber == that.phoneNumber && Objects.equals(manufactureNumber, that.manufactureNumber) && Objects.equals(fullName, that.fullName) && Objects.equals(addressManifacture, that.addressManifacture) && Objects.equals(email, that.email);
+        return Objects.equals(manufactureNumber, that.manufactureNumber);
     }
 
     @Override

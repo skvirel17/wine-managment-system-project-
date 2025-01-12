@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dataroot xmlns:od="urn:schemas-microsoft-com:officedata" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"  xsi:noNamespaceSchemaLocation="TblManufactures.xsd" generated="2025-01-12T12:31:03">
+<TblManufactures>
+<manufactureId>501</manufactureId>
+<manufactureFullName>Netanya Foods</manufactureFullName>
+<manufacturePhoneNumber>525678901</manufacturePhoneNumber>
+<manufactureAddressCity>Netanya</manufactureAddressCity>
+<manufactureAddressStreet>Herzog</manufactureAddressStreet>
+<manufactureAddressBulding>15</manufactureAddressBulding>
+<manufactureEmail>orders@netanyafoods.com</manufactureEmail>
+</TblManufactures>
+<TblManufactures>
+<manufactureId>502</manufactureId>
+<manufactureFullName>Ramat Gan Plastics</manufactureFullName>
+<manufacturePhoneNumber>526789012</manufacturePhoneNumber>
+<manufactureAddressCity>Ramat Gan</manufactureAddressCity>
+<manufactureAddressStreet>Herzog</manufactureAddressStreet>
+<manufactureAddressBulding>16</manufactureAddressBulding>
+<manufactureEmail>plastics@ramatganplastics.com</manufactureEmail>
+</TblManufactures>
+<TblManufactures>
+<manufactureId>503</manufactureId>
+<manufactureFullName>Beer Sheva Metals</manufactureFullName>
+<manufacturePhoneNumber>529012345</manufacturePhoneNumber>
+<manufactureAddressCity>Beer Sheva</manufactureAddressCity>
+<manufactureAddressStreet>Shalom</manufactureAddressStreet>
+<manufactureAddressBulding>19</manufactureAddressBulding>
+<manufactureEmail>contact@bsmetals.com</manufactureEmail>
+</TblManufactures>
+<TblManufactures>
+<manufactureId>504</manufactureId>
+<manufactureFullName>Haifa Chemicals</manufactureFullName>
+<manufacturePhoneNumber>521234568</manufacturePhoneNumber>
+<manufactureAddressCity>Haifa</manufactureAddressCity>
+<manufactureAddressStreet>Gordon</manufactureAddressStreet>
+<manufactureAddressBulding>30</manufactureAddressBulding>
+<manufactureEmail>chemicals@haifachem.com</manufactureEmail>
+</TblManufactures>
+<TblManufactures>
+<manufactureId>505</manufactureId>
+<manufactureFullName>Ramat Gan Steel</manufactureFullName>
+<manufacturePhoneNumber>529012346</manufacturePhoneNumber>
+<manufactureAddressCity>Ramat Gan</manufactureAddressCity>
+<manufactureAddressStreet>Levona</manufactureAddressStreet>
+<manufactureAddressBulding>29</manufactureAddressBulding>
+<manufactureEmail>steel@rgsteel.com</manufactureEmail>
+</TblManufactures>
+<TblManufactures>
+<manufactureId>506</manufactureId>
+<manufactureFullName>Tel Aviv Apparel</manufactureFullName>
+<manufacturePhoneNumber>522345679</manufacturePhoneNumber>
+<manufactureAddressCity>Tel Aviv</manufactureAddressCity>
+<manufactureAddressStreet>Ben Gurion</manufactureAddressStreet>
+<manufactureAddressBulding>31</manufactureAddressBulding>
+<manufactureEmail>apparel@telapparel.com</manufactureEmail>
+</TblManufactures>
+<TblManufactures>
+<manufactureId>507</manufactureId>
+<manufactureFullName>Kiryat Shmona Produce</manufactureFullName>
+<manufacturePhoneNumber>528901235</manufacturePhoneNumber>
+<manufactureAddressCity>Kiryat Shmona</manufactureAddressCity>
+<manufactureAddressStreet>Shalom</manufactureAddressStreet>
+<manufactureAddressBulding>28</manufactureAddressBulding>
+<manufactureEmail>produce@ksp.com</manufactureEmail>
+</TblManufactures>
+<TblManufactures>
+<manufactureId>508</manufactureId>
+<manufactureFullName>Tel Aviv Logistics</manufactureFullName>
+<manufacturePhoneNumber>524567891</manufacturePhoneNumber>
+<manufactureAddressCity>Tel Aviv</manufactureAddressCity>
+<manufactureAddressStreet>Herzog</manufactureAddressStreet>
+<manufactureAddressBulding>24</manufactureAddressBulding>
+<manufactureEmail>logistics@tavalogistics.com</manufactureEmail>
+</TblManufactures>
+<TblManufactures>
+<manufactureId>509</manufactureId>
+<manufactureFullName>Haifa Motors</manufactureFullName>
+<manufacturePhoneNumber>522345678</manufacturePhoneNumber>
+<manufactureAddressCity>Haifa</manufactureAddressCity>
+<manufactureAddressStreet>Ben Gurion</manufactureAddressStreet>
+<manufactureAddressBulding>12</manufactureAddressBulding>
+<manufactureEmail>contact@haifamotors.com</manufactureEmail>
+</TblManufactures>
+<TblManufactures>
+<manufactureId>510</manufactureId>
+<manufactureFullName>Tel Aviv Electronics</manufactureFullName>
+<manufacturePhoneNumber>521234567</manufacturePhoneNumber>
+<manufactureAddressCity>Tel Aviv</manufactureAddressCity>
+<manufactureAddressStreet>Rothschild</manufactureAddressStreet>
+<manufactureAddressBulding>11</manufactureAddressBulding>
+<manufactureEmail>info@taelectronics.com</manufactureEmail>
+</TblManufactures>
+<TblManufactures>
+<manufactureId>511</manufactureId>
+<manufactureFullName>Netanya Pharma</manufactureFullName>
+<manufacturePhoneNumber>525678902</manufacturePhoneNumber>
+<manufactureAddressCity>Netanya</manufactureAddressCity>
+<manufactureAddressStreet>Jabotinsky</manufactureAddressStreet>
+<manufactureAddressBulding>25</manufactureAddressBulding>
+<manufactureEmail>pharma@netanyapharma.com</manufactureEmail>
+</TblManufactures>
+<TblManufactures>
+<manufactureId>512</manufactureId>
+<manufactureFullName>Jerusalem Textiles</manufactureFullName>
+<manufacturePhoneNumber>524567890</manufacturePhoneNumber>
+<manufactureAddressCity>Jerusalem</manufactureAddressCity>
+<manufactureAddressStreet>King George</manufactureAddressStreet>
+<manufactureAddressBulding>14</manufactureAddressBulding>
+<manufactureEmail>support@jertextiles.com</manufactureEmail>
+</TblManufactures>
+<TblManufactures>
+<manufactureId>513</manufactureId>
+<manufactureFullName>Modiin Chemicals</manufactureFullName>
+<manufacturePhoneNumber>527890123</manufacturePhoneNumber>
+<manufactureAddressCity>Modiin</manufactureAddressCity>
+<manufactureAddressStreet>Ben Gurion</manufactureAddressStreet>
+<manufactureAddressBulding>17</manufactureAddressBulding>
+<manufactureEmail>info@modiinchem.com</manufactureEmail>
+</TblManufactures>
+<TblManufactures>
+<manufactureId>514</manufactureId>
+<manufactureFullName>Ashdod Furniture</manufactureFullName>
+<manufacturePhoneNumber>523456789</manufacturePhoneNumber>
+<manufactureAddressCity>Ashdod</manufactureAddressCity>
+<manufactureAddressStreet>Shalom</manufactureAddressStreet>
+<manufactureAddressBulding>13</manufactureAddressBulding>
+<manufactureEmail>sales@ashdodfurniture.com</manufactureEmail>
+</TblManufactures>
+<TblManufactures>
+<manufactureId>515</manufactureId>
+<manufactureFullName>Ashdod Electronics</manufactureFullName>
+<manufacturePhoneNumber>526789013</manufacturePhoneNumber>
+<manufactureAddressCity>Ashdod</manufactureAddressCity>
+<manufactureAddressStreet>Shapira</manufactureAddressStreet>
+<manufactureAddressBulding>26</manufactureAddressBulding>
+<manufactureEmail>electronics@ashelectronics.com</manufactureEmail>
+</TblManufactures>
+<TblManufactures>
+<manufactureId>516</manufactureId>
+<manufactureFullName>Haifa Shipping</manufactureFullName>
+<manufacturePhoneNumber>523456790</manufacturePhoneNumber>
+<manufactureAddressCity>Haifa</manufactureAddressCity>
+<manufactureAddressStreet>Levona</manufactureAddressStreet>
+<manufactureAddressBulding>23</manufactureAddressBulding>
+<manufactureEmail>shipping@haifashipping.com</manufactureEmail>
+</TblManufactures>
+<TblManufactures>
+<manufactureId>517</manufactureId>
+<manufactureFullName>Petah Tikva Machinery</manufactureFullName>
+<manufacturePhoneNumber>528901234</manufacturePhoneNumber>
+<manufactureAddressCity>Petah Tikva</manufactureAddressCity>
+<manufactureAddressStreet>Haim</manufactureAddressStreet>
+<manufactureAddressBulding>18</manufactureAddressBulding>
+<manufactureEmail>machinery@petmachinery.com</manufactureEmail>
+</TblManufactures>
+<TblManufactures>
+<manufactureId>518</manufactureId>
+<manufactureFullName>Netanya Construction</manufactureFullName>
+<manufacturePhoneNumber>523456780</manufacturePhoneNumber>
+<manufactureAddressCity>Netanya</manufactureAddressCity>
+<manufactureAddressStreet>Herzog</manufactureAddressStreet>
+<manufactureAddressBulding>32</manufactureAddressBulding>
+<manufactureEmail>construction@netanyacon.com</manufactureEmail>
+</TblManufactures>
+<TblManufactures>
+<manufactureId>519</manufactureId>
+<manufactureFullName>Rishon Lezion Wines</manufactureFullName>
+<manufacturePhoneNumber>520123456</manufacturePhoneNumber>
+<manufactureAddressCity>Rishon Lezion</manufactureAddressCity>
+<manufactureAddressStreet>Shapira</manufactureAddressStreet>
+<manufactureAddressBulding>20</manufactureAddressBulding>
+<manufactureEmail>wines@rishonwines.com</manufactureEmail>
+</TblManufactures>
+<TblManufactures>
+<manufactureId>520</manufactureId>
+<manufactureFullName>Modiin Furniture</manufactureFullName>
+<manufacturePhoneNumber>527890124</manufacturePhoneNumber>
+<manufactureAddressCity>Modiin</manufactureAddressCity>
+<manufactureAddressStreet>Ayalon</manufactureAddressStreet>
+<manufactureAddressBulding>27</manufactureAddressBulding>
+<manufactureEmail>furniture@modiinfurn.com</manufactureEmail>
+</TblManufactures>
+</dataroot>

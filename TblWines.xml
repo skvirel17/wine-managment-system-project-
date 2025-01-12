@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wines>
+    <Wine>
+        <wineCatalogNumber>3001</wineCatalogNumber>
+        <wineName>Cabernet</wineName>
+        <wineDescription>Full-bodied red wine</wineDescription>
+        <wineProductionYear>2019</wineProductionYear>
+        <winePricePerBootle>26</winePricePerBootle>
+        <wineType>FORTIFIED</wineType>
+        <wineSweetnessLevel>SEMIDRY</wineSweetnessLevel>
+        <wineManufactureNumber>501</wineManufactureNumber>
+    </Wine>
+    <Wine>
+        <wineCatalogNumber>3027</wineCatalogNumber>
+        <wineName>Chardonnay</wineName>
+        <wineDescription>Crisp white wine</wineDescription>
+        <wineProductionYear>2020</wineProductionYear>
+        <winePricePerBootle>18</winePricePerBootle>
+        <wineType>WHITE</wineType>
+        <wineSweetnessLevel>SEMIDRY</wineSweetnessLevel>
+        <wineManufactureNumber>502</wineManufactureNumber>
+    </Wine>
+    <Wine>
+        <wineCatalogNumber>3035</wineCatalogNumber>
+        <wineName>Merlot</wineName>
+        <wineDescription>Smooth red wine</wineDescription>
+        <wineProductionYear>2018</wineProductionYear>
+        <winePricePerBootle>23</winePricePerBootle>
+        <wineType>WHITE</wineType>
+        <wineSweetnessLevel>SEMIDRY</wineSweetnessLevel>
+        <wineManufactureNumber>503</wineManufactureNumber>
+    </Wine>
+</Wines>
+
+

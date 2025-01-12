@@ -67,28 +67,33 @@ public class FrmManufacture extends RootLayout {
 
 		setTitle("Manifactures Details");
 		contentPane.setLayout(null);
-		pnlWineDetails.setBounds(21, 11, 339, 171);
+		pnlWineDetails.setBounds(21, 11, 700, 171);
 		pnlWineDetails.setBorder(null);
 		contentPane.add(pnlWineDetails);
 		tfManufactureNumber = new JTextField();
-		tfManufactureNumber.setBounds(84, 11, 179, 20);
+		tfManufactureNumber.setBounds(160, 11, 250, 20);
 		tfManufactureNumber.setEditable(false);
 		tfManufactureNumber.setColumns(10);
 
 		tfName = new JTextField();
 		tfName.setEditable(false);
 		tfName.setColumns(20);
-		tfName.setBounds(84, 37, 179, 20);
+		tfName.setBounds(160, 37, 250, 20);
 
 		tfPhoneNumber = new JTextField();
 		tfPhoneNumber.setEditable(false);
 		tfPhoneNumber.setColumns(10);
-		tfPhoneNumber.setBounds(84, 63, 179, 20);
+		tfPhoneNumber.setBounds(160, 63, 250, 20);
 
 		tfEmail = new JTextField();
 		tfEmail.setEditable(false);
 		tfEmail.setColumns(20);
-		tfEmail.setBounds(84, 89, 179, 20);
+		tfEmail.setBounds(160, 89, 250, 20);
+
+		tfManufactureAddress = new JTextField();
+		tfManufactureAddress.setColumns(20);
+		tfManufactureAddress.setEditable(false);
+		tfManufactureAddress.setBounds(160, 115, 250, 20);
 
 		//pnlPhoneNumberManifacture.setBounds(370, 11, 355, 156);
 		//contentPane.add(pnlPhoneNumberManifacture);
@@ -110,10 +115,7 @@ public class FrmManufacture extends RootLayout {
 		pnlActionBtn.add(btnNext);
 		btnLast.setFont(new Font("Tahoma", Font.PLAIN, 10));
 		pnlActionBtn.add(btnLast);
-        tfSearch = new JTextField();
-        tfSearch.setText("Search");
-        pnlActionBtn.add(tfSearch);
-        tfSearch.setColumns(10);
+
 
         initGroupLayoutleftPanel();
         initGroupLayoutRightPanel();
@@ -211,18 +213,21 @@ public class FrmManufacture extends RootLayout {
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	private void initGroupLayoutleftPanel() {
 		pnlWineDetails.setLayout(null);
-		lblManufactureNumber.setBounds(10, 14, 64, 14);
+		lblManufactureNumber.setBounds(10, 14, 120, 14);
 		pnlWineDetails.add(lblManufactureNumber);
-		lblName.setBounds(10, 91, 64, 14);
+		lblName.setBounds(10, 40, 120, 14);
 		pnlWineDetails.add(lblName);
-		lblPhoneNumber.setBounds(10, 40, 54, 14);
+		lblPhoneNumber.setBounds(10, 66, 120, 14);
 		pnlWineDetails.add(lblPhoneNumber);
-		lblEmail.setBounds(10, 66, 55, 14);
+		lblEmail.setBounds(10, 90, 120, 14);
 		pnlWineDetails.add(lblEmail);
+		lblAddress.setBounds(10, 115, 120, 14);
+		pnlWineDetails.add(lblAddress);
 		pnlWineDetails.add(tfManufactureNumber);
 		pnlWineDetails.add(tfName);
 		pnlWineDetails.add(tfPhoneNumber);
 		pnlWineDetails.add(tfEmail);
+		pnlWineDetails.add(tfManufactureAddress);
 	}
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -238,7 +243,6 @@ public class FrmManufacture extends RootLayout {
     private void refreshControls() {
 		refreshNavigation();
 		refreshManufactureFields();
-		refreshDataButtons();
 	}
 
 	private void refreshNavigation() {
@@ -252,15 +256,6 @@ public class FrmManufacture extends RootLayout {
 		btnLast.setEnabled(currentManufacture != null && currentManufacture < manufacturesArray.size());
 	}
 
-	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	// Updates the various order manipulation buttons,
-	// according to form state
-	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    private void refreshDataButtons() {
-		 tfSearch.setEnabled(!inAddMode);
-	}
-
-
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	// updates the empArray controls with a given employee's information.
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -270,6 +265,7 @@ public class FrmManufacture extends RootLayout {
 		tfName.setText(manufacture.getFullName());
 		tfPhoneNumber.setText(String.valueOf(manufacture.getPhoneNumber()));
 		tfEmail.setText(manufacture.getEmail());
+		tfManufactureAddress.setText(manufacture.getAddressManifacture());
 		panel.refreshComp((manufacture != null) ? (manufacture.getManifactureNumber()) : "0");
 	}
 
@@ -316,6 +312,7 @@ public class FrmManufacture extends RootLayout {
 	private JTextField tfPhoneNumber;
 	private JTextField tfEmail;
 	private JTextField tfNavigation = new JTextField();
+	private JTextField tfManufactureAddress;
 
 	private JLabel lblEmployeeID = new JLabel("Employee:");
 	private JLabel lblCustomer = new JLabel("Customer:");
@@ -324,6 +321,7 @@ public class FrmManufacture extends RootLayout {
 	private JLabel lblName = new JLabel("Name:");
 	private JLabel lblPhoneNumber = new JLabel("Phone number:");
 	private JLabel lblEmail = new JLabel("Email:");
+	private JLabel lblAddress = new JLabel("Address:");
 
 	private JButton btnFirst = new JButton("|<");
 	private JButton btnPrev = new JButton("<<");
@@ -332,7 +330,6 @@ public class FrmManufacture extends RootLayout {
 	private JButton btnLast = new JButton(">|");
 
 	private JPanel pnlActionBtn;
-	private JTextField tfSearch;
 	private JTextField tfShipViaID;
 	private JTextField tfShipAddress= new JTextField();
 	private JTextField tfShipCity;
