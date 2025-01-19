@@ -33,6 +33,7 @@ public class MainMenu extends RootLayout {
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
+					//}
 				}
 			}
 		});
