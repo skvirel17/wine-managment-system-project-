@@ -6,6 +6,8 @@ import enums.SweetnessLevel;
 import enums.WineType;
 
 import javax.swing.*;
+import java.io.FileOutputStream;
+import java.io.ObjectOutputStream;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -110,6 +112,7 @@ public class WineLogic {
                 wineList.add(wine);
             }
 
+            serializeWines(wineList, "database.ser");
 
             rs.close();
             stmt.close();
@@ -119,6 +122,15 @@ public class WineLogic {
         }
 
         return wineList;
+    }
+
+    private static void serializeWines(List<Wine> wines, String fileName) {
+        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(fileName))) {
+            oos.writeObject(wines);
+            System.out.println("Data serialized sucsesfuly: " + fileName);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public void addNewData(List<Wine> wines) {

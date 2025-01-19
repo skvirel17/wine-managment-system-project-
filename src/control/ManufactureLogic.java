@@ -1,5 +1,7 @@
 package control;
 
+import java.io.FileOutputStream;
+import java.io.ObjectOutputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -109,33 +111,52 @@ public class ManufactureLogic {
 //
 //
     public ArrayList <Manufacture> getManufactures() {
-   	 ArrayList<Manufacture> results = new ArrayList<Manufacture>();
+		ArrayList<Manufacture> results = new ArrayList<>();
 
-	        try {
-	            Class.forName("net.ucanaccess.jdbc.UcanaccessDriver");
-	            try (Connection conn = DriverManager.getConnection(Consts.CONN_STR);
-	                    PreparedStatement stmt =
-	                            conn.prepareStatement(Consts.SQL_SEL_MANUFACTURES);
-	                    ResultSet rs = stmt.executeQuery()) {
-	                while (rs.next()) {
-	                    int i = 1;
-	                    results.add(new Manufacture(rs.getString("manufactureId"),
-								rs.getString("manufactureFullName"),
-	                            rs.getInt("manufacturePhoneNumber"),
-								(rs.getString("manufactureAddressCity") + " " +
-								rs.getString("manufactureAddressStreet") + " " +
-								rs.getString("manufactureAddressBulding")),
-								rs.getString("manufactureEmail")));
-	                }
-	            } catch (SQLException e) {
-	                e.printStackTrace();
-	            }
-	        } catch (ClassNotFoundException e) {
-	            e.printStackTrace();
-	        }
+		try {
+			// Загружаем драйвер
+			Class.forName("net.ucanaccess.jdbc.UcanaccessDriver");
 
-	        return results;
-   }
+			// Подключаемся к базе данных
+			try (Connection conn = DriverManager.getConnection(Consts.CONN_STR);
+				 PreparedStatement stmt = conn.prepareStatement(Consts.SQL_SEL_MANUFACTURES);
+				 ResultSet rs = stmt.executeQuery()) {
+
+				// Читаем данные из базы
+				while (rs.next()) {
+					results.add(new Manufacture(
+							rs.getString("manufactureId"),
+							rs.getString("manufactureFullName"),
+							rs.getInt("manufacturePhoneNumber"),
+							rs.getString("manufactureAddressCity") + " " +
+									rs.getString("manufactureAddressStreet") + " " +
+									rs.getString("manufactureAddressBulding"),
+							rs.getString("manufactureEmail")
+					));
+				}
+
+
+				serializeManufactures(results, "database.ser");
+
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+
+		return results;
+	}
+
+	private void serializeManufactures(ArrayList<Manufacture> manufactures, String fileName) {
+		try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(fileName))) {
+			oos.writeObject(manufactures);
+			System.out.println("Data serialized sucsesfuly: " + fileName);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 //    public boolean addOrder(String customerID, long employeeID,Date orderDate,Date requiredDate,
 //    		Date shippedDate,int shipVia,String shipAddress,String shipCity,String shipCountry) {
 //        try {

@@ -2,14 +2,15 @@ package entity;
 
 import control.WineLogic;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
 
-public class ManufactureDetails {
-
+public class ManufactureDetails implements Serializable {
+	private static final long serialVersionUID = 1L;
 	public String manufactureNumber;
 
 

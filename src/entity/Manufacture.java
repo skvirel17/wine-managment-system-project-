@@ -1,8 +1,10 @@
 package entity;
 
+import java.io.Serializable;
 import java.util.Objects;
 
-public class Manufacture {
+public class Manufacture implements Serializable {
+    private static final long serialVersionUID = 1L;
     public String manufactureNumber;
     public String fullName;
     public int phoneNumber;

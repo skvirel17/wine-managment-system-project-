@@ -3,9 +3,11 @@ package entity;
 import enums.SweetnessLevel;
 import enums.WineType;
 
+import java.io.Serializable;
 import java.util.Objects;
 
-public class Wine {
+public class Wine implements Serializable {
+    private static final long serialVersionUID = 1L;
     public String catalogNumber;
     public String manufactureNumber;
     public String name;
