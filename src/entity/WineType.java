@@ -3,19 +3,20 @@ package entity;
 import enums.Location;
 import enums.OccasionE;
 import enums.Season;
+import enums.WineTypeE;
 
 import java.util.List;
 import java.util.Map;
 
 public class WineType {
     String serialNumber;
-    WineType name;
+    WineTypeE name;
     Map<String, List<String>> foodParings;
     List <OccasionE> occasionERecommendations;
     Season season;
     Location location;
 
-    public WineType(String serialNumber, WineType name, List<OccasionE> occasionERecommendations, Map<String, List<String>> foodParings, Season season, Location location) {
+    public WineType(String serialNumber, WineTypeE name, List<OccasionE> occasionERecommendations, Map<String, List<String>> foodParings, Season season, Location location) {
         this.serialNumber = serialNumber;
         this.name = name;
         this.occasionERecommendations = occasionERecommendations;
@@ -32,11 +33,11 @@ public class WineType {
         this.serialNumber = serialNumber;
     }
 
-    public WineType getName() {
+    public WineTypeE getName() {
         return name;
     }
 
-    public void setName(WineType name) {
+    public void setName(WineTypeE name) {
         this.name = name;
     }
 
