@@ -10,7 +10,7 @@ import java.util.Map;
 
 public class WineType {
     String serialNumber;
-    WineType name;
+    WineTypeE name;
     Map<String, List<String>> foodParings;
     List <OccasionE> occasionERecommendations;
     Season season;
