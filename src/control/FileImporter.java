@@ -4,7 +4,8 @@ import javax.xml.parsers.DocumentBuilderFactory;
 
 import entity.Wine;
 import enums.SweetnessLevel;
-import enums.WineType;
+import enums.WineTypeE;
+import enums.WineTypeE;
 import org.w3c.dom.*;
 
 
@@ -49,13 +50,13 @@ public class FileImporter {
                     String name = wine.getElementsByTagName("wineName").item(0).getTextContent();
                     String wineProductionYear = wine.getElementsByTagName("wineProductionYear").item(0).getTextContent();
                     String winePricePerBootle = wine.getElementsByTagName("winePricePerBootle").item(0).getTextContent();
-                    String wineType = wine.getElementsByTagName("wineType").item(0).getTextContent();
+                    String wineTypeE = wine.getElementsByTagName("wineType").item(0).getTextContent();
                     String wineSweetnessLevel = wine.getElementsByTagName("wineSweetnessLevel").item(0).getTextContent();
                     String wineManufactureNumber = wine.getElementsByTagName("wineManufactureNumber").item(0).getTextContent();
                     String wineDescription = wine.getElementsByTagName("wineDescription").item(0).getTextContent();
                     wines.add(new Wine(catalogNumber, wineManufactureNumber, name, wineDescription, Integer.valueOf(wineProductionYear),
                             Float.valueOf(winePricePerBootle), SweetnessLevel.valueOf(wineSweetnessLevel), null,
-                            WineType.valueOf(wineType)));
+                            WineTypeE.valueOf(wineTypeE)));
                 }
             }
             return wines;
