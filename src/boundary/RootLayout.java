@@ -22,11 +22,12 @@ public class RootLayout extends JFrame {
 	static RootLayout frame;
 	private FrmManufacture ordersPanel;
 
- 	private JMenu mnHome;
+	private JMenu mnHome;
 	private JMenu mnManufactures;
 	private JMenu mnEmployees;
 	private JMenu mnExport;
 	private JMenu mnImportWeekly;
+	private JMenu mnChooseWineType;
 
 	/**
 	 * Launch the application.
@@ -54,7 +55,7 @@ public class RootLayout extends JFrame {
 		createMenuBar();
 
 	}
-	
+
 	public void createMenuBar() {
 
 		JMenuBar menuBar = new JMenuBar();
@@ -82,8 +83,10 @@ public class RootLayout extends JFrame {
 		mnHome.addMenuListener(new MenuListener() {
 			public void menuCanceled(MenuEvent e) {
 			}
+
 			public void menuDeselected(MenuEvent e) {
 			}
+
 			public void menuSelected(MenuEvent e) {
 				new MainMenu().setVisible(true);
 				JFrame f1 = (JFrame) SwingUtilities.windowForComponent(menuBar);
@@ -96,8 +99,10 @@ public class RootLayout extends JFrame {
 		mnManufactures.addMenuListener(new MenuListener() {
 			public void menuCanceled(MenuEvent e) {
 			}
+
 			public void menuDeselected(MenuEvent e) {
 			}
+
 			public void menuSelected(MenuEvent e) {
 				new FrmManufacture().setVisible(true);
 				JFrame f1 = (JFrame) SwingUtilities.windowForComponent(menuBar);
@@ -158,28 +163,48 @@ public class RootLayout extends JFrame {
 
 		menuBar.add(mnExport);
 
+		mnChooseWineType = new JMenu("ChooseWineType");
+		mnChooseWineType.addMenuListener(new MenuListener() {
+			public void menuCanceled(MenuEvent e) {
+			}
+			public void menuDeselected(MenuEvent e) {
+			}
+			public void menuSelected(MenuEvent e) {
+				new FrmChooseWine().setVisible(true);
+				JFrame f1 = (JFrame) SwingUtilities.windowForComponent(menuBar);
+				f1.dispose();
+			}
+		});
+		mnChooseWineType.addActionListener((ActionEvent event) -> {
+			System.exit(0);
+		});
 
-	 	mnImportWeekly = new JMenu("Import weekly report");
+		menuBar.add(mnChooseWineType);
+
+
+		mnImportWeekly = new JMenu("Import weekly report");
 		mnImportWeekly.addMenuListener(new MenuListener() {
-			 @Override
-			 public void menuSelected(MenuEvent e) {
-			 }
+			@Override
+			public void menuSelected(MenuEvent e) {
+			}
 
-			 @Override
-			 public void menuDeselected(MenuEvent e) {
-			 }
+			@Override
+			public void menuDeselected(MenuEvent e) {
+			}
 
-			 @Override
-			 public void menuCanceled(MenuEvent e) {
-			 }
-	 	});
+			@Override
+			public void menuCanceled(MenuEvent e) {
+			}
+		});
 		mnImportWeekly.addActionListener((ActionEvent event) -> {
 			System.exit(0);
 		});
 		menuBar.add(mnImportWeekly);
 
-	 	setJMenuBar(menuBar);
+		setJMenuBar(menuBar);
 	}
+
+
 	 
 	 private void changePanel(JPanel panel) {
 		    getContentPane().removeAll();

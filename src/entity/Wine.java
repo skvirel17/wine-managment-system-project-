@@ -1,7 +1,7 @@
 package entity;
 
 import enums.SweetnessLevel;
-import enums.WineType;
+import enums.WineTypeE;
 
 
 import java.io.Serializable;
@@ -17,10 +17,10 @@ public class Wine implements Serializable {
     public float pricePerBottle;
     public SweetnessLevel sweetnessLevel;
     public byte[] productImage;
-    public WineType wineType;
+    public WineTypeE wineType;
 
     public Wine(String catalogNumber, String manufactureNumber, String name, String description, int productionYear, float pricePerBottle,
-                SweetnessLevel sweetnessLevel, byte[] productImage, WineType wineType) {
+                SweetnessLevel sweetnessLevel, byte[] productImage, WineTypeE wineType) {
         this.catalogNumber = catalogNumber;
         this.manufactureNumber = manufactureNumber;
         this.name = name;
@@ -96,11 +96,11 @@ public class Wine implements Serializable {
         this.productImage = productImage;
     }
 
-    public WineType getWineTypeId() {
+    public WineTypeE getWineTypeId() {
         return wineType;
     }
 
-    public void setWineTypeId(WineType wineTypeId) {
+    public void setWineTypeId(WineTypeE wineTypeId) {
         this.wineType = wineTypeId;
     }
 

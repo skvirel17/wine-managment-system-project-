@@ -5,7 +5,6 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import entity.Wine;
 import enums.SweetnessLevel;
 import enums.WineTypeE;
-import enums.WineTypeE;
 import org.w3c.dom.*;
 
 

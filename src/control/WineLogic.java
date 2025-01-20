@@ -3,7 +3,7 @@ import entity.Consts;
 import entity.Manufacture;
 import entity.Wine;
 import enums.SweetnessLevel;
-import enums.WineType;
+import enums.WineTypeE;
 
 import javax.swing.*;
 import java.io.FileOutputStream;
@@ -50,7 +50,7 @@ public class WineLogic {
                 String sweetnessLevelStr = rs.getString("level");  // אנחנו מקבלים את הערך כ-String
                 SweetnessLevel sweetnessLevel = SweetnessLevel.valueOf(sweetnessLevelStr.toUpperCase());  // המרה לערך enum
                 String wineTypeStr = rs.getString("wineType");
-                WineType wineType = WineType.valueOf(wineTypeStr.toUpperCase());
+                WineTypeE wineType = WineTypeE.valueOf(wineTypeStr.toUpperCase());
                 byte[] productImage = null;//rs.getBytes("wineProductImage");
 
 
@@ -103,7 +103,7 @@ public class WineLogic {
                 String sweetnessLevelStr = rs.getString("level");  // אנחנו מקבלים את הערך כ-String
                 SweetnessLevel sweetnessLevel = SweetnessLevel.valueOf(sweetnessLevelStr.toUpperCase());  // המרה לערך enum
                 String wineTypeStr = rs.getString("wineType");
-                WineType wineType = WineType.valueOf(wineTypeStr.toUpperCase());
+                WineTypeE wineType = WineTypeE.valueOf(wineTypeStr.toUpperCase());
                 byte[] productImage = null;//rs.getBytes("wineProductImage");
 
 
