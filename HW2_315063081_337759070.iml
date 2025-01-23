@@ -7,11 +7,7 @@
     </content>
     <orderEntry type="jdk" jdkName="openjdk-23" jdkType="JavaSDK" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" exported="" name="lib" level="project" />
     <orderEntry type="library" exported="" name="UCanAccess-5.0.1 2" level="project" />
-    <orderEntry type="library" name="lib (2)" level="project" />
-    <orderEntry type="library" exported="" name="lib (3)" level="project" />
-    <orderEntry type="library" exported="" name="lib (4)" level="project" />
     <orderEntry type="module-library" exported="">
       <library>
         <CLASSES>
@@ -58,5 +54,9 @@
       </library>
     </orderEntry>
     <orderEntry type="library" name="KotlinJavaRuntime" level="project" />
+    <orderEntry type="library" exported="" name="java" level="project" />
+    <orderEntry type="library" exported="" name="commons-beanutils-1.9.4-javadoc1" level="project" />
+    <orderEntry type="library" exported="" name="jasperreports-6.20.0" level="project" />
+    <orderEntry type="library" exported="" name="commons-beanutils-1.9.4-javadoc" level="project" />
   </component>
 </module>
