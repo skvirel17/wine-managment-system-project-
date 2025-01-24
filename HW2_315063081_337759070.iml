@@ -54,9 +54,5 @@
       </library>
     </orderEntry>
     <orderEntry type="library" name="KotlinJavaRuntime" level="project" />
-    <orderEntry type="library" exported="" name="java" level="project" />
-    <orderEntry type="library" exported="" name="commons-beanutils-1.9.4-javadoc1" level="project" />
-    <orderEntry type="library" exported="" name="jasperreports-6.20.0" level="project" />
-    <orderEntry type="library" exported="" name="commons-beanutils-1.9.4-javadoc" level="project" />
   </component>
 </module>

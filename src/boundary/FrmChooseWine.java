@@ -1,90 +1,132 @@
 package boundary;
 
-import control.ManufactureLogic;
-import entity.Manufacture;
-import enums.OccasionE;
+import entity.Wine;
 import enums.WineTypeE;
 
 import javax.swing.*;
-import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.stream.Collectors;
 
-public class FrmChooseWine extends RootLayout {
-    public static void main(String[] args) {
-        EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                try {
-                    boundary.FrmChooseWine frame = new boundary.FrmChooseWine();
-                    frame.setVisible(true);
+public class FrmChooseWine extends JFrame {
+    private JPanel foodPairingsPanel;
+    private JPanel occasionPanel;
+    private JPanel wineTypePanel;
+    private JTable resultTable;
+    private DefaultTableModel tableModel;
 
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+    public static void main(String[] args) {
+        EventQueue.invokeLater(() -> {
+            try {
+                FrmChooseWine frame = new FrmChooseWine();
+                frame.setVisible(true);
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         });
     }
 
     public FrmChooseWine() {
         initComponents();
-        fetchAndRefresh();
-        createEvents();
-    }
-
-    private void createEvents() {
-    }
-
-    private void fetchAndRefresh() {
     }
 
     private void initComponents() {
         setTitle("Choose Wine Preferences");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setBounds(100, 100, 600, 400);
+        setBounds(100, 100, 800, 600);
         setLayout(new BorderLayout());
 
-        // Панель для размещения групп чекбоксов
+        // Панель для чекбоксов
         JPanel mainPanel = new JPanel();
         mainPanel.setLayout(new GridLayout(1, 3, 10, 10));
         mainPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
-
-
         // Создание групп чекбоксов
-        mainPanel.add(createCheckBoxPanel("Food Pairings", Arrays.asList("Cheese", "Meat", "Seafood", "Vegetarian").toArray(new String[0])));
-        mainPanel.add(createCheckBoxPanel("Occasion", new String[]{"Birthday", "Anniversary", "Dinner Party", "Casual"}));
-        mainPanel.add(createCheckBoxPanel("Wine Type", Arrays.asList("Red", "White", "Rosé", "Sparkling").toArray(new String[0])));
+        foodPairingsPanel = createCheckBoxPanel("Food Pairings", Arrays.asList("Cheese", "Meat", "Seafood",
+                "Sushi", "Vegetables", "Fruits", "Fish", "Sweets", "Chicken", "Italian").toArray(new String[0]));
+        occasionPanel = createCheckBoxPanel("Occasion", new String[]{"Birthday", "Anniversary",
+                "Marriage", "Hike", "Cheesy Night", "Festival", "Brunch", "Picnic", "Summit", "Retreat"});
+        wineTypePanel = createCheckBoxPanel("Wine Type", Arrays.asList("red", "white", "rosé", "sparkling", "dessert",
+                "fortified").toArray(new String[0]));
 
+        // Добавление групп чекбоксов на панель
+        mainPanel.add(foodPairingsPanel);
+        mainPanel.add(occasionPanel);
+        mainPanel.add(wineTypePanel);
 
-        // Добавление панели в окно
+        // Добавление основной панели
         add(mainPanel, BorderLayout.CENTER);
+
+        // Таблица для отображения результатов
+        tableModel = new DefaultTableModel(new Object[]{"Catalog Number", "Name", "Description", "Price"}, 0);
+        resultTable = new JTable(tableModel);
+        add(new JScrollPane(resultTable), BorderLayout.NORTH);
 
         // Кнопка подтверждения
         JButton btnSubmit = new JButton("Submit");
         add(btnSubmit, BorderLayout.SOUTH);
 
-        // Отображение окна
-        setVisible(true);
+        // Обработчик событий кнопки Submit
+        btnSubmit.addActionListener(e -> handleSubmit(false)); // Используем метод, который позволяет переключаться между базой и объектами
 
+        setVisible(true);
     }
 
     private JPanel createCheckBoxPanel(String title, String[] options) {
-        // Панель для группы чекбоксов
         JPanel panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
         panel.setBorder(BorderFactory.createTitledBorder(title));
 
-        // Создание и добавление чекбоксов
         for (String option : options) {
             JCheckBox checkBox = new JCheckBox(option);
             panel.add(checkBox);
         }
 
         return panel;
+    }
+
+    private void handleSubmit(boolean useDatabase) {
+        // Получение выбранных фильтров
+        List<String> foodPairings = getSelectedCheckboxes(foodPairingsPanel);
+        List<String> occasions = getSelectedCheckboxes(occasionPanel);
+        List<String> wineTypes = getSelectedCheckboxes(wineTypePanel);
+
+        // Преобразование типа вина
+        WineTypeE wineType = !wineTypes.isEmpty() ? WineTypeE.valueOf(wineTypes.get(0).toUpperCase()) : null;
+
+        // Объединение ключевых слов
+        List<String> keywords = new ArrayList<>();
+        keywords.addAll(foodPairings);
+        keywords.addAll(occasions);
+
+        WineLogic wineLogic = WineLogic.getInstance();
+        List<Wine> filteredWines = wineLogic.getFilteredWines(wineType, keywords, useDatabase);
+
+        // Обновление таблицы результатами
+        updateResultTable(filteredWines);
+    }
+
+    private List<String> getSelectedCheckboxes(JPanel panel) {
+        return Arrays.stream(panel.getComponents())
+                .filter(component -> component instanceof JCheckBox)
+                .map(component -> (JCheckBox) component)
+                .filter(JCheckBox::isSelected)
+                .map(JCheckBox::getText)
+                .collect(Collectors.toList());
+    }
+
+    private void updateResultTable(List<Wine> wines) {
+        tableModel.setRowCount(0); // Очистка таблицы
+        for (Wine wine : wines) {
+            tableModel.addRow(new Object[]{
+                    wine.getCatalogNumber(),
+                    wine.getName(),
+                    wine.getDescription(),
+                    wine.getPricePerBottle()
+            });
+        }
     }
 }

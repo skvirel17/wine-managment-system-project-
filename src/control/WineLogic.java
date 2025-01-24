@@ -1,248 +1,175 @@
-package control;
 import entity.Consts;
-import entity.Manufacture;
 import entity.Wine;
-import enums.SweetnessLevel;
 import enums.WineTypeE;
+import enums.SweetnessLevel;
 
-import javax.swing.*;
-import java.io.FileOutputStream;
-import java.io.ObjectOutputStream;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.sql.Connection;
-import java.sql.DriverManager;
-
 
 public class WineLogic {
-
-    public static List<Wine> getWineInfoByManufacturer(String manufactureNumber) {
-        List<Wine> wineList = new ArrayList<>();
-
-
-        String dbURL = Consts.CONN_STR;//"jdbc:ucanaccess://C://database.accdb";
-
-        try {
-
-            Connection conn = DriverManager.getConnection(dbURL);
-            Statement stmt = conn.createStatement();
-
-
-            String query = """
-                SELECT TblWines.wineCatalogNumber, TblWines.wineManufactureNumber, TblWines.wineName, 
-                    TblWines.wineDescription, TblWines.wineProductionYear, TblWines.winePricePerBootle, 
-                    sl.SweetnessLevel as level, wt.wineTypeName as wineType, TblWines.wineProductImage 
-                FROM TblWines 
-                LEFT JOIN TbtEnumSweetnessLevels sl ON sl.ID = TblWines.wineSweetnessLevel 
-                LEFT JOIN TblWineTypes wt ON wt.wineTypeSerialNumber = TblWines.wineType 
-                WHERE TblWines.wineManufactureNumber = """ + manufactureNumber;
-            ResultSet rs = stmt.executeQuery(query);
-
-
-            while (rs.next()) {
-                String catalogNumber = rs.getString("wineCatalogNumber");
-                String manufacturyNumber = rs.getString("wineManufactureNumber");
-                String name = rs.getString("wineName");
-                String description = rs.getString("wineDescription");
-                int productionYear = rs.getInt("wineProductionYear");
-                float pricePerBottle = rs.getFloat("winePricePerBootle");
-                String sweetnessLevelStr = rs.getString("level");  // אנחנו מקבלים את הערך כ-String
-                SweetnessLevel sweetnessLevel = SweetnessLevel.valueOf(sweetnessLevelStr.toUpperCase());  // המרה לערך enum
-                String wineTypeStr = rs.getString("wineType");
-                WineTypeE wineType = WineTypeE.valueOf(wineTypeStr.toUpperCase());
-                byte[] productImage = null;//rs.getBytes("wineProductImage");
-
-
-                Wine wine = new Wine(catalogNumber, manufacturyNumber, name, description, productionYear,
-                        pricePerBottle, sweetnessLevel, productImage ,wineType);
-                wineList.add(wine);
-            }
-
-
-            rs.close();
-            stmt.close();
-            conn.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        return wineList;
-    }
-
-    public static List<Wine> getWines() {
-        List<Wine> wineList = new ArrayList<>();
-
-
-        String dbURL = Consts.CONN_STR;//"jdbc:ucanaccess://C://database.accdb";
-
-        try {
-
-            Connection conn = DriverManager.getConnection(dbURL);
-            Statement stmt = conn.createStatement();
-
-
-            String query = """
-                SELECT TblWines.wineCatalogNumber, TblWines.wineManufactureNumber, TblWines.wineName, 
-                    TblWines.wineDescription, TblWines.wineProductionYear, TblWines.winePricePerBootle, 
-                    sl.SweetnessLevel as level, wt.wineTypeName as wineType, TblWines.wineProductImage 
-                FROM TblWines 
-                LEFT JOIN TbtEnumSweetnessLevels sl ON sl.ID = TblWines.wineSweetnessLevel 
-                LEFT JOIN TblWineTypes wt ON wt.wineTypeSerialNumber = TblWines.wineType 
-                """;
-            ResultSet rs = stmt.executeQuery(query);
-
-
-            while (rs.next()) {
-                String catalogNumber = rs.getString("wineCatalogNumber");
-                String manufacturyNumber = rs.getString("wineManufactureNumber");
-                String name = rs.getString("wineName");
-                String description = rs.getString("wineDescription");
-                int productionYear = rs.getInt("wineProductionYear");
-                float pricePerBottle = rs.getFloat("winePricePerBootle");
-                String sweetnessLevelStr = rs.getString("level");  // אנחנו מקבלים את הערך כ-String
-                SweetnessLevel sweetnessLevel = SweetnessLevel.valueOf(sweetnessLevelStr.toUpperCase());  // המרה לערך enum
-                String wineTypeStr = rs.getString("wineType");
-                WineTypeE wineType = WineTypeE.valueOf(wineTypeStr.toUpperCase());
-                byte[] productImage = null;//rs.getBytes("wineProductImage");
-
-
-                Wine wine = new Wine(catalogNumber, manufacturyNumber, name, description, productionYear,
-                        pricePerBottle, sweetnessLevel, productImage ,wineType);
-                wineList.add(wine);
-            }
-
-            serializeWines(wineList, "database.ser");
-
-            rs.close();
-            stmt.close();
-            conn.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        return wineList;
-    }
-
-    private static void serializeWines(List<Wine> wines, String fileName) {
-        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(fileName))) {
-            oos.writeObject(wines);
-            System.out.println("Data serialized sucsesfuly: " + fileName);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    public void addNewData(List<Wine> wines) {
-        for (Wine wine : wines) {
-            if (getWines().contains(wine)) {
-                if(ManufactureLogic.getInstance().getManufactures().contains(new Manufacture(wine.getManufactureNumber()))) {
-                    updateWine(wine);
-                } else {
-                    JOptionPane.showMessageDialog(
-                            null,
-                            "It is not possible to add the wine because the manufacturer data is missing." +
-                                    "(" + wine.getCatalogNumber() + ")" +
-                                    " Please update the manufacturer information.",
-                            "Error",
-                            JOptionPane.ERROR_MESSAGE
-                    );
-                }
-            } else {
-                addWine(wine);
-            }
-        }
-    }
-
-    private void addWine(Wine wine) {
-        String dbURL = Consts.CONN_STR;//"jdbc:ucanaccess://C://database.accdb";
-
-        try {
-            Connection conn = DriverManager.getConnection(dbURL);
-
-            String query = """
-            INSERT INTO TblWines
-            VALUES (?, ?, ?, ?, ?,
-            (SELECT wineTypeSerialNumber FROM TblWineTypes WHERE LOWER(wineTypeName) = LOWER(?)),
-                (SELECT ID FROM TbtEnumSweetnessLevels WHERE LOWER(SweetnessLevel) = LOWER(?)),
-                ?, ?)
-        """;
-
-            PreparedStatement pstmt = conn.prepareStatement(query);
-
-
-            pstmt.setString(1, wine.getCatalogNumber());
-            pstmt.setString(2, wine.getName());
-            pstmt.setString(3, wine.getDescription());
-            pstmt.setInt(4, wine.getProductionYear());
-            pstmt.setFloat(5, wine.getPricePerBottle());
-            pstmt.setString(6, wine.getWineTypeId().toString());
-            pstmt.setString(7, wine.getSweetnessLevel().toString());
-            pstmt.setString(8, wine.getManufactureNumber());
-            pstmt.setBytes(9, wine.getProductImage());
-
-            int rowsAffected = pstmt.executeUpdate();
-
-
-            pstmt.close();
-            conn.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
-    private void updateWine(Wine wine) {
-        String dbURL = Consts.CONN_STR;//"jdbc:ucanaccess://C://database.accdb";
-        boolean isUpdated = false;
-
-        try {
-            Connection conn = DriverManager.getConnection(dbURL);
-
-            String query = """
-                UPDATE TblWines
-                    SET wineManufactureNumber = ?,
-                        wineName = ?,
-                        wineDescription = ?,
-                        wineProductionYear = ?,
-                        winePricePerBootle = ?,
-                        wineSweetnessLevel = (SELECT ID FROM TbtEnumSweetnessLevels WHERE SweetnessLevel = ?),
-                        wineType = (SELECT wineTypeSerialNumber FROM TblWineTypes WHERE wineTypeName = ?)
-                WHERE wineCatalogNumber = ?
-            """;
-
-            PreparedStatement pstmt = conn.prepareStatement(query);
-
-
-            pstmt.setString(1, wine.getManufactureNumber());
-            pstmt.setString(2, wine.getName());
-            pstmt.setString(3, wine.getDescription());
-            pstmt.setInt(4, wine.getProductionYear());
-            pstmt.setFloat(5, wine.getPricePerBottle());
-            pstmt.setString(6, wine.getSweetnessLevel().toString());
-            pstmt.setString(7, wine.getWineTypeId().toString());
-            pstmt.setString(8, wine.getCatalogNumber());
-
-
-            int rowsAffected = pstmt.executeUpdate();
-
-            isUpdated = rowsAffected > 0;
-
-            pstmt.close();
-            conn.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
     private static WineLogic instance;
+
+    private WineLogic() {}
+
     public static WineLogic getInstance() {
         if (instance == null) {
             instance = new WineLogic();
         }
         return instance;
     }
-    private List<Wine> wineDatabase;
-    public List<Wine> getAllWines() {
-       return wineDatabase;
-  }
+
+    // Метод фильтрации через SQL или объекты
+    public List<Wine> getFilteredWines(WineTypeE wineType, List<String> keywords, boolean useDatabase) {
+        if (useDatabase) {
+            return getFilteredWinesFromDB(wineType, keywords); // Фильтрация через SQL
+        } else {
+            return filterWinesInMemory(wineType, keywords); // Фильтрация через объекты
+        }
+    }
+
+    // Метод фильтрации через SQL
+    private List<Wine> getFilteredWinesFromDB(WineTypeE wineType, List<String> keywords) {
+        List<Wine> wineList = new ArrayList<>();
+        String dbURL = Consts.CONN_STR;
+
+        try (Connection conn = DriverManager.getConnection(dbURL)) {
+            StringBuilder queryBuilder = new StringBuilder("""
+                SELECT TblWines.wineCatalogNumber, TblWines.wineManufactureNumber, TblWines.wineName, 
+                    TblWines.wineDescription, TblWines.wineProductionYear, TblWines.winePricePerBootle, 
+                    sl.SweetnessLevel AS level, wt.wineTypeName AS wineType, TblWines.wineProductImage 
+                FROM TblWines 
+                LEFT JOIN TbtEnumSweetnessLevels sl ON sl.ID = TblWines.wineSweetnessLevel 
+                LEFT JOIN TblWineTypes wt ON wt.wineTypeSerialNumber = TblWines.wineType 
+                WHERE 1=1
+            """);
+
+            // Добавляем фильтр по типу вина
+            if (wineType != null) {
+                queryBuilder.append(" AND wt.wineTypeName = ? ");
+            }
+
+            // Добавляем фильтр по ключевым словам
+            if (keywords != null && !keywords.isEmpty()) {
+                queryBuilder.append(" AND (");
+                for (int i = 0; i < keywords.size(); i++) {
+                    queryBuilder.append(" TblWines.wineDescription LIKE ? ");
+                    if (i < keywords.size() - 1) {
+                        queryBuilder.append(" OR ");
+                    }
+                }
+                queryBuilder.append(") ");
+            }
+
+            try (PreparedStatement pstmt = conn.prepareStatement(queryBuilder.toString())) {
+                int paramIndex = 1;
+
+                // Устанавливаем параметры для типа вина
+                if (wineType != null) {
+                    pstmt.setString(paramIndex++, wineType.name());
+                }
+
+                // Устанавливаем параметры для ключевых слов
+                if (keywords != null && !keywords.isEmpty()) {
+                    for (String keyword : keywords) {
+                        pstmt.setString(paramIndex++, "%" + keyword + "%");
+                    }
+                }
+
+                ResultSet rs = pstmt.executeQuery();
+                while (rs.next()) {
+                    String catalogNumber = rs.getString("wineCatalogNumber");
+                    String manufactureNumber = rs.getString("wineManufactureNumber");
+                    String name = rs.getString("wineName");
+                    String description = rs.getString("wineDescription");
+                    int productionYear = rs.getInt("wineProductionYear");
+                    float pricePerBottle = rs.getFloat("winePricePerBootle");
+                    String sweetnessLevelStr = rs.getString("level");
+                    SweetnessLevel sweetnessLevel = SweetnessLevel.valueOf(sweetnessLevelStr.toUpperCase());
+                    String wineTypeStr = rs.getString("wineType");
+                    WineTypeE wineTypeFromDB = WineTypeE.valueOf(wineTypeStr.toUpperCase());
+                    byte[] productImage = rs.getBytes("wineProductImage");
+
+                    Wine wine = new Wine(catalogNumber, manufactureNumber, name, description, productionYear,
+                            pricePerBottle, sweetnessLevel, productImage, wineTypeFromDB);
+                    wineList.add(wine);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return wineList;
+    }
+
+    // Метод фильтрации через объекты
+    private List<Wine> filterWinesInMemory(WineTypeE wineType, List<String> keywords) {
+        List<Wine> allWines = getWines(); // Загружаем все вина
+        List<Wine> filteredWines = new ArrayList<>();
+
+        for (Wine wine : allWines) {
+            boolean matches = true;
+
+            // Фильтрация по типу вина
+            if (wineType != null && wine.getWineType() != wineType) {
+                matches = false;
+            }
+
+            // Фильтрация по ключевым словам
+            if (matches && keywords != null && !keywords.isEmpty()) {
+                boolean keywordMatches = keywords.stream().anyMatch(keyword ->
+                        wine.getDescription().toLowerCase().contains(keyword.toLowerCase()));
+                if (!keywordMatches) {
+                    matches = false;
+                }
+            }
+
+            if (matches) {
+                filteredWines.add(wine);
+            }
+        }
+
+        return filteredWines;
+    }
+
+    // Метод для получения всех вин из базы
+    public List<Wine> getWines() {
+        List<Wine> wineList = new ArrayList<>();
+        String dbURL = Consts.CONN_STR;
+
+        try (Connection conn = DriverManager.getConnection(dbURL)) {
+            String query = """
+                SELECT TblWines.wineCatalogNumber, TblWines.wineManufactureNumber, TblWines.wineName, 
+                    TblWines.wineDescription, TblWines.wineProductionYear, TblWines.winePricePerBootle, 
+                    sl.SweetnessLevel AS level, wt.wineTypeName AS wineType, TblWines.wineProductImage 
+                FROM TblWines 
+                LEFT JOIN TbtEnumSweetnessLevels sl ON sl.ID = TblWines.wineSweetnessLevel 
+                LEFT JOIN TblWineTypes wt ON wt.wineTypeSerialNumber = TblWines.wineType 
+            """;
+
+            try (Statement stmt = conn.createStatement(); ResultSet rs = stmt.executeQuery(query)) {
+                while (rs.next()) {
+                    String catalogNumber = rs.getString("wineCatalogNumber");
+                    String manufactureNumber = rs.getString("wineManufactureNumber");
+                    String name = rs.getString("wineName");
+                    String description = rs.getString("wineDescription");
+                    int productionYear = rs.getInt("wineProductionYear");
+                    float pricePerBottle = rs.getFloat("winePricePerBootle");
+                    String sweetnessLevelStr = rs.getString("level");
+                    SweetnessLevel sweetnessLevel = SweetnessLevel.valueOf(sweetnessLevelStr.toUpperCase());
+                    String wineTypeStr = rs.getString("wineType");
+                    WineTypeE wineType = WineTypeE.valueOf(wineTypeStr.toUpperCase());
+                    byte[] productImage = rs.getBytes("wineProductImage");
+
+                    Wine wine = new Wine(catalogNumber, manufactureNumber, name, description, productionYear,
+                            pricePerBottle, sweetnessLevel, productImage, wineType);
+                    wineList.add(wine);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return wineList;
+    }
 }

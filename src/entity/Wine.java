@@ -96,7 +96,7 @@ public class Wine implements Serializable {
         this.productImage = productImage;
     }
 
-    public WineTypeE getWineTypeId() {
+    public WineTypeE getWineType() {
         return wineType;
     }
 
