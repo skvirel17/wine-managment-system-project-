@@ -92,23 +92,23 @@ public class FrmManufactureDetailsInternal extends JPanel {
 		tableModel.setRowCount(0);
 
 		// מה שהיה
-		List <Wine> wine = WineLogic.getWineInfoByManufacturer(this.manifactureNumber);
+		//List <Wine> wine = WineLogic.getWineInfoByManufacturer(this.manifactureNumber);
 
 		int i = 0;
-		while (i < wine.size()) {
-			Vector<Object> data = new Vector<Object>();
-			System.out.println(wine.get(i).catalogNumber+"try");
-			data.add(wine.get(i).catalogNumber);
-			data.add(wine.get(i).name);
-			data.add(wine.get(i).description);
-			data.add(wine.get(i).productionYear);
-			data.add(wine.get(i).pricePerBottle);
-			data.add(wine.get(i).sweetnessLevel);
-			data.add(wine.get(i).productImage);
-			data.add(wine.get(i).wineType);
-			i++;
-			tableModel.addRow(data);
-		}
+//		while (i < wine.size()) {
+//			Vector<Object> data = new Vector<Object>();
+//			System.out.println(wine.get(i).catalogNumber+"try");
+//			data.add(wine.get(i).catalogNumber);
+//			data.add(wine.get(i).name);
+//			data.add(wine.get(i).description);
+//			data.add(wine.get(i).productionYear);
+//			data.add(wine.get(i).pricePerBottle);
+//			data.add(wine.get(i).sweetnessLevel);
+//			data.add(wine.get(i).productImage);
+//			data.add(wine.get(i).wineType);
+//			i++;
+//			tableModel.addRow(data);
+//		}
 
 		// 	Add empty Row
 		addEmptyRow();

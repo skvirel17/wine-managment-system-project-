@@ -34,7 +34,7 @@ public class ManufactureDetails implements Serializable {
 
 	public List<Wine> getWinesByManufactureNumber() {
 		// Получаем список всех вин (вы можете реализовать собственный метод получения данных)
-		List<Wine> allWines = WineLogic.getInstance().getAllWines();
+		List<Wine> allWines = WineLogic.getInstance().getWines();
 
 		// Фильтруем вина, которые принадлежат данному производителю
 		List<Wine> winesByManufacture = new ArrayList<>();
@@ -45,5 +45,6 @@ public class ManufactureDetails implements Serializable {
 		}
 		return winesByManufacture;
 	}
+
 
 }

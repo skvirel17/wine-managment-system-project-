@@ -1,5 +1,6 @@
 package boundary;
 
+import control.WineLogic;
 import entity.Wine;
 import enums.WineTypeE;
 

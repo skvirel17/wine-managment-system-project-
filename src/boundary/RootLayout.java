@@ -142,7 +142,7 @@ public class RootLayout extends JFrame {
 					FileImporter fileImporter = new FileImporter();
 					List<Wine> wines = fileImporter.importXML(selectedFile);
 
-					WineLogic.getInstance().addNewData(wines);
+					//WineLogic.getInstance().addNewData(wines);
 					JOptionPane.showMessageDialog(frame, "File chosen: " + selectedFile.getAbsolutePath());
 				} else {
 					JOptionPane.showMessageDialog(frame, "File canceled.");
