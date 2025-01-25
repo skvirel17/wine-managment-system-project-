@@ -1,6 +1,7 @@
 package boundary;
 
 import control.WineLogic;
+import entity.ChooseWineDTO;
 import entity.Wine;
 import enums.WineTypeE;
 
@@ -37,7 +38,7 @@ public class FrmChooseWine extends JFrame {
     private void initComponents() {
         setTitle("Choose Wine Preferences");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setBounds(100, 100, 800, 600);
+        setBounds(100, 100, 800, 700);
         setLayout(new BorderLayout());
 
         // Панель для чекбоксов
@@ -62,12 +63,12 @@ public class FrmChooseWine extends JFrame {
         add(mainPanel, BorderLayout.CENTER);
 
         // Таблица для отображения результатов
-        tableModel = new DefaultTableModel(new Object[]{"Catalog Number", "Name", "Description", "Price"}, 0);
+        tableModel = new DefaultTableModel(new Object[]{"WineName","Description", "Food", "Occasion", "WineType"}, 0);
         resultTable = new JTable(tableModel);
         add(new JScrollPane(resultTable), BorderLayout.NORTH);
 
         // Кнопка подтверждения
-        JButton btnSubmit = new JButton("Submit");
+        JButton btnSubmit = new JButton("Filter");
         add(btnSubmit, BorderLayout.SOUTH);
 
         // Обработчик событий кнопки Submit
@@ -104,7 +105,7 @@ public class FrmChooseWine extends JFrame {
         keywords.addAll(occasions);
 
         WineLogic wineLogic = WineLogic.getInstance();
-        List<Wine> filteredWines = wineLogic.getFilteredWines(wineType, keywords, useDatabase);
+        List<ChooseWineDTO> filteredWines = wineLogic.getFilteredWines(occasions, foodPairings, wineTypes);
 
         // Обновление таблицы результатами
         updateResultTable(filteredWines);
@@ -119,14 +120,15 @@ public class FrmChooseWine extends JFrame {
                 .collect(Collectors.toList());
     }
 
-    private void updateResultTable(List<Wine> wines) {
+    private void updateResultTable(List<ChooseWineDTO> wines) {
         tableModel.setRowCount(0); // Очистка таблицы
-        for (Wine wine : wines) {
+        for (ChooseWineDTO wine : wines) {
             tableModel.addRow(new Object[]{
-                    wine.getCatalogNumber(),
-                    wine.getName(),
+                    wine.getWineName(),
                     wine.getDescription(),
-                    wine.getPricePerBottle()
+                    wine.getFood().getName(),
+                    wine.getOccasion(),
+                    wine.getWineType()
             });
         }
     }

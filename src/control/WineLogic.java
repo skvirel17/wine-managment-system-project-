@@ -1,7 +1,7 @@
 package control;
 
-import entity.Consts;
-import entity.Wine;
+import entity.*;
+import enums.OccasionE;
 import enums.WineTypeE;
 import enums.SweetnessLevel;
 import org.apache.commons.lang3.ObjectUtils;
@@ -9,6 +9,7 @@ import org.apache.commons.lang3.ObjectUtils;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class WineLogic {
     private static WineLogic instance;
@@ -24,17 +25,14 @@ public class WineLogic {
     }
 
     // Метод фильтрации через SQL или объекты
-    public List<Wine> getFilteredWines(WineTypeE wineType, List<String> keywords, boolean useDatabase) {
-        if (useDatabase) {
-            return getFilteredWinesFromDB(wineType, keywords); // Фильтрация через SQL
-        } else {
-            return filterWinesInMemory(wineType, keywords); // Фильтрация через объекты
-        }
+    public List<ChooseWineDTO> getFilteredWines(List<String> occasions, List<String> food, List<String> wineType) {
+
+            return getFilteredWinesFromDB(occasions, food, wineType); // Фильтрация через SQL
     }
 
     // Метод фильтрации через SQL
-    private List<Wine> getFilteredWinesFromDB(WineTypeE wineType, List<String> keywords) {
-        List<Wine> wineList = new ArrayList<>();
+    private List<ChooseWineDTO> getFilteredWinesFromDB(List<String> occasions, List<String> food, List<String> wineType) {
+        List<ChooseWineDTO> wineList = new ArrayList<>();
         String dbURL = Consts.CONN_STR;
 
         try (Connection conn = DriverManager.getConnection(dbURL)) {
@@ -45,33 +43,64 @@ public class WineLogic {
                             TblWines.wineName, 
                             TblWines.wineDescription, 
                             TblWines.wineProductionYear, 
-                            TblWines.winePricePerBootle, 
-                            TbtEnumSweetnessLevels.SweetnessLevel AS level, 
+                            TblWines.winePricePerBootle,  
                             TblWineTypes.wineTypeName AS wineType, 
-                            TblWines.wineProductImage 
-                        FROM TblWines 
-                        LEFT JOIN TbtEnumSweetnessLevels 
-                            ON TbtEnumSweetnessLevels.ID = TblWines.wineSweetnessLevel 
+                            TblWines.wineProductImage,
+                            TbtOccasions.occasion,
+                            TblFoods.foodName,
+                            TblFoods.foodCode 
+                        FROM TblWines  
                         LEFT JOIN TblWineTypes 
                             ON TblWineTypes.wineTypeSerialNumber = TblWines.wineType
+                        LEFT JOIN TblWineTypeOccasion
+                            ON TblWineTypes.wineTypeSerialNumber = TblWineTypeOccasion.wineTypeSerialNumber
+                        LEFT JOIN TbtOccasions 
+                            ON TblWineTypeOccasion.ID = TbtOccasions.ID
+                        LEFT JOIN TblWineTypeFoodParings 
+                            ON TblWineTypes.wineTypeSerialNumber = TblWineTypeFoodParings.wineTypeSerialNumber
+                        LEFT JOIN TblFoods
+                            ON TblWineTypeFoodParings.foodCode = TblFoods.foodCode
                         WHERE 1=1
                     """);
 
             // Добавляем фильтр по типу вина
-            if (wineType != null) {
-                queryBuilder.append(" AND TblWineTypes.wineTypeName = ? ");
+            if (!wineType.isEmpty()) {
+                queryBuilder.append(" AND TblWineTypes.wineTypeName IN  " +
+                        "('" + wineType.stream().collect(Collectors.joining("', '")) + "')");
             }
 
             // Добавляем фильтр по ключевым словам
-            if (keywords != null && !keywords.isEmpty()) {
-                queryBuilder.append(" AND (");
-                for (int i = 0; i < keywords.size(); i++) {
-                    queryBuilder.append(" TblWines.wineDescription LIKE ? ");
-                    if (i < keywords.size() - 1) {
-                        queryBuilder.append(" OR ");
-                    }
+            if (!occasions.isEmpty()) {
+                queryBuilder.append(" AND TbtOccasions.occasion IN  " +
+                        "('" + occasions.stream().collect(Collectors.joining("', '")) + "')");
+            }
+
+            if (!food.isEmpty()) {
+                queryBuilder.append(" AND TblFoods.foodName IN  " +
+                        "('" + food.stream().collect(Collectors.joining("', '")) + "')");
+            }
+
+            try (Statement stmt = conn.createStatement(); ResultSet rs = stmt.executeQuery(queryBuilder.toString())) {
+                while (rs.next()) {
+//                    String catalogNumber = rs.getString("wineCatalogNumber");
+//                    String manufactureNumber = rs.getString("wineManufactureNumber");
+                    String name = rs.getString("wineName");
+                    String description = rs.getString("wineDescription");
+//                    int productionYear = rs.getInt("wineProductionYear");
+//                    float pricePerBottle = rs.getFloat("winePricePerBootle");
+//                    String sweetnessLevelStr = rs.getString("level");
+//                    SweetnessLevel sweetnessLevel = SweetnessLevel.valueOf(sweetnessLevelStr.toUpperCase());
+//                    String wineTypeStr = rs.getString("wineType");
+//                    WineTypeE wineType_ = WineTypeE.valueOf(wineTypeStr.toUpperCase());
+
+                    String wineTypeStr = rs.getString("wineType");
+                    WineTypeE wineTypeE = WineTypeE.valueOf(wineTypeStr.toUpperCase());
+
+                    Food foodItem = new Food(rs.getString("foodName"), rs.getInt("foodCode"));
+                    OccasionE occasionE = OccasionE.fromValue(rs.getString("occasion"));
+                    ChooseWineDTO wine = new ChooseWineDTO(foodItem, occasionE, wineTypeE, description, name);
+                    wineList.add(wine);
                 }
-                queryBuilder.append(") ");
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -79,35 +108,6 @@ public class WineLogic {
         return wineList;
     }
 
-    // Метод фильтрации через объекты
-    private List<Wine> filterWinesInMemory(WineTypeE wineType, List<String> keywords) {
-        List<Wine> allWines = getWines(); // Загружаем все вина
-        List<Wine> filteredWines = new ArrayList<>();
-
-        for (Wine wine : allWines) {
-            boolean matches = true;
-
-            // Фильтрация по типу вина
-            if (wineType != null && wine.getWineType() != wineType) {
-                matches = false;
-            }
-
-            // Фильтрация по ключевым словам
-            if (matches && keywords != null && !keywords.isEmpty()) {
-                boolean keywordMatches = keywords.stream().anyMatch(keyword ->
-                        wine.getDescription().toLowerCase().contains(keyword.toLowerCase()));
-                if (!keywordMatches) {
-                    matches = false;
-                }
-            }
-
-            if (matches) {
-                filteredWines.add(wine);
-            }
-        }
-
-        return filteredWines;
-    }
 
     // Метод для получения всех вин из базы
     public List<Wine> getWines() {
