@@ -13,7 +13,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class FrmChooseWine extends JFrame {
+public class FrmChooseWine extends RootLayout {
     private JPanel foodPairingsPanel;
     private JPanel occasionPanel;
     private JPanel wineTypePanel;

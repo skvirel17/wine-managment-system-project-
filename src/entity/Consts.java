@@ -10,12 +10,21 @@ public class Consts {
     protected static final String DB_FILEPATH = getDBPath();
 
     public static final String CONN_STR = "jdbc:ucanaccess://"  + DB_FILEPATH + ";COLUMNORDER=DISPLAY";
+    public static final String SQL_INS_MANUFACTURE =
+            "INSERT INTO Manufactures (manufactureId, manufactureFullName, manufacturePhoneNumber, manufactureAddress, manufactureEmail) VALUES (?, ?, ?, ?, ?)";
+
+    public static final String SQL_DEL_MANUFACTURE =
+            "DELETE FROM Manufactures WHERE manufactureId = ?";
+
+    public static final String SQL_UPD_MANUFACTURE =
+            "UPDATE Manufactures SET manufactureFullName = ?, manufacturePhoneNumber = ?, manufactureAddress = ?, manufactureEmail = ? WHERE manufactureId = ?";
 
 
 
 
 
-//    public static final String SQL_SEL_EMPLOYEES = "SELECT * FROM TblEmployees";
+
+    //    public static final String SQL_SEL_EMPLOYEES = "SELECT * FROM TblEmployees";
 //    public static final String SQL_DEL_EMPLOYEE = "{ call qryDelEmployee(?) }";
 //    public static final String SQL_INS_EMPLOYEE =
 //            "{ call qryInsEmployee(?,?,?,?,?,?,?,?,?,?,?) }";

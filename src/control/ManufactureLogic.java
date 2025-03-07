@@ -37,79 +37,7 @@ public class ManufactureLogic {
         return _instance;
     }
 
-  //////////////////////////////////////////////////////////////////
-  //READ ORDERS FROM DB
-  //////////////////////////////////////////////////////////////////
-//    public ArrayList <Customer> getCustomers() {
-//      	 ArrayList<Customer> results = new ArrayList<Customer>();
-//
-//   	        try {
-//   	            Class.forName("net.ucanaccess.jdbc.UcanaccessDriver");
-//   	            try (Connection conn = DriverManager.getConnection(Consts.CONN_STR);
-//   	                    PreparedStatement stmt =
-//   	                            conn.prepareStatement(Consts.SQL_SEL_CUSTOMERS);
-//   	                    ResultSet rs = stmt.executeQuery()) {
-//   	                while (rs.next()) {
-//   	                    int i = 1;
-//   	                    results.add(new Customer(rs.getString(i++), rs.getString(i++) ));
-//   	                }
-//   	            } catch (SQLException e) {
-//   	                e.printStackTrace();
-//   	            }
-//   	        } catch (ClassNotFoundException e) {
-//   	            e.printStackTrace();
-//   	        }
-//
-//   	        return results;
-//      }
-//
-//    public ArrayList <Shipper> getshippers() {
-//     	 ArrayList<Shipper> results = new ArrayList<Shipper>();
-//
-//  	        try {
-//  	            Class.forName("net.ucanaccess.jdbc.UcanaccessDriver");
-//  	            try (Connection conn = DriverManager.getConnection(Consts.CONN_STR);
-//  	                    PreparedStatement stmt =
-//  	                            conn.prepareStatement(Consts.SQL_SEL_SHIPPERS);
-//  	                    ResultSet rs = stmt.executeQuery()) {
-//  	                while (rs.next()) {
-//  	                    int i = 1;
-//  	                    results.add(new Shipper(rs.getLong(i++), rs.getString(i++) ));
-//  	                }
-//  	            } catch (SQLException e) {
-//  	                e.printStackTrace();
-//  	            }
-//  	        } catch (ClassNotFoundException e) {
-//  	            e.printStackTrace();
-//  	        }
-//
-//  	        return results;
-//     }
-//
-//    public ArrayList <Product> getProducts() {
-//     	 ArrayList<Product> results = new ArrayList<Product>();
-//
-//  	        try {
-//  	            Class.forName("net.ucanaccess.jdbc.UcanaccessDriver");
-//  	            try (Connection conn = DriverManager.getConnection(Consts.CONN_STR);
-//  	                    PreparedStatement stmt =
-//  	                            conn.prepareStatement(Consts.SQL_SEL_PRODUCTS);
-//  	                    ResultSet rs = stmt.executeQuery()) {
-//  	                while (rs.next()) {
-//  	                    int i = 1;
-//  	                    results.add(new Product(Long.parseLong(rs.getString(i++)), rs.getString(i++),Long.parseLong(rs.getString(i++)),Long.parseLong(rs.getString(i++)),new BigDecimal( rs.getString(i++)),Integer.parseInt(rs.getString(i++)) ));
-//  	                }
-//  	            } catch (SQLException e) {
-//  	                e.printStackTrace();
-//  	            }
-//  	        } catch (ClassNotFoundException e) {
-//  	            e.printStackTrace();
-//  	        }
-//
-//  	        return results;
-//     }
-//
-//
+
     public ArrayList <Manufacture> getManufactures() {
 		ArrayList<Manufacture> results = new ArrayList<>();
 
@@ -157,151 +85,7 @@ public class ManufactureLogic {
 			e.printStackTrace();
 		}
 	}
-//    public boolean addOrder(String customerID, long employeeID,Date orderDate,Date requiredDate,
-//    		Date shippedDate,int shipVia,String shipAddress,String shipCity,String shipCountry) {
-//        try {
-//            Class.forName("net.ucanaccess.jdbc.UcanaccessDriver");
-//
-//            try (Connection conn = DriverManager.getConnection(Consts.CONN_STR);
-//                    CallableStatement stmt = conn.prepareCall(Consts.SQL_ADD_ORDER)) {
-//                int i = 1;
-//
-//                stmt.setString(i++, customerID);  // can't be null
-//                stmt.setLong(i++, employeeID); // can't be null
-//
-//
-//                if (orderDate != null)
-//                    stmt.setDate(i++, new java.sql.Date(orderDate.getTime()));
-//                else
-//                    stmt.setNull(i++, java.sql.Types.DATE);
-//                if (requiredDate != null)
-//                    stmt.setDate(i++, new java.sql.Date(requiredDate.getTime()));
-//                else
-//                    stmt.setNull(i++, java.sql.Types.DATE);
-//                if (shippedDate != null)
-//                    stmt.setDate(i++, new java.sql.Date(shippedDate.getTime()));
-//                else
-//                    stmt.setNull(i++, java.sql.Types.DATE);
-//
-//
-//                stmt.setInt(i++, shipVia); // can't be null
-//
-//                if (shipAddress != null)
-//                    stmt.setString(i++, shipAddress);
-//                else
-//                    stmt.setNull(i++, java.sql.Types.VARCHAR);
-//                if (shipCity != null)
-//                    stmt.setString(i++, shipCity);
-//                else
-//                    stmt.setNull(i++, java.sql.Types.VARCHAR);
-//                if (shipCountry != null)
-//                    stmt.setString(i++, shipCountry);
-//                else
-//                    stmt.setNull(i++, java.sql.Types.VARCHAR);
-//
-//
-//                stmt.executeUpdate();
-//                return true;
-//            } catch (SQLException e) {
-//                e.printStackTrace();
-//            }
-//        } catch (ClassNotFoundException e) {
-//            e.printStackTrace();
-//        }
-//        return false;
-//
-//    }
-//    public boolean removeOrder(long orderID) {
-//        try {
-//            Class.forName("net.ucanaccess.jdbc.UcanaccessDriver");
-//
-//            try (Connection conn = DriverManager.getConnection(Consts.CONN_STR);
-//            		CallableStatement stmt1 = conn.prepareCall(Consts.SQL_DEL_ORDER_DETAILS);
-//
-//            		) {
-//                stmt1.setLong(1, orderID);
-//                stmt1.executeUpdate();
-//
-//
-//
-//            } catch (SQLException e) {
-//                e.printStackTrace();
-//            }
-//
-//            try (Connection conn = DriverManager.getConnection(Consts.CONN_STR);
-//
-//            		CallableStatement stmt2 = conn.prepareCall(Consts.SQL_DEL_ORDER)
-//            		) {
-//
-//                stmt2.setLong(1, orderID);
-//                stmt2.executeUpdate();
-//                return true;
-//            } catch (SQLException e) {
-//                e.printStackTrace();
-//            }
-//
-//        } catch (ClassNotFoundException e) {
-//            e.printStackTrace();
-//        }
-//        return false;
-//    }
-//    public boolean editOrder(long orderID, String customerID, long employeeID,Date orderDate,Date requiredDate,
-//    		Date shippedDate,int shipVia,String shipAddress,String shipCity,String shipCountry) {
-//        try {
-//            Class.forName("net.ucanaccess.jdbc.UcanaccessDriver");
-//
-//            try (Connection conn = DriverManager.getConnection(Consts.CONN_STR);
-//                    CallableStatement stmt = conn.prepareCall(Consts.SQL_UPD_ORDER)) {
-//                int i = 1;
-//
-//                stmt.setString(i++, customerID);  // can't be null
-//                stmt.setLong(i++, employeeID); // can't be null
-//
-//
-//                if (orderDate != null)
-//                    stmt.setDate(i++, new java.sql.Date(orderDate.getTime()));
-//                else
-//                    stmt.setNull(i++, java.sql.Types.DATE);
-//                if (requiredDate != null)
-//                    stmt.setDate(i++, new java.sql.Date(requiredDate.getTime()));
-//                else
-//                    stmt.setNull(i++, java.sql.Types.DATE);
-//                if (shippedDate != null)
-//                    stmt.setDate(i++, new java.sql.Date(shippedDate.getTime()));
-//                else
-//                    stmt.setNull(i++, java.sql.Types.DATE);
-//
-//
-//                stmt.setInt(i++, shipVia); // can't be null
-//
-//                if (shipAddress != null)
-//                    stmt.setString(i++, shipAddress);
-//                else
-//                    stmt.setNull(i++, java.sql.Types.VARCHAR);
-//                if (shipCity != null)
-//                    stmt.setString(i++, shipCity);
-//                else
-//                    stmt.setNull(i++, java.sql.Types.VARCHAR);
-//                if (shipCountry != null)
-//                    stmt.setString(i++, shipCountry);
-//                else
-//                    stmt.setNull(i++, java.sql.Types.VARCHAR);
-//
-//                stmt.setLong(i++, orderID);
-//
-//                stmt.executeUpdate();
-//                return true;
-//            } catch (SQLException e) {
-//                e.printStackTrace();
-//            }
-//        } catch (ClassNotFoundException e) {
-//            e.printStackTrace();
-//        }
-//        return false;
-//    }
-//
-//
-//
+
     public ArrayList <Manufacture> getManufactureDetails(String manifactureNumber) {
    	 ArrayList<Manufacture> results = new ArrayList<Manufacture>();
 
@@ -364,61 +148,83 @@ public class ManufactureLogic {
 //        }
         return false;
     }
-//    public boolean addOrderDetails(long orderID, long productID, int quantity,float discount) {
-//
-//        try {
-//         Class.forName("net.ucanaccess.jdbc.UcanaccessDriver");
-//
-//         try (
-//         	Connection conn = DriverManager.getConnection(Consts.CONN_STR);
-//             CallableStatement stmt = conn.prepareCall(Consts.SQL_INS_ORDER_DETAILS))
-//         {
-//
-//             int i = 1;
-//
-//             stmt.setLong(i++, orderID); // can't be null
-//             stmt.setLong(i++, productID); // can't be null
-//             stmt.setInt(i++, quantity);
-//             stmt.setFloat(i++, discount);// can't be null
-//             stmt.executeUpdate();
-//
-//
-//             return true;
-//         } catch (SQLException e) {
-//             e.printStackTrace();
-//         }
-//     } catch (ClassNotFoundException e) {
-//         e.printStackTrace();
-//     }
-//     return false;
-// }
-//    public boolean removeOrderDetail(long orderID,long productID) {
-//        try {
-//            Class.forName("net.ucanaccess.jdbc.UcanaccessDriver");
-//
-//            try (Connection conn = DriverManager.getConnection(Consts.CONN_STR);
-//            		CallableStatement stmt1 = conn.prepareCall(Consts.SQL_DEL_ORDER_DETAILS_PRODUCT);
-//
-//            		) {
-//                stmt1.setLong(1, orderID);
-//                stmt1.setLong(2, productID);
-//                stmt1.executeUpdate();
-//
-//
-//
-//            } catch (SQLException e) {
-//                e.printStackTrace();
-//            }
-//
-//        } catch (ClassNotFoundException e) {
-//            e.printStackTrace();
-//        }
-//        return false;
-//    }
-public static List<Wine> getWineInfoByManufacturer(String manufactureNumber) {
+
+	/**
+	 * Добавление нового производителя
+	 */
+	public boolean addManufacture(Manufacture manufacture) {
+		try {
+			Class.forName("net.ucanaccess.jdbc.UcanaccessDriver");
+			try (Connection conn = DriverManager.getConnection(Consts.CONN_STR);
+				 PreparedStatement stmt = conn.prepareStatement(Consts.SQL_INS_MANUFACTURE)) {
+
+				stmt.setString(1, manufacture.getManifactureNumber());
+				stmt.setString(2, manufacture.getFullName());
+				stmt.setInt(3, manufacture.getPhoneNumber());
+				stmt.setString(4, manufacture.getAddressManifacture());
+				stmt.setString(5, manufacture.getEmail());
+
+				int affectedRows = stmt.executeUpdate();
+				return affectedRows > 0;
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+		return false;
+	}
+
+	/**
+	 * Удаление производителя по ID
+	 */
+	public boolean removeManufacture(String manufactureId) {
+		try {
+			Class.forName("net.ucanaccess.jdbc.UcanaccessDriver");
+			try (Connection conn = DriverManager.getConnection(Consts.CONN_STR);
+				 PreparedStatement stmt = conn.prepareStatement(Consts.SQL_DEL_MANUFACTURE)) {
+
+				stmt.setString(1, manufactureId);
+
+				int affectedRows = stmt.executeUpdate();
+				return affectedRows > 0;
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+		return false;
+	}
+
+	/**
+	 * Редактирование информации о производителе
+	 */
+	public boolean editManufacture(Manufacture manufacture) {
+		try {
+			Class.forName("net.ucanaccess.jdbc.UcanaccessDriver");
+			try (Connection conn = DriverManager.getConnection(Consts.CONN_STR);
+				 PreparedStatement stmt = conn.prepareStatement(Consts.SQL_UPD_MANUFACTURE)) {
+
+				stmt.setString(1, manufacture.getFullName());
+				stmt.setInt(2, manufacture.getPhoneNumber());
+				stmt.setString(3, manufacture.getAddressManifacture());
+				stmt.setString(4, manufacture.getEmail());
+				stmt.setString(5, manufacture.getManifactureNumber());
+
+				int affectedRows = stmt.executeUpdate();
+				return affectedRows > 0;
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+		return false;
+	}
+
+	public static List<Wine> getWineInfoByManufacturer(String manufactureNumber) {
 	List<Wine> wineInfo = new ArrayList<Wine>();
 	 return wineInfo;
-}
-
-
+	}
 }

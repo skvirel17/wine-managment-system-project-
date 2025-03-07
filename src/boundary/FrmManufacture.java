@@ -116,6 +116,13 @@ public class FrmManufacture extends RootLayout {
 		btnLast.setFont(new Font("Tahoma", Font.PLAIN, 10));
 		pnlActionBtn.add(btnLast);
 
+		pnlActionBtn.add(btnAdd);
+		pnlActionBtn.add(btnSave);
+		pnlActionBtn.add(btnDelete);
+
+		btnSave.setEnabled(false);
+		btnDelete.setEnabled(false);
+
 
         initGroupLayoutleftPanel();
         initGroupLayoutRightPanel();
@@ -151,10 +158,8 @@ public class FrmManufacture extends RootLayout {
 		});
 	}
 
-//	///////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//	// This method initializing the design structure
-//	// of form right side fields
-//	///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
 	private void initGroupLayoutRightPanel() {
 //			pnlPhoneNumberManifacture.setLayout(null);
 //
@@ -206,11 +211,6 @@ public class FrmManufacture extends RootLayout {
 
 	}
 
-
-	///////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	// This method initializing the design structure
-	// of form left fields
-	///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	private void initGroupLayoutleftPanel() {
 		pnlWineDetails.setLayout(null);
 		lblManufactureNumber.setBounds(10, 14, 120, 14);
@@ -280,6 +280,41 @@ public class FrmManufacture extends RootLayout {
 		refreshControls();
 	}
 
+	private void btnAddOnClick() {
+		inAddMode = true;
+		tfManufactureNumber.setText("");
+		tfName.setText("");
+		tfPhoneNumber.setText("");
+		tfEmail.setText("");
+		tfManufactureAddress.setText("");
+
+		btnSave.setEnabled(true);
+		btnDelete.setEnabled(false);
+	}
+
+	private void btnSaveOnClick() {
+		Manufacture newManufacture = new Manufacture(
+				tfManufactureNumber.getText(),
+				tfName.getText(),
+				Integer.parseInt(tfPhoneNumber.getText()),
+				tfManufactureAddress.getText(),
+				tfEmail.getText()
+		);
+
+		if (inAddMode) {
+			ManufactureLogic.getInstance().addManufacture(newManufacture);
+		} else {
+			ManufactureLogic.getInstance().editManufacture(newManufacture);
+		}
+
+		fetchAndRefresh();
+	}
+
+	private void btnDeleteOnClick() {
+		ManufactureLogic.getInstance().removeManufacture(tfManufactureNumber.getText());
+		fetchAndRefresh();
+	}
+
 	//		///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	//		// Updates the view to present next order
 	//		//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -328,6 +363,10 @@ public class FrmManufacture extends RootLayout {
 
 	private JButton btnNext = new JButton(">>");
 	private JButton btnLast = new JButton(">|");
+
+	private JButton btnAdd = new JButton("Add");
+	private JButton btnSave = new JButton("Save");
+	private JButton btnDelete = new JButton("Delete");
 
 	private JPanel pnlActionBtn;
 	private JTextField tfShipViaID;
