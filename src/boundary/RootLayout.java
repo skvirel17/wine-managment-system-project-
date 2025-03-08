@@ -28,6 +28,7 @@ public class RootLayout extends JFrame {
 	private JMenu mnExport;
 	private JMenu mnImportWeekly;
 	private JMenu mnChooseWineType;
+	private JMenu mnWines;
 
 	/**
 	 * Launch the application.
@@ -114,6 +115,26 @@ public class RootLayout extends JFrame {
 		});
 
 		menuBar.add(mnManufactures);
+
+		mnWines = new JMenu("Wines");
+		mnWines.addMenuListener(new MenuListener() {
+			public void menuCanceled(MenuEvent e) {
+			}
+
+			public void menuDeselected(MenuEvent e) {
+			}
+
+			public void menuSelected(MenuEvent e) {
+				new FrmWine().setVisible(true);
+				JFrame f1 = (JFrame) SwingUtilities.windowForComponent(menuBar);
+				f1.dispose();
+			}
+		});
+		mnWines.addActionListener((ActionEvent event) -> {
+			System.exit(0);
+		});
+
+		menuBar.add(mnWines);
 
 		mnExport = new JMenu("Import data");
 		mnExport.addMenuListener(new MenuListener() {

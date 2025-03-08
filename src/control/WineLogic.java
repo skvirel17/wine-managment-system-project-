@@ -8,6 +8,7 @@ import org.apache.commons.lang3.ObjectUtils;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -187,4 +188,84 @@ public class WineLogic {
 
         return wineList;
     }
+
+    public boolean addWine(Wine wine) {
+        try {
+            Class.forName("net.ucanaccess.jdbc.UcanaccessDriver");
+            try (Connection conn = DriverManager.getConnection(Consts.CONN_STR);
+                 PreparedStatement stmt = conn.prepareStatement(Consts.SQL_INS_MANUFACTURE)) {
+
+                stmt.setString(1, wine.getManufactureNumber());
+                stmt.setString(2, wine.getName());
+                stmt.setString(3, wine.getDescription());
+                stmt.setInt(4, wine.getProductionYear());
+                stmt.setFloat(5, wine.getPricePerBottle());
+                stmt.setString(5, String.valueOf(wine.getWineType()));
+                stmt.setString(5, String.valueOf(wine.getSweetnessLevel()));
+                stmt.setString(5, Arrays.toString(wine.getProductImage()));
+                stmt.setString(5, wine.getCatalogNumber());
+
+                int affectedRows = stmt.executeUpdate();
+                return affectedRows > 0;
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    /**
+     * Удаление производителя по ID
+     */
+    public boolean removeWine(String catalogNumber) {
+        try {
+            Class.forName("net.ucanaccess.jdbc.UcanaccessDriver");
+            try (Connection conn = DriverManager.getConnection(Consts.CONN_STR);
+                 PreparedStatement stmt = conn.prepareStatement(Consts.SQL_DEL_MANUFACTURE)) {
+
+                stmt.setString(1, catalogNumber);
+
+                int affectedRows = stmt.executeUpdate();
+                return affectedRows > 0;
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    /**
+     * Редактирование информации о производителе
+     */
+    public boolean editWine(Wine wine) {
+        try {
+            Class.forName("net.ucanaccess.jdbc.UcanaccessDriver");
+            try (Connection conn = DriverManager.getConnection(Consts.CONN_STR);
+                 PreparedStatement stmt = conn.prepareStatement(Consts.SQL_UPD_MANUFACTURE)) {
+
+                stmt.setString(1, wine.getManufactureNumber());
+                stmt.setString(2, wine.getName());
+                stmt.setString(3, wine.getDescription());
+                stmt.setInt(4, wine.getProductionYear());
+                stmt.setFloat(5, wine.getPricePerBottle());
+                stmt.setString(5, String.valueOf(wine.getWineType()));
+                stmt.setString(5, String.valueOf(wine.getSweetnessLevel()));
+                stmt.setString(5, Arrays.toString(wine.getProductImage()));
+                stmt.setString(5, wine.getCatalogNumber());
+
+                int affectedRows = stmt.executeUpdate();
+                return affectedRows > 0;
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
 }

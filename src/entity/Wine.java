@@ -32,6 +32,10 @@ public class Wine implements Serializable {
         this.wineType = wineType;
     }
 
+    public Wine(String catalogNumbertext, String manufactureNumber, String name, String description, String productionYear,
+                String pricePerBottle, String sweetnessLevel, Object productImage, String winetype) {
+    }
+
     public String getCatalogNumber() {
         return catalogNumber;
     }
