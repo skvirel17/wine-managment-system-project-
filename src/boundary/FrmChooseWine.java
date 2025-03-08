@@ -8,8 +8,7 @@ import enums.WineTypeE;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
-import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.*;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -51,7 +50,7 @@ public class FrmChooseWine extends RootLayout {
                 "Sushi", "Vegetables", "Fruits", "Fish", "Sweets", "Chicken", "Italian").toArray(new String[0]));
         occasionPanel = createCheckBoxPanel("Occasion", new String[]{"Birthday", "Anniversary",
                 "Marriage", "Hike", "Cheesy Night", "Festival", "Brunch", "Picnic", "Summit", "Retreat"});
-        wineTypePanel = createCheckBoxPanel("Wine Type", Arrays.asList("red", "white", "rosé", "sparkling", "dessert",
+        wineTypePanel = createCheckBoxPanel("Wine Type", Arrays.asList("red", "white", "rose", "sparkling", "dessert",
                 "fortified").toArray(new String[0]));
 
         // Добавление групп чекбоксов на панель
@@ -121,7 +120,9 @@ public class FrmChooseWine extends RootLayout {
     }
 
     private void updateResultTable(List<ChooseWineDTO> wines) {
-        tableModel.setRowCount(0); // Очистка таблицы
+        tableModel.setRowCount(0);
+
+        // Очистка таблицы
         for (ChooseWineDTO wine : wines) {
             tableModel.addRow(new Object[]{
                     wine.getWineName(),

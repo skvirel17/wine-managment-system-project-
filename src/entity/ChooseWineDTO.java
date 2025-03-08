@@ -4,6 +4,8 @@ import enums.OccasionE;
 import enums.SweetnessLevel;
 import enums.WineTypeE;
 
+import java.util.Objects;
+
 public class ChooseWineDTO {
     private Food food;
     private OccasionE occasion;
@@ -71,5 +73,18 @@ public class ChooseWineDTO {
                 ", description='" + description + '\'' +
                 ", wineName='" + wineName + '\'' +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ChooseWineDTO that = (ChooseWineDTO) o;
+        return occasion == that.occasion && wineType == that.wineType && Objects.equals(description, that.description) && Objects.equals(wineName, that.wineName);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(occasion, wineType, description, wineName);
     }
 }

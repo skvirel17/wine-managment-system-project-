@@ -24,6 +24,37 @@ public class WineLogic {
         return instance;
     }
 
+    public static List<Wine> getWineInfoByManufacturer(String manifactureNumber) {
+        List<Wine> wineList = new ArrayList<>();
+        String dbURL = Consts.CONN_STR;
+
+        try (Connection conn = DriverManager.getConnection(dbURL)) {
+            StringBuilder queryBuilder = new StringBuilder("SELECT * FROM TblWines  WHERE wineManufactureNumber = "
+                    + manifactureNumber);
+
+            try (Statement stmt = conn.createStatement(); ResultSet rs = stmt.executeQuery(queryBuilder.toString())) {
+                while (rs.next()) {
+                        String catalogNumber = rs.getString("wineCatalogNumber");
+                        String manufactureNumber = rs.getString("wineManufactureNumber");
+                        String name = rs.getString("wineName");
+                        String description = rs.getString("wineDescription");
+                        int productionYear = rs.getInt("wineProductionYear");
+                        float pricePerBottle = rs.getFloat("winePricePerBootle");
+                        SweetnessLevel sweetnessLevel = SweetnessLevel.fromId(rs.getString("wineSweetnessLevel"));
+                        WineTypeE wineType_ = WineTypeE.fromId(rs.getString("wineType"));
+
+
+                    Wine wine = new Wine(catalogNumber,manufactureNumber, name, description, productionYear, pricePerBottle,
+                            sweetnessLevel,null, wineType_);
+                    wineList.add(wine);
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return wineList;
+    }
+
     // Метод фильтрации через SQL или объекты
     public List<ChooseWineDTO> getFilteredWines(List<String> occasions, List<String> food, List<String> wineType) {
 
