@@ -122,15 +122,44 @@ public class FrmChooseWine extends RootLayout {
     private void updateResultTable(List<ChooseWineDTO> wines) {
         tableModel.setRowCount(0);
 
+        Map<String, String> uniqueFoods = new HashMap<>();
+        for (ChooseWineDTO wine : wines) {
+            if (wine.getFood() != null) {
+                uniqueFoods.put(wine.getWineName(),
+                        uniqueFoods.getOrDefault(wine.getWineName(), "").contains(wine.getFood().getName()) ?
+                                uniqueFoods.get(wine.getWineName()) :
+                                uniqueFoods.getOrDefault(wine.getWineName(), "") +
+                                        ((uniqueFoods.getOrDefault(wine.getWineName(), "")).isEmpty() ? wine.getFood().getName() : ", " + wine.getFood().getName()));
+            }
+        }
+
+        Map<String, String> uniqueOccasions = new HashMap<>();
+        for (ChooseWineDTO wine : wines) {
+            if (wine.getOccasion() != null) {
+                uniqueOccasions.put(wine.getWineName(),
+                        uniqueOccasions.getOrDefault(wine.getWineName(), "").contains(wine.getOccasion().toString()) ?
+                                uniqueOccasions.get(wine.getWineName()) :
+                                uniqueOccasions.getOrDefault(wine.getWineName(), "") +
+                                        ((uniqueOccasions.getOrDefault(wine.getWineName(), "")).isEmpty() ?
+                                                wine.getOccasion().toString() : ", " + wine.getOccasion().toString()));
+            }
+        }
+
+        wines = wines.stream()
+                .distinct()
+                .collect(Collectors.toList());
+
         // Очистка таблицы
         for (ChooseWineDTO wine : wines) {
             tableModel.addRow(new Object[]{
                     wine.getWineName(),
                     wine.getDescription(),
-                    wine.getFood().getName(),
-                    wine.getOccasion(),
+                    uniqueFoods.getOrDefault(wine.getWineName(), ""),
+                    uniqueOccasions.getOrDefault(wine.getWineName(), ""),
                     wine.getWineType()
             });
         }
     }
+
+
 }

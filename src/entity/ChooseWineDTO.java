@@ -74,17 +74,16 @@ public class ChooseWineDTO {
                 ", wineName='" + wineName + '\'' +
                 '}';
     }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         ChooseWineDTO that = (ChooseWineDTO) o;
-        return occasion == that.occasion && wineType == that.wineType && Objects.equals(description, that.description) && Objects.equals(wineName, that.wineName);
+        return wineType == that.wineType && Objects.equals(description, that.description) && Objects.equals(wineName, that.wineName);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(occasion, wineType, description, wineName);
+        return Objects.hash(wineType, description, wineName);
     }
 }
