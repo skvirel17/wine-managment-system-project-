@@ -1,28 +1,24 @@
 package boundary;
 
-import java.awt.EventQueue;
-import java.awt.FlowLayout;
-import java.awt.Font;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JTextField;
-import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
 import control.OrderLogic;
 import entity.Order;
+import entity.Wine;
 import enums.OrderStatus;
+import enums.SweetnessLevel;
 
 import javax.swing.table.DefaultTableModel;
-import java.awt.SystemColor;
 
 public class FrmOrder extends RootLayout {
 
@@ -39,7 +35,8 @@ public class FrmOrder extends RootLayout {
     private JTextField tfTotalPrice;
     private JTextField tfNavigation;
     private JTextField tfOrderStatus;
-    private JButton btnFirst, btnPrev, btnNext, btnLast, btnAdd, btnSave, btnDelete;
+    private JComboBox<OrderStatus> cbOrderStatus;
+    private JButton btnFirst, btnPrev, btnNext, btnLast, btnAddOrder, btnSave, btnDelete;
     private JPanel pnlActionBtn;
     private DefaultTableModel tableModel;
 
@@ -65,17 +62,17 @@ public class FrmOrder extends RootLayout {
 
     private void initComponents() {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setBounds(100, 100, 500, 400);
+        setBounds(100, 100, 500, 500); // Увеличил высоту окна для нового поля
         contentPane = new JPanel();
         contentPane.setLayout(null);
         setContentPane(contentPane);
 
-        String[] labels = {"Order Number:", "Order Date:", "Shipment Date:", "Employee ID:", "Total Price:", "Orders status:"};
-        JTextField[] fields = new JTextField[labels.length];
+        String[] labels = {"Order Number:", "Order Date:", "Shipment Date:", "Employee ID:", "Total Price:", "Order Status:"};
+        JTextField[] fields = new JTextField[labels.length - 1]; // Убираем одно поле для выпадающего списка
 
         int labelX = 20, fieldX = 150, y = 20, width = 120, height = 25;
 
-        for (int i = 0; i < labels.length; i++) {
+        for (int i = 0; i < labels.length - 1; i++) { // Последнее поле будет JComboBox
             JLabel label = new JLabel(labels[i]);
             label.setBounds(labelX, y, width, height);
             contentPane.add(label);
@@ -92,7 +89,16 @@ public class FrmOrder extends RootLayout {
         tfShipmentDate = fields[2];
         tfEmployeeId = fields[3];
         tfTotalPrice = fields[4];
-        tfOrderStatus = fields[5];
+
+        JLabel lblOrderStatus = new JLabel("Order Status:");
+        lblOrderStatus.setBounds(labelX, y, width, height);
+        contentPane.add(lblOrderStatus);
+        OrderStatus[] orderStatuses = OrderStatus.values();
+        cbOrderStatus = new JComboBox<>(orderStatuses);
+        cbOrderStatus.setBounds(fieldX, y, width, height);
+        contentPane.add(cbOrderStatus);
+
+        y += 40;
 
         tfNavigation = new JTextField();
         tfNavigation.setEditable(false);
@@ -105,19 +111,26 @@ public class FrmOrder extends RootLayout {
         btnPrev = new JButton("Prev");
         btnNext = new JButton("Next");
         btnLast = new JButton("Last");
-        btnAdd = new JButton("Add");
+        btnAddOrder = new JButton("Add");
+        btnAddOrder.setPreferredSize(new Dimension(120, 30));
+        btnAddOrder.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                FrmAddOrder addOrderWindow = new FrmAddOrder();
+                addOrderWindow.setVisible(true);
+            }
+        });
         btnSave = new JButton("Save");
         btnDelete = new JButton("Delete");
 
         JPanel buttonPanel = new JPanel();
-        buttonPanel.setBounds(50, y, 400, 40);
+        buttonPanel.setBounds(20, y, 460, 100); // Увеличил высоту панели для видимости кнопки
         buttonPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
 
         buttonPanel.add(btnFirst);
         buttonPanel.add(btnPrev);
         buttonPanel.add(btnNext);
         buttonPanel.add(btnLast);
-        buttonPanel.add(btnAdd);
+        buttonPanel.add(btnAddOrder);
         buttonPanel.add(btnSave);
         buttonPanel.add(btnDelete);
 
@@ -125,12 +138,13 @@ public class FrmOrder extends RootLayout {
     }
 
 
+
     private void createEvents() {
         btnFirst.addActionListener(e -> btnFirstOnClick());
         btnLast.addActionListener(e -> btnLastOnClick());
         btnPrev.addActionListener(e -> btnPrevOnClick());
         btnNext.addActionListener(e -> btnNextOnClick());
-        btnAdd.addActionListener(e -> btnAddOnClick());
+        btnAddOrder.addActionListener(e -> btnAddOnClick());
         btnSave.addActionListener(e -> btnSaveOnClick());
         btnDelete.addActionListener(e -> btnDeleteOnClick());
     }
@@ -166,29 +180,43 @@ public class FrmOrder extends RootLayout {
         tfShipmentDate.setText("");
         tfEmployeeId.setText("");
         tfTotalPrice.setText("");
-        tfOrderStatus.setText("");
+        cbOrderStatus.setSelectedIndex(0);
         btnSave.setEnabled(true);
         btnDelete.setEnabled(true);
     }
 
     private void btnSaveOnClick() {
-        Order newOrder = new Order(
-                Integer.parseInt(tfOrderNumber.getText()),
-                tfOrderDate.getText(),
-                new Date(),
-                OrderStatus.fromValue(tfOrderStatus.getText()), // יש לשנות זאת בהתאם לערך בפועל
-                new Date(),
-                tfEmployeeId.getText(),
-                Double.parseDouble(tfTotalPrice.getText())
-        );
+        try {
+            int orderNumber = Integer.parseInt(tfOrderNumber.getText().trim());
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+            Date orderDate = dateFormat.parse(tfOrderDate.getText().trim());
+            Date shipmentDate = dateFormat.parse(tfShipmentDate.getText().trim());
 
-        if (inAddMode) {
-            OrderLogic.getInstance().addOrder(newOrder);
-        } else {
-            OrderLogic.getInstance().editOrder(newOrder);
+            // Получаем статус из JComboBox
+            OrderStatus orderStatus = (OrderStatus) cbOrderStatus.getSelectedItem();
+            if (orderStatus == null) {
+                orderStatus = OrderStatus.INPROCESS; // Значение по умолчанию
+            }
+
+            String employeeId = tfEmployeeId.getText().trim();
+            double totalPrice = Double.parseDouble(tfTotalPrice.getText().trim());
+
+            Order newOrder = new Order(orderNumber, orderDate, orderStatus, shipmentDate, employeeId, totalPrice);
+
+            if (inAddMode) {
+                OrderLogic.getInstance().addOrder(newOrder);
+            } else {
+                OrderLogic.getInstance().editOrder(newOrder);
+            }
+            fetchAndRefresh();
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "Invalid number format!", "Error", JOptionPane.ERROR_MESSAGE);
+        } catch (ParseException e) {
+            JOptionPane.showMessageDialog(this, "Invalid date format! Use yyyy-MM-dd", "Error", JOptionPane.ERROR_MESSAGE);
         }
-        fetchAndRefresh();
     }
+
+
 
     private void btnDeleteOnClick() {
         OrderLogic.getInstance().removeOrder(tfOrderNumber.getText());
@@ -214,12 +242,37 @@ public class FrmOrder extends RootLayout {
     }
 
     private void refreshOrderFields() {
-        Order order = (!inAddMode) ? ordersArray.get(currentOrder - 1) : null;
-        tfOrderNumber.setText(order != null ? order.getOrderNumber() : "");
-        tfOrderDate.setText(order != null ? order.getOrderDate().toString() : "");
-        tfShipmentDate.setText(order != null ? order.getShipmentDate().toString() : "");
-        tfEmployeeId.setText(order != null ? order.getEmployeeId() : "");
-        tfTotalPrice.setText(order != null ? String.valueOf(order.getTotalPrice()) : "");
-        tfOrderStatus.setText(order != null ? String.valueOf(order.getOrderStatus()) : "");
+        if (ordersArray.isEmpty() || currentOrder == null || currentOrder <= 0) {
+            tfOrderNumber.setText("");
+            tfOrderDate.setText("");
+            tfShipmentDate.setText("");
+            tfEmployeeId.setText("");
+            tfTotalPrice.setText("");
+            cbOrderStatus.setSelectedIndex(-1);
+            return;
+        }
+
+        Order order = ordersArray.get(currentOrder - 1);
+        tfOrderNumber.setText(String.valueOf(order.getOrderNumber()));
+        tfOrderDate.setText(order.getOrderDate().toString());
+        tfShipmentDate.setText(order.getShipmentDate().toString());
+        tfEmployeeId.setText(order.getEmployeeId());
+        tfTotalPrice.setText(String.valueOf(order.getTotalPrice()));
+
+        // Преобразуем OrderStatus в индекс для JComboBox
+        cbOrderStatus.setSelectedItem(order.getOrderStatus());
     }
+
+//    private void refreshWineFields() {
+//        Wine wine = (!inAddMode) ? wineArrayList.get(currentWine - 1) : null;
+//        tfManufactureNumber.setText(wine.manufactureNumber);
+//        tfName.setText(wine.getName());
+//        tfWineDescription.setText(String.valueOf(wine.getDescription()));
+//        tfWineProductYear.setText(String.valueOf(wine.getProductionYear()));
+//        cbWineType.setSelectedItem(wine.getWineType());
+//        tfWinePricePerBottle.setText(String.valueOf(wine.getPricePerBottle()));
+//        //tfWineSweetnessLevel.setText(String.valueOf(wine.getSweetnessLevel()));
+//        tfWineCatalogNumber.setText(wine.getCatalogNumber());
+//        cbSweetnessLevel.setSelectedItem(wine.getSweetnessLevel());
+//    }
 }

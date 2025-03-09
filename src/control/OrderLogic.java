@@ -3,9 +3,11 @@ import java.io.FileOutputStream;
 import java.io.ObjectOutputStream;
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
+//import com.sun.org.apache.xpath.internal.operations.Or;
 import entity.*;
 import enums.OccasionE;
 import enums.OrderStatus;
@@ -34,9 +36,9 @@ public class OrderLogic {
                     while (rs.next()) {
                         results.add(new Order(
                                 //rs.getInt("priorityLevel"),
-                                rs.getString("orderNumber"),
+                                rs.getInt("orderNumber"),
                                 rs.getDate("orderDate"),
-                                OrderStatus.fromId(rs.getString("orderCurrentStatus")),
+                                OrderStatus.fromId(rs.getInt("orderCurrentStatus")),
                                 rs.getDate("orderShipmentDate"),
                                 rs.getString("orderEmployee")
                                 //rs.getDouble("totalPrice")
@@ -68,7 +70,7 @@ public class OrderLogic {
                      PreparedStatement stmt = conn.prepareStatement(Consts.SQL_INS_ORDER)) {
 
                     stmt.setInt(1, order.getPriorityLevel());
-                    stmt.setString(2, order.getOrderNumber());
+                    stmt.setInt(2, order.getOrderNumber());
                     stmt.setDate(3, new java.sql.Date(order.getOrderDate().getTime()));
                     stmt.setObject(4, order.getOrderStatus(), java.sql.Types.VARCHAR);
                     stmt.setDate(5, new java.sql.Date(order.getShipmentDate().getTime()));
@@ -105,40 +107,49 @@ public class OrderLogic {
             return false;
         }
 
-        public boolean editOrder(Order order) {
-            try {
-                Class.forName("net.ucanaccess.jdbc.UcanaccessDriver");
-                try (Connection conn = DriverManager.getConnection(Consts.CONN_STR);
-                     PreparedStatement stmt = conn.prepareStatement(Consts.SQL_UPD_ORDER)) {
+    public boolean editOrder(Order order) {
+        try {
+            Class.forName("net.ucanaccess.jdbc.UcanaccessDriver");
+            try (Connection conn = DriverManager.getConnection(Consts.CONN_STR);
+                 PreparedStatement stmt = conn.prepareStatement(Consts.SQL_UPD_ORDER)) {
 
-                    stmt.setInt(1, order.getPriorityLevel());
-                    stmt.setDate(2, new java.sql.Date(order.getOrderDate().getTime()));
-                    stmt.setString(3, order.getOrderStatus().toString());
-                    stmt.setDate(4, new java.sql.Date(order.getShipmentDate().getTime()));
-                    stmt.setString(5, order.getEmployeeId());
-                    stmt.setDouble(6, order.getTotalPrice());
-                    stmt.setString(7, order.getOrderNumber());
+                stmt.setDate(1, new java.sql.Date(order.getOrderDate().getTime()));
 
-                    int affectedRows = stmt.executeUpdate();
-                    return affectedRows > 0;
-                } catch (SQLException e) {
-                    e.printStackTrace();
+                // Поскольку orderCurrentStatus — это Number, передаем его как Integer
+                if (order.getOrderStatus() != null) {
+                    stmt.setInt(2, order.getOrderStatus().getId()); // Передаем ID статуса
+                } else {
+                    stmt.setNull(2, java.sql.Types.INTEGER); // Если статус пустой, ставим NULL
                 }
-            } catch (ClassNotFoundException e) {
+
+                stmt.setDate(3, new java.sql.Date(order.getShipmentDate().getTime()));
+                stmt.setInt(4, Integer.parseInt(order.getEmployeeId())); // Преобразуем строку в число
+                stmt.setInt(5, order.getOrderNumber());
+
+                int affectedRows = stmt.executeUpdate();
+                return affectedRows > 0;
+            } catch (SQLException e) {
                 e.printStackTrace();
             }
-            return false;
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
         }
+        return false;
+    }
 
-        // 56
-        public ArrayList<Order> getOrderDetails(String orderNumber) {
+
+
+
+
+    // 56
+        public ArrayList<Order> getOrderDetails(int orderNumber) {
             ArrayList<Order> results = new ArrayList<>();
 
             try {
                 Class.forName("net.ucanaccess.jdbc.UcanaccessDriver");
                 try (Connection conn = DriverManager.getConnection(Consts.CONN_STR);
                      PreparedStatement stmt = conn.prepareStatement(Consts.SQL_SEL_ORDERS)) {
-                    stmt.setString(1, orderNumber);
+                    stmt.setInt(1, orderNumber);
                     try (ResultSet rs = stmt.executeQuery()) {
                         while (rs.next()) {
                             String orderNum = rs.getString("orderNumber");
