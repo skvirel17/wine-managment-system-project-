@@ -19,6 +19,19 @@ public class Consts {
     public static final String SQL_UPD_MANUFACTURE =
             "UPDATE Manufactures SET manufactureFullName = ?, manufacturePhoneNumber = ?, manufactureAddress = ?, manufactureEmail = ? WHERE manufactureId = ?";
 
+    // orders const
+
+    public static final String SQL_SEL_ORDERS =
+            "SELECT  orderNumber, orderDate, orderCurrentStatus, orderShipmentDate , orderEmployee FROM TblOrders";
+
+    public static final String SQL_INS_ORDER =
+            "INSERT INTO TblOrders ( orderNumber, orderDate, orderCurrentStatus, orderShipmentDate , orderEmployee) VALUES (?, ?, ?, ?, ?)";
+
+    public static final String SQL_DEL_ORDER =
+            "DELETE FROM TblOrders WHERE orderNumber = ?";
+
+    public static final String SQL_UPD_ORDER =
+            "UPDATE TblOrders SET  orderDate = ?, orderCurrentStatus = ?, orderShipmentDate = ?, orderEmployee = ? WHERE orderNumber = ?";
 
 
 

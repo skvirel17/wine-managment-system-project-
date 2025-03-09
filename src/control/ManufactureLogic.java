@@ -1,4 +1,4 @@
-package control;
+ package control;
 
 import java.io.FileOutputStream;
 import java.io.ObjectOutputStream;
@@ -29,16 +29,16 @@ import entity.Wine;
 public class ManufactureLogic {
 	private static ManufactureLogic _instance;
 
-    private ManufactureLogic() { }
+	private ManufactureLogic() { }
 
-    public static ManufactureLogic getInstance() {
-        if (_instance == null)
-            _instance = new ManufactureLogic();
-        return _instance;
-    }
+	public static ManufactureLogic getInstance() {
+		if (_instance == null)
+			_instance = new ManufactureLogic();
+		return _instance;
+	}
 
 
-    public ArrayList <Manufacture> getManufactures() {
+	public ArrayList <Manufacture> getManufactures() {
 		ArrayList<Manufacture> results = new ArrayList<>();
 
 		try {
@@ -86,35 +86,35 @@ public class ManufactureLogic {
 		}
 	}
 
-    public ArrayList <Manufacture> getManufactureDetails(String manifactureNumber) {
-   	 ArrayList<Manufacture> results = new ArrayList<Manufacture>();
+	public ArrayList <Manufacture> getManufactureDetails(String manifactureNumber) {
+		ArrayList<Manufacture> results = new ArrayList<Manufacture>();
 
-	        try {
-	            Class.forName("net.ucanaccess.jdbc.UcanaccessDriver");
-	            try (Connection conn = DriverManager.getConnection(Consts.CONN_STR);
-	                    PreparedStatement stmt =
-	                            conn.prepareStatement(Consts.SQL_SEL_MANUFACTURES_DETAILS);)
-	            {
+		try {
+			Class.forName("net.ucanaccess.jdbc.UcanaccessDriver");
+			try (Connection conn = DriverManager.getConnection(Consts.CONN_STR);
+				 PreparedStatement stmt =
+						 conn.prepareStatement(Consts.SQL_SEL_MANUFACTURES_DETAILS);)
+			{
 
-	            	stmt.setString(1, manifactureNumber);
-	            	ResultSet rs = stmt.executeQuery();
-	                while (rs.next()) {
-	                    int i = 1;
-	                    results.add(new Manufacture(rs.getString(i++), rs.getString(i++),
-								rs.getInt(i++), rs.getString(i++), rs.getString(i++)));
+				stmt.setString(1, manifactureNumber);
+				ResultSet rs = stmt.executeQuery();
+				while (rs.next()) {
+					int i = 1;
+					results.add(new Manufacture(rs.getString(i++), rs.getString(i++),
+							rs.getInt(i++), rs.getString(i++), rs.getString(i++)));
 
 
-	                }
-	            } catch (SQLException e) {
-	                e.printStackTrace();
-	            }
-	        } catch (ClassNotFoundException e) {
-	            e.printStackTrace();
-	        }
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
 
-	        return results;
-   }
-    public boolean editManufactureDetails(long orderID, long productID, int quantity,float discount) {
+		return results;
+	}
+	public boolean editManufactureDetails(long orderID, long productID, int quantity,float discount) {
 //
 //           try {
 //            Class.forName("net.ucanaccess.jdbc.UcanaccessDriver");
@@ -146,8 +146,8 @@ public class ManufactureLogic {
 //        } catch (ClassNotFoundException e) {
 //            e.printStackTrace();
 //        }
-        return false;
-    }
+		return false;
+	}
 
 	/**
 	 * Добавление нового производителя
@@ -224,7 +224,7 @@ public class ManufactureLogic {
 	}
 
 	public static List<Wine> getWineInfoByManufacturer(String manufactureNumber) {
-	List<Wine> wineInfo = new ArrayList<Wine>();
-	 return wineInfo;
+		List<Wine> wineInfo = new ArrayList<Wine>();
+		return wineInfo;
 	}
 }
