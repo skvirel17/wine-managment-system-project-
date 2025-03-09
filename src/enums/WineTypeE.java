@@ -33,4 +33,8 @@ public enum WineTypeE {
         }
         return null;
     }
+
+    public  String getId(){
+        return this.id;
+    }
 }

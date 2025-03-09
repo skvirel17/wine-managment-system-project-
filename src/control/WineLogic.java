@@ -221,17 +221,19 @@ public class WineLogic {
         try {
             Class.forName("net.ucanaccess.jdbc.UcanaccessDriver");
             try (Connection conn = DriverManager.getConnection(Consts.CONN_STR);
-                 PreparedStatement stmt = conn.prepareStatement(Consts.SQL_INS_MANUFACTURE)) {
+                 PreparedStatement stmt = conn.prepareStatement(Consts.SQL_INS_WINE)) {
 
-                stmt.setString(1, wine.getManufactureNumber());
-                stmt.setString(2, wine.getName());
-                stmt.setString(3, wine.getDescription());
-                stmt.setInt(4, wine.getProductionYear());
-                stmt.setFloat(5, wine.getPricePerBottle());
-                stmt.setString(5, String.valueOf(wine.getWineType()));
-                stmt.setString(5, String.valueOf(wine.getSweetnessLevel()));
-                stmt.setString(5, Arrays.toString(wine.getProductImage()));
-                stmt.setString(5, wine.getCatalogNumber());
+                stmt.setString(1, wine.getCatalogNumber());
+                stmt.setString(2, wine.getManufactureNumber());
+                stmt.setString(3, wine.getName());
+                stmt.setString(4, wine.getDescription());
+                stmt.setInt(5, wine.getProductionYear());
+                stmt.setFloat(6, wine.getPricePerBottle());
+                stmt.setString(7, wine.getWineType().getId());
+                stmt.setString(8, wine.getSweetnessLevel().getId());
+                //stmt.setString(8, wine.getProductImage());
+                stmt.setNull(9, Types.BLOB);
+
 
                 int affectedRows = stmt.executeUpdate();
                 return affectedRows > 0;

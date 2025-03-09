@@ -54,7 +54,7 @@ public class RootLayout extends JFrame {
 	 */
 	public RootLayout() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 1000, 521);
+		setBounds(100, 100, 1500, 521);
 
 		createMenuBar();
 
@@ -180,25 +180,25 @@ public class RootLayout extends JFrame {
 		menuBar.add(mnWineLocation);
 
 
-		mnUnproductiveEmployees = new JMenu("Unproductive Employees");
-		mnUnproductiveEmployees.addMenuListener(new MenuListener() {
-			public void menuCanceled(MenuEvent e) {
-			}
-
-			public void menuDeselected(MenuEvent e) {
-			}
-
-			public void menuSelected(MenuEvent e) {
-				new FrmUnproductiveEmployees().setVisible(true);
-				JFrame f1 = (JFrame) SwingUtilities.windowForComponent(menuBar);
-				f1.dispose();
-			}
-		});
-		mnUnproductiveEmployees.addActionListener((ActionEvent event) -> {
-			System.exit(0);
-		});
-
-		menuBar.add(mnUnproductiveEmployees);
+//		mnUnproductiveEmployees = new JMenu("Unproductive Employees");
+//		mnUnproductiveEmployees.addMenuListener(new MenuListener() {
+//			public void menuCanceled(MenuEvent e) {
+//			}
+//
+//			public void menuDeselected(MenuEvent e) {
+//			}
+//
+//			public void menuSelected(MenuEvent e) {
+//				new FrmUnproductiveEmployees().setVisible(true);
+//				JFrame f1 = (JFrame) SwingUtilities.windowForComponent(menuBar);
+//				f1.dispose();
+//			}
+//		});
+//		mnUnproductiveEmployees.addActionListener((ActionEvent event) -> {
+//			System.exit(0);
+//		});
+//
+//		menuBar.add(mnUnproductiveEmployees);
 
 
 		mnExport = new JMenu("Import data");
@@ -249,45 +249,45 @@ public class RootLayout extends JFrame {
 
 		menuBar.add(mnExport);
 
-		mnChooseWineType = new JMenu("ChooseWineType");
-		mnChooseWineType.addMenuListener(new MenuListener() {
-			public void menuCanceled(MenuEvent e) {
-			}
-			public void menuDeselected(MenuEvent e) {
-			}
-			public void menuSelected(MenuEvent e) {
-				new FrmChooseWine().setVisible(true);
-				JFrame f1 = (JFrame) SwingUtilities.windowForComponent(menuBar);
-				f1.dispose();
-			}
-		});
-		mnChooseWineType.addActionListener((ActionEvent event) -> {
-			System.exit(0);
-		});
+//		mnChooseWineType = new JMenu("ChooseWineType");
+//		mnChooseWineType.addMenuListener(new MenuListener() {
+//			public void menuCanceled(MenuEvent e) {
+//			}
+//			public void menuDeselected(MenuEvent e) {
+//			}
+//			public void menuSelected(MenuEvent e) {
+//				new FrmChooseWine().setVisible(true);
+//				JFrame f1 = (JFrame) SwingUtilities.windowForComponent(menuBar);
+//				f1.dispose();
+//			}
+//		});
+//		mnChooseWineType.addActionListener((ActionEvent event) -> {
+//			System.exit(0);
+//		});
+//
+//		menuBar.add(mnChooseWineType);
 
-		menuBar.add(mnChooseWineType);
 
-
-		mnImportWeekly = new JMenu("Import weekly report");
-		mnImportWeekly.addMenuListener(new MenuListener() {
-			@Override
-			public void menuSelected(MenuEvent e) {
-			}
-
-			@Override
-			public void menuDeselected(MenuEvent e) {
-			}
-
-			@Override
-			public void menuCanceled(MenuEvent e) {
-			}
-		});
-		mnImportWeekly.addActionListener((ActionEvent event) -> {
-			System.exit(0);
-		});
-		menuBar.add(mnImportWeekly);
-
-		setJMenuBar(menuBar);
+//		mnImportWeekly = new JMenu("Import weekly report");
+//		mnImportWeekly.addMenuListener(new MenuListener() {
+//			@Override
+//			public void menuSelected(MenuEvent e) {
+//			}
+//
+//			@Override
+//			public void menuDeselected(MenuEvent e) {
+//			}
+//
+//			@Override
+//			public void menuCanceled(MenuEvent e) {
+//			}
+//		});
+//		mnImportWeekly.addActionListener((ActionEvent event) -> {
+//			System.exit(0);
+//		});
+//		menuBar.add(mnImportWeekly);
+//
+	setJMenuBar(menuBar);
 	}
 
 

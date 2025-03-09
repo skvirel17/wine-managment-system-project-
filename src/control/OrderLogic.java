@@ -4,6 +4,7 @@ import java.io.ObjectOutputStream;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -35,13 +36,13 @@ public class OrderLogic {
 
                     while (rs.next()) {
                         results.add(new Order(
-                                //rs.getInt("priorityLevel"),
                                 rs.getInt("orderNumber"),
                                 rs.getDate("orderDate"),
                                 OrderStatus.fromId(rs.getInt("orderCurrentStatus")),
                                 rs.getDate("orderShipmentDate"),
-                                rs.getString("orderEmployee")
-                                //rs.getDouble("totalPrice")
+                                rs.getString("orderEmployee"),
+                                rs.getInt("orderCountBottle"),
+                                rs.getInt("wineCatalogNumber")
                         ) );
                     }
                     serializeOrders(results, "orders.ser");
@@ -76,6 +77,7 @@ public class OrderLogic {
                     stmt.setDate(5, new java.sql.Date(order.getShipmentDate().getTime()));
                     stmt.setString(6, order.getEmployeeId());
                     stmt.setDouble(7, order.getTotalPrice());
+                    stmt.setInt(8, order.getCountBottle());
 
                     int affectedRows = stmt.executeUpdate();
                     return affectedRows > 0;

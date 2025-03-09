@@ -39,6 +39,7 @@ public class FrmOrder extends RootLayout {
     private JButton btnFirst, btnPrev, btnNext, btnLast, btnAddOrder, btnSave, btnDelete;
     private JPanel pnlActionBtn;
     private DefaultTableModel tableModel;
+    private JTextField tfCountBotle, tfCatalogNumberWine, tfPriorityLevel;
 
 
     public static void main(String[] args) {
@@ -62,17 +63,18 @@ public class FrmOrder extends RootLayout {
 
     private void initComponents() {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setBounds(100, 100, 500, 500); // Увеличил высоту окна для нового поля
+        setBounds(100, 100, 500, 600); // Увеличил высоту окна для нового поля
         contentPane = new JPanel();
         contentPane.setLayout(null);
         setContentPane(contentPane);
 
-        String[] labels = {"Order Number:", "Order Date:", "Shipment Date:", "Employee ID:", "Total Price:", "Order Status:"};
-        JTextField[] fields = new JTextField[labels.length - 1]; // Убираем одно поле для выпадающего списка
+        String[] labels = {"Order Number:", "Order Date:", "Shipment Date:", "Employee ID:", "Total Price:",
+                "Bottle count:", "Wine catalog Number:"};
+        JTextField[] fields = new JTextField[labels.length]; // Убираем одно поле для выпадающего списка
 
         int labelX = 20, fieldX = 150, y = 20, width = 120, height = 25;
 
-        for (int i = 0; i < labels.length - 1; i++) { // Последнее поле будет JComboBox
+        for (int i = 0; i < labels.length; i++) { // Последнее поле будет JComboBox
             JLabel label = new JLabel(labels[i]);
             label.setBounds(labelX, y, width, height);
             contentPane.add(label);
@@ -85,10 +87,13 @@ public class FrmOrder extends RootLayout {
         }
 
         tfOrderNumber = fields[0];
+        //tfPriorityLevel = fields[1];
         tfOrderDate = fields[1];
         tfShipmentDate = fields[2];
         tfEmployeeId = fields[3];
         tfTotalPrice = fields[4];
+        tfCountBotle = fields[5];
+        tfCatalogNumberWine = fields[6];
 
         JLabel lblOrderStatus = new JLabel("Order Status:");
         lblOrderStatus.setBounds(labelX, y, width, height);
@@ -176,10 +181,13 @@ public class FrmOrder extends RootLayout {
     private void btnAddOnClick() {
         inAddMode = true;
         tfOrderNumber.setText("");
+        //tfPriorityLevel.setText("");
         tfOrderDate.setText("");
         tfShipmentDate.setText("");
         tfEmployeeId.setText("");
         tfTotalPrice.setText("");
+        tfCountBotle.setText("");
+        tfCatalogNumberWine.setText("");
         cbOrderStatus.setSelectedIndex(0);
         btnSave.setEnabled(true);
         btnDelete.setEnabled(true);
@@ -188,6 +196,7 @@ public class FrmOrder extends RootLayout {
     private void btnSaveOnClick() {
         try {
             int orderNumber = Integer.parseInt(tfOrderNumber.getText().trim());
+            //int priorityLevel = Integer.parseInt(tfPriorityLevel.getText().trim());
             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
             Date orderDate = dateFormat.parse(tfOrderDate.getText().trim());
             Date shipmentDate = dateFormat.parse(tfShipmentDate.getText().trim());
@@ -200,8 +209,12 @@ public class FrmOrder extends RootLayout {
 
             String employeeId = tfEmployeeId.getText().trim();
             double totalPrice = Double.parseDouble(tfTotalPrice.getText().trim());
+            int bottleCount = Integer.parseInt(tfCountBotle.getText().trim());
+            int wineCatalogNumber = Integer.parseInt(tfCatalogNumberWine.getText().trim());
 
-            Order newOrder = new Order(orderNumber, orderDate, orderStatus, shipmentDate, employeeId, totalPrice);
+
+            Order newOrder = new Order(orderNumber, orderDate, orderStatus, shipmentDate, employeeId,
+                    totalPrice, bottleCount, wineCatalogNumber);
 
             if (inAddMode) {
                 OrderLogic.getInstance().addOrder(newOrder);

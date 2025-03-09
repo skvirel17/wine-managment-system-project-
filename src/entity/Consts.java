@@ -11,7 +11,11 @@ public class Consts {
 
     public static final String CONN_STR = "jdbc:ucanaccess://"  + DB_FILEPATH + ";COLUMNORDER=DISPLAY";
     public static final String SQL_INS_MANUFACTURE =
-            "INSERT INTO Manufactures (manufactureId, manufactureFullName, manufacturePhoneNumber, manufactureAddress, manufactureEmail) VALUES (?, ?, ?, ?, ?)";
+            "INSERT INTO TblManufactures (manufactureId, manufactureFullName, manufacturePhoneNumber, manufactureAddress, manufactureEmail) VALUES (?, ?, ?, ?, ?)";
+
+    public static final String SQL_INS_WINE =
+            "INSERT INTO TblWines (wineCatalogNumber, wineManufactureNumber, wineName, wineDescription, wineProductionYear, winePricePerBootle," +
+                    "wineType, wineSweetnessLevel,  wineProductImage) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
     public static final String SQL_DEL_MANUFACTURE =
             "DELETE FROM Manufactures WHERE manufactureId = ?";
@@ -22,10 +26,10 @@ public class Consts {
     // orders const
 
     public static final String SQL_SEL_ORDERS =
-            "SELECT  orderNumber, orderDate, orderCurrentStatus, orderShipmentDate , orderEmployee FROM TblOrders";
+            "SELECT  orderNumber, orderDate, orderCurrentStatus, orderShipmentDate , orderEmployee, orderCountBottle, wineCatalogNumber FROM TblOrders";
 
     public static final String SQL_INS_ORDER =
-            "INSERT INTO TblOrders ( orderNumber, orderDate, orderCurrentStatus, orderShipmentDate , orderEmployee) VALUES (?, ?, ?, ?, ?)";
+            "INSERT INTO TblOrders ( orderNumber, orderDate, orderCurrentStatus, orderShipmentDate , orderEmployee, orderCountBottle, wineCatalogNumber) VALUES (?, ?, ?, ?, ?, ?, ?)";
 
     public static final String SQL_DEL_ORDER =
             "DELETE FROM TblOrders WHERE orderNumber = ?";

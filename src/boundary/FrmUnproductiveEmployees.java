@@ -113,7 +113,6 @@ public class FrmUnproductiveEmployees extends RootLayout {
         btnNext = new JButton("Next");
         btnLast = new JButton("Last");
         btnRefresh = new JButton("Refresh");
-
         pnlActionBtn.add(btnFirst);
         pnlActionBtn.add(btnPrev);
         pnlActionBtn.add(btnNext);
@@ -121,6 +120,7 @@ public class FrmUnproductiveEmployees extends RootLayout {
         pnlActionBtn.add(btnRefresh);
         contentPane.add(pnlActionBtn);
     }
+
     private void btnFirstOnClick() {
         currentEmployee = 1;
         refreshControls();
@@ -149,7 +149,6 @@ public class FrmUnproductiveEmployees extends RootLayout {
     }
 
 
-
     private void createEvents() {
         btnFirst.addActionListener(e -> btnFirstOnClick());
         btnLast.addActionListener(e -> btnLastOnClick());
@@ -173,6 +172,7 @@ public class FrmUnproductiveEmployees extends RootLayout {
         refreshNavigation();
         refreshEmployeeFields();
     }
+
     private void refreshNavigation() {
         tfNavigation.setText((currentEmployee != null) ?
                 currentEmployee + " of " + employeesArray.size() : "No records available");
@@ -185,7 +185,10 @@ public class FrmUnproductiveEmployees extends RootLayout {
             tfEmployeeName.setText("");
             tfTotalOrders.setText("");
             return;
+        } else {
+            tfEmployeeId.setText(employeesArray.get(currentEmployee - 1).getEmployeeId());
+            tfEmployeeName.setText(employeesArray.get(currentEmployee - 1).getName());
+            tfTotalOrders.setText(String.valueOf(employeesArray.get(currentEmployee - 1).getTotalOrders()));
         }
     }
-
 }

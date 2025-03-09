@@ -14,8 +14,11 @@ public class Order implements Serializable {
     private Date shipmentDate;
     private String employeeId;
     private double totalPrice;
+    private int countBottle;
+    private int wineCatalogNumber;
 
-    public Order(Integer priorityLevel, int orderNumber, Date orderDate, OrderStatus orderStatus, Date shipmentDate, String employeeId, double totalPrice) {
+    public Order(Integer priorityLevel, Date orderDate, OrderStatus orderStatus, Date shipmentDate, String employeeId, double totalPrice,
+                 int countBottle, int wineCatalogNumber) {
         this.priorityLevel = priorityLevel;
         this.orderNumber = orderNumber;
         this.orderDate = orderDate;
@@ -23,6 +26,8 @@ public class Order implements Serializable {
         this.shipmentDate = shipmentDate;
         this.employeeId = employeeId;
         this.totalPrice = totalPrice;
+        this.countBottle = countBottle;
+        this.wineCatalogNumber = wineCatalogNumber;
     }
 
     public Order(int orderNumber, Date orderDate, OrderStatus orderStatus, Date shipmentDate, String employeeId) {
@@ -41,6 +46,17 @@ public class Order implements Serializable {
         this.shipmentDate = shipmentDate;
         this.employeeId = employeeId;
         this.totalPrice = totalPrice;
+    }
+
+    public Order( int orderNumber, java.sql.Date orderDate, OrderStatus orderCurrentStatus, java.sql.Date orderShipmentDate, String orderEmployee, int orderCountBottle, int wineCatalogNumber) {
+        this.orderNumber = orderNumber;
+        this.orderDate = orderDate;
+        this.orderStatus = orderCurrentStatus;
+        this.shipmentDate = orderShipmentDate;
+        this.employeeId = orderEmployee;
+        this.totalPrice = 0;
+        this.countBottle = orderCountBottle;
+        this.wineCatalogNumber = wineCatalogNumber;
     }
 
     public int getOrderNumber() {
@@ -97,5 +113,21 @@ public class Order implements Serializable {
 
     public void setTotalPrice(double totalPrice) {
         this.totalPrice = totalPrice;
+    }
+
+    public void setCountBottle(int countBottle){
+        this.countBottle = countBottle;
+    }
+
+    public int getCountBottle() {
+        return countBottle;
+    }
+
+    public void setWineCatalogNumber(int wineCatalogNumber){
+        this.wineCatalogNumber = wineCatalogNumber;
+    }
+
+    public int getWineCatalogNumber(int wineCatalogNumber){
+        return wineCatalogNumber;
     }
 }

@@ -32,4 +32,8 @@ public enum SweetnessLevel {
         return null;
     }
 
+    public String getId(){
+        return this.id;
+    }
+
 }

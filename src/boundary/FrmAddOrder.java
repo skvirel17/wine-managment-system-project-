@@ -13,7 +13,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class FrmAddOrder extends JFrame {
-    private JTextField tfOrderNumber, tfOrderDate, tfShipmentDate, tfEmployeeId, tfTotalPrice, tfPriorityLevel;
+    private JTextField tfOrderNumber, tfOrderDate, tfShipmentDate, tfEmployeeId, tfTotalPrice, tfPriorityLevel,
+            tfCountBotle, tfCatalogNumberWine;
     private JComboBox<OrderStatus> cbOrderStatus;
     private JButton btnSave, btnCancel;
 
@@ -29,7 +30,7 @@ public class FrmAddOrder extends JFrame {
         gbc.insets = new Insets(5, 5, 5, 5);
         gbc.anchor = GridBagConstraints.WEST;
 
-        String[] labels = {"Order Number:", "Order Date (yyyy-MM-dd):", "Shipment Date (yyyy-MM-dd):", "Employee ID:", "Total Price:", "Priority Level:", "Order Status:"};
+        String[] labels = {"Order Number:", "Priority Level:", "Order Date (yyyy-MM-dd):", "Shipment Date (yyyy-MM-dd):", "Employee ID:", "Total Price:",  "Order Status:"};
         JComponent[] fields = {
                 tfOrderNumber = new JTextField(15),
                 tfOrderDate = new JTextField(15),
@@ -37,7 +38,9 @@ public class FrmAddOrder extends JFrame {
                 tfEmployeeId = new JTextField(15),
                 tfTotalPrice = new JTextField(15),
                 tfPriorityLevel = new JTextField(15),
-                cbOrderStatus = new JComboBox<>(OrderStatus.values())
+                cbOrderStatus = new JComboBox<>(OrderStatus.values()),
+                tfCountBotle = new JTextField(15),
+                tfCatalogNumberWine = new JTextField(15)
         };
 
         for (int i = 0; i < labels.length; i++) {
@@ -83,8 +86,11 @@ public class FrmAddOrder extends JFrame {
             OrderStatus orderStatus = (OrderStatus) cbOrderStatus.getSelectedItem();
             int employeeId = Integer.parseInt(tfEmployeeId.getText().trim());
             double totalPrice = Double.parseDouble(tfTotalPrice.getText().trim());
+            int countBottle = Integer.parseInt(tfCountBotle.getText().trim());
+            int catalogNumberWine = Integer.parseInt(tfCatalogNumberWine.getText().trim());
 
-            Order newOrder = new Order(priorityLevel, orderNumber, orderDate, orderStatus, shipmentDate, String.valueOf(employeeId), totalPrice);
+            Order newOrder = new Order(priorityLevel, orderDate, orderStatus, shipmentDate, String.valueOf(employeeId),
+                    totalPrice, countBottle,catalogNumberWine);
             boolean success = OrderLogic.getInstance().addOrder(newOrder);
 
             if (success) {

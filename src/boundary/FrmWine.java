@@ -127,10 +127,6 @@ public class FrmWine extends RootLayout {
         cbSweetnessLevel = new JComboBox<>(sweetnessLevels);
         cbSweetnessLevel.setBounds(120, 50, 150, 25);
 
-        //cbSweetnessLevel.setSelectedItem(wineArrayList.get(currentWine - 1).getSweetnessLevel());
-        //frame.add(cbSweetnessLevel);
-
-
 
         pnlWineDetails.add(lblCatalogNumber);
         pnlWineDetails.add(tfWineCatalogNumber);
@@ -159,6 +155,19 @@ public class FrmWine extends RootLayout {
         btnNext = new JButton(">>");
         btnLast = new JButton(">|");
         btnAdd = new JButton("Add");
+        btnAdd.setPreferredSize(new Dimension(120, 30));
+        btnAdd.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                FrmAddWine addWineWindow = new FrmAddWine();
+                addWineWindow.setVisible(true);
+                addWineWindow.addWindowListener(new java.awt.event.WindowAdapter() {
+                    @Override
+                    public void windowClosed(java.awt.event.WindowEvent windowEvent) {
+                        fetchAndRefresh(); // После закрытия окна обновляем данные
+                    }
+                });
+            }
+        });
         btnSave = new JButton("Save");
         btnDelete = new JButton("Delete");
         btnSave.setEnabled(true);
@@ -330,9 +339,13 @@ public class FrmWine extends RootLayout {
         refreshControls();
     }
 
-    private void btnAddOnClick() {}
+    private void btnAddOnClick() {
+        refreshControls();
+    }
 
-    private void btnSaveOnClick() {}
+    private void btnSaveOnClick() {
+        refreshControls();
+    }
 
     private void btnDeleteOnClick() {
         if (wineArrayList.isEmpty() || currentWine == null) {
@@ -348,8 +361,9 @@ public class FrmWine extends RootLayout {
 
         if (confirm == JOptionPane.YES_OPTION) {
             // Удаление текущего вина
+
+            WineLogic.removeWine(wineArrayList.get(currentWine - 1).getCatalogNumber());
             wineArrayList.remove(currentWine - 1);
-            WineLogic.removeWine(wineArrayList.get(currentWine).getCatalogNumber());
 
             // Обновление currentWine: если удалили последний элемент, уменьшаем индекс
             if (wineArrayList.isEmpty()) {
