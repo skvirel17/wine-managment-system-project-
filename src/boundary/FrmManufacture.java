@@ -72,27 +72,27 @@ public class FrmManufacture extends RootLayout {
 		contentPane.add(pnlWineDetails);
 		tfManufactureNumber = new JTextField();
 		tfManufactureNumber.setBounds(160, 11, 250, 20);
-		tfManufactureNumber.setEditable(false);
+		tfManufactureNumber.setEditable(true);
 		tfManufactureNumber.setColumns(10);
 
 		tfName = new JTextField();
-		tfName.setEditable(false);
+		tfName.setEditable(true);
 		tfName.setColumns(20);
 		tfName.setBounds(160, 37, 250, 20);
 
 		tfPhoneNumber = new JTextField();
-		tfPhoneNumber.setEditable(false);
+		tfPhoneNumber.setEditable(true);
 		tfPhoneNumber.setColumns(10);
 		tfPhoneNumber.setBounds(160, 63, 250, 20);
 
 		tfEmail = new JTextField();
-		tfEmail.setEditable(false);
+		tfEmail.setEditable(true);
 		tfEmail.setColumns(20);
 		tfEmail.setBounds(160, 89, 250, 20);
 
 		tfManufactureAddress = new JTextField();
 		tfManufactureAddress.setColumns(20);
-		tfManufactureAddress.setEditable(false);
+		tfManufactureAddress.setEditable(true);
 		tfManufactureAddress.setBounds(160, 115, 250, 20);
 
 		//pnlPhoneNumberManifacture.setBounds(370, 11, 355, 156);
@@ -120,8 +120,8 @@ public class FrmManufacture extends RootLayout {
 		pnlActionBtn.add(btnSave);
 		pnlActionBtn.add(btnDelete);
 
-		btnSave.setEnabled(false);
-		btnDelete.setEnabled(false);
+		btnSave.setEnabled(true);
+		btnDelete.setEnabled(true);
 
 
         initGroupLayoutleftPanel();

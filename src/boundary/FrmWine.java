@@ -349,7 +349,7 @@ public class FrmWine extends RootLayout {
         if (confirm == JOptionPane.YES_OPTION) {
             // Удаление текущего вина
             wineArrayList.remove(currentWine - 1);
-            WineLogic.removeWineById(wineArrayList.get(currentWine).getCatalogNumber());
+            WineLogic.removeWine(wineArrayList.get(currentWine).getCatalogNumber());
 
             // Обновление currentWine: если удалили последний элемент, уменьшаем индекс
             if (wineArrayList.isEmpty()) {

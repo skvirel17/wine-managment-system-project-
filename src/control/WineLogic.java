@@ -247,24 +247,52 @@ public class WineLogic {
     /**
      * Удаление производителя по ID
      */
-    public boolean removeWine(String catalogNumber) {
+    public static boolean removeWine(String catalogNumber) {
         try {
             Class.forName("net.ucanaccess.jdbc.UcanaccessDriver");
-            try (Connection conn = DriverManager.getConnection(Consts.CONN_STR);
-                 PreparedStatement stmt = conn.prepareStatement(Consts.SQL_DEL_MANUFACTURE)) {
+            try (Connection conn = DriverManager.getConnection(Consts.CONN_STR)) {
+                conn.setAutoCommit(false); // Начинаем транзакцию
 
-                stmt.setString(1, catalogNumber);
+                try {
+                    // Удаляем зависимости перед удалением вина
+                    try (PreparedStatement stmt1 = conn.prepareStatement("DELETE FROM TbWinelStorageLocations WHERE wineCatalogNumber = ?");
+                         PreparedStatement stmt2 = conn.prepareStatement("DELETE FROM TblCustomerDoRegularOrderWithOthers WHERE wineTypeSerialNumber = ?");
+                         PreparedStatement stmt3 = conn.prepareStatement("DELETE FROM TblOrders WHERE orderNumber IN (SELECT orderNumber FROM TblCustomerDoRegularOrderWithOthers WHERE wineTypeSerialNumber = ?)");
+                         PreparedStatement stmt4 = conn.prepareStatement("DELETE FROM TblUrgentOrders WHERE orderNumber IN (SELECT orderNumber FROM TblOrders WHERE orderEmployee IN (SELECT ID FROM TblEmployees WHERE ID IN (SELECT orderEmployee FROM TblOrders WHERE orderNumber IN (SELECT orderNumber FROM TblCustomerDoRegularOrderWithOthers WHERE wineTypeSerialNumber = ?))))");
+                         PreparedStatement stmt5 = conn.prepareStatement("DELETE FROM TblWines WHERE wineCatalogNumber = ?")) {
 
-                int affectedRows = stmt.executeUpdate();
-                return affectedRows > 0;
-            } catch (SQLException e) {
-                e.printStackTrace();
+                        stmt1.setString(1, catalogNumber);
+                        stmt1.executeUpdate();
+
+                        stmt2.setString(1, catalogNumber);
+                        stmt2.executeUpdate();
+
+                        stmt3.setString(1, catalogNumber);
+                        stmt3.executeUpdate();
+
+                        stmt4.setString(1, catalogNumber);
+                        stmt4.executeUpdate();
+
+                        stmt5.setString(1, catalogNumber);
+                        int affectedRows = stmt5.executeUpdate();
+
+                        conn.commit(); // Подтверждаем изменения
+                        return affectedRows > 0;
+                    }
+                } catch (SQLException e) {
+                    conn.rollback(); // Откат транзакции при ошибке
+                    e.printStackTrace();
+                } finally {
+                    conn.setAutoCommit(true);
+                }
             }
-        } catch (ClassNotFoundException e) {
+        } catch (ClassNotFoundException | SQLException e) {
             e.printStackTrace();
         }
         return false;
     }
+
+
 
     /**
      * Редактирование информации о производителе
