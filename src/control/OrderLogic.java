@@ -36,7 +36,7 @@ public class OrderLogic {
                                 //rs.getInt("priorityLevel"),
                                 rs.getString("orderNumber"),
                                 rs.getDate("orderDate"),
-                                OrderStatus.valueOf(rs.getString("orderCurrentStatus")),
+                                OrderStatus.fromId(rs.getString("orderCurrentStatus")),
                                 rs.getDate("orderShipmentDate"),
                                 rs.getString("orderEmployee")
                                 //rs.getDouble("totalPrice")

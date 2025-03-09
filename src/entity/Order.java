@@ -2,10 +2,12 @@ package entity;
 
 import enums.OrderStatus;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
-public class Order {
+public class Order implements Serializable {
+    private static final long serialVersionUID = 1L;
     private Integer priorityLevel;
     private String orderNumber;
     private Date orderDate;
