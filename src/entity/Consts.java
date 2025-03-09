@@ -33,7 +33,33 @@ public class Consts {
     public static final String SQL_UPD_ORDER =
             "UPDATE TblOrders SET  orderDate = ?, orderCurrentStatus = ?, orderShipmentDate = ?, orderEmployee = ? WHERE orderNumber = ?";
 
+    // storage const
+    public static final String SQL_SEL_STORAGE_LOCATIONS =
+            "SELECT locationNumber, locationName FROM TblStorageLocations";
 
+    public static final String SQL_SEL_WINE_STORAGE =
+            "SELECT locationNumber, botleCount, wineCatalogNumber, wineManifactureNumber FROM TbWinelStorageLocations";
+
+    public static final String SQL_INS_STORAGE_LOCATION =
+            "INSERT INTO TblStorageLocations (locationNumber, locationName) VALUES (?, ?)";
+
+    public static final String SQL_INS_WINE_STORAGE =
+            "INSERT INTO TbWinelStorageLocations (locationNumber, botleCount, wineCatalogNumber, wineManifactureNumber) VALUES (?, ?, ?, ?)";
+
+    public static final String SQL_DEL_STORAGE_LOCATION =
+            "DELETE FROM TblStorageLocations WHERE locationNumber = ?";
+
+    public static final String SQL_DEL_WINE_STORAGE =
+            "DELETE FROM TbWinelStorageLocations WHERE locationNumber = ? AND wineCatalogNumber = ?";
+
+    public static final String SQL_UPD_STORAGE_LOCATION =
+            "UPDATE TblStorageLocations SET locationName = ? WHERE locationNumber = ?";
+
+    public static final String SQL_UPD_WINE_STORAGE =
+            "UPDATE TbWinelStorageLocations SET bottleCount = ? WHERE locationNumber = ? AND wineCatalogNumber = ?";
+    //employee
+    public static final String SQL_DEL_EMPLOYEE =
+            "DELETE FROM TblEmployees WHERE ID = ?";
 
 
 

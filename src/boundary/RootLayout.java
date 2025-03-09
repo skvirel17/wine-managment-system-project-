@@ -30,7 +30,8 @@ public class RootLayout extends JFrame {
 	private JMenu mnChooseWineType;
 	private JMenu mnWines;
 	private JMenu mnOrders;
-
+	private JMenu mnWineLocation;
+	private JMenu mnUnproductiveEmployees;
 
 	/**
 	 * Launch the application.
@@ -53,7 +54,7 @@ public class RootLayout extends JFrame {
 	 */
 	public RootLayout() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 753, 521);
+		setBounds(100, 100, 1000, 521);
 
 		createMenuBar();
 
@@ -157,6 +158,47 @@ public class RootLayout extends JFrame {
 		});
 
 		menuBar.add(mnOrders);
+
+		mnWineLocation = new JMenu("Wine Location");
+		mnWineLocation.addMenuListener(new MenuListener() {
+			public void menuCanceled(MenuEvent e) {
+			}
+
+			public void menuDeselected(MenuEvent e) {
+			}
+
+			public void menuSelected(MenuEvent e) {
+				new FrmWineLocation().setVisible(true);
+				JFrame f1 = (JFrame) SwingUtilities.windowForComponent(menuBar);
+				f1.dispose();
+			}
+		});
+		mnWineLocation.addActionListener((ActionEvent event) -> {
+			System.exit(0);
+		});
+
+		menuBar.add(mnWineLocation);
+
+
+		mnUnproductiveEmployees = new JMenu("Unproductive Employees");
+		mnUnproductiveEmployees.addMenuListener(new MenuListener() {
+			public void menuCanceled(MenuEvent e) {
+			}
+
+			public void menuDeselected(MenuEvent e) {
+			}
+
+			public void menuSelected(MenuEvent e) {
+				new FrmUnproductiveEmployees().setVisible(true);
+				JFrame f1 = (JFrame) SwingUtilities.windowForComponent(menuBar);
+				f1.dispose();
+			}
+		});
+		mnUnproductiveEmployees.addActionListener((ActionEvent event) -> {
+			System.exit(0);
+		});
+
+		menuBar.add(mnUnproductiveEmployees);
 
 
 		mnExport = new JMenu("Import data");
