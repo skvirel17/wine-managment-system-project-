@@ -12,6 +12,8 @@ import control.ManufactureLogic;
 import control.WineLogic;
 import entity.Manufacture;
 import entity.Wine;
+import enums.SweetnessLevel;
+import enums.WineTypeE;
 
 
 import javax.swing.table.DefaultTableModel;
@@ -34,6 +36,8 @@ public class FrmWine extends RootLayout {
     private JTextField tfWineSweetnessLevel;
     private JTextField tfManufactureNumber;
     private JTextField tfNavigation;
+    private JComboBox<SweetnessLevel> cbSweetnessLevel;
+    private JComboBox<WineTypeE> cbWineType;
 
     private JButton btnFirst, btnPrev, btnNext, btnLast, btnAdd, btnSave, btnDelete;
 
@@ -98,12 +102,12 @@ public class FrmWine extends RootLayout {
         pnlWineDetails.setLayout(new GridLayout(8, 2, 10, 10));
         pnlMain.add(pnlWineDetails);
 
-        JLabel lblManufactureNumber = new JLabel("Manufacture Number:");
-        tfManufactureNumber = new JTextField();
-        tfManufactureNumber.setEditable(false);
 
         JLabel lblCatalogNumber = new JLabel("Catalog Number:");
         tfWineCatalogNumber = new JTextField();
+        JLabel lblManufactureNumber = new JLabel("Manufacture Number:");
+        tfManufactureNumber = new JTextField();
+        tfManufactureNumber.setEditable(false);
         JLabel lblName = new JLabel("Name:");
         tfName = new JTextField();
         JLabel lblDescription = new JLabel("Description:");
@@ -112,15 +116,26 @@ public class FrmWine extends RootLayout {
         tfWineProductYear = new JTextField();
         JLabel lblPrice = new JLabel("Price per Bottle:");
         tfWinePricePerBottle = new JTextField();
-        JLabel lblType = new JLabel("Wine Type:");
-        tfWineType = new JTextField();
-        JLabel lblSweetness = new JLabel("Sweetness Level:");
-        tfWineSweetnessLevel = new JTextField();
 
-        pnlWineDetails.add(lblManufactureNumber);
-        pnlWineDetails.add(tfManufactureNumber);
+        JLabel lblType = new JLabel("Wine Type:");
+        WineTypeE[] wineType = WineTypeE.values();
+        cbWineType = new JComboBox<>(wineType);
+        cbWineType.setBounds(120, 50, 150, 25);
+
+        JLabel lblSweetness = new JLabel("Sweetness Level:");
+        SweetnessLevel[] sweetnessLevels = SweetnessLevel.values();
+        cbSweetnessLevel = new JComboBox<>(sweetnessLevels);
+        cbSweetnessLevel.setBounds(120, 50, 150, 25);
+
+        //cbSweetnessLevel.setSelectedItem(wineArrayList.get(currentWine - 1).getSweetnessLevel());
+        //frame.add(cbSweetnessLevel);
+
+
+
         pnlWineDetails.add(lblCatalogNumber);
         pnlWineDetails.add(tfWineCatalogNumber);
+        pnlWineDetails.add(lblManufactureNumber);
+        pnlWineDetails.add(tfManufactureNumber);
         pnlWineDetails.add(lblName);
         pnlWineDetails.add(tfName);
         pnlWineDetails.add(lblDescription);
@@ -130,9 +145,9 @@ public class FrmWine extends RootLayout {
         pnlWineDetails.add(lblPrice);
         pnlWineDetails.add(tfWinePricePerBottle);
         pnlWineDetails.add(lblType);
-        pnlWineDetails.add(tfWineType);
+        pnlWineDetails.add(cbWineType);
         pnlWineDetails.add(lblSweetness);
-        pnlWineDetails.add(tfWineSweetnessLevel);
+        pnlWineDetails.add(cbSweetnessLevel);
 
         pnlActionBtn = new JPanel();
         pnlMain.add(pnlActionBtn);
@@ -146,8 +161,8 @@ public class FrmWine extends RootLayout {
         btnAdd = new JButton("Add");
         btnSave = new JButton("Save");
         btnDelete = new JButton("Delete");
-        btnSave.setEnabled(false);
-        btnDelete.setEnabled(false);
+        btnSave.setEnabled(true);
+        btnDelete.setEnabled(true);
 
         pnlActionBtn.add(btnFirst);
         pnlActionBtn.add(btnPrev);
@@ -158,9 +173,7 @@ public class FrmWine extends RootLayout {
         pnlActionBtn.add(btnSave);
         pnlActionBtn.add(btnDelete);
 
-        // Инициализация panel
-        panel = new FrmWineDetailsInternal();
-        pnlMain.add(panel);
+
     }
 
     private void createEvents() {
@@ -185,6 +198,13 @@ public class FrmWine extends RootLayout {
                 btnNextOnClick(evt);
             }
         });
+
+        btnDelete.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                btnDeleteOnClick();
+            }
+        });
+
     }
 
 
@@ -293,11 +313,11 @@ public class FrmWine extends RootLayout {
         tfName.setText(wine.getName());
         tfWineDescription.setText(String.valueOf(wine.getDescription()));
         tfWineProductYear.setText(String.valueOf(wine.getProductionYear()));
-        tfWineType.setText(String.valueOf(wine.getWineType()));
+        cbWineType.setSelectedItem(wine.getWineType());
         tfWinePricePerBottle.setText(String.valueOf(wine.getPricePerBottle()));
-        tfWineSweetnessLevel.setText(String.valueOf(wine.getSweetnessLevel()));
+        //tfWineSweetnessLevel.setText(String.valueOf(wine.getSweetnessLevel()));
         tfWineCatalogNumber.setText(wine.getCatalogNumber());
-        panel.refreshComp((wine != null) ? (wine.getCatalogNumber()) : "0");
+        cbSweetnessLevel.setSelectedItem(wine.getSweetnessLevel());
     }
 
     //	    ///////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -314,7 +334,36 @@ public class FrmWine extends RootLayout {
 
     private void btnSaveOnClick() {}
 
-    private void btnDeleteOnClick() {}
+    private void btnDeleteOnClick() {
+        if (wineArrayList.isEmpty() || currentWine == null) {
+            JOptionPane.showMessageDialog(this, "No wine to delete!", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+
+        int confirm = JOptionPane.showConfirmDialog(this,
+                "Are you sure you want to delete this wine?",
+                "Confirm Deletion",
+                JOptionPane.YES_NO_OPTION);
+
+        if (confirm == JOptionPane.YES_OPTION) {
+            // Удаление текущего вина
+            wineArrayList.remove(currentWine - 1);
+            WineLogic.removeWineById(wineArrayList.get(currentWine).getCatalogNumber());
+
+            // Обновление currentWine: если удалили последний элемент, уменьшаем индекс
+            if (wineArrayList.isEmpty()) {
+                currentWine = null;
+                inAddMode = true;
+            } else if (currentWine > wineArrayList.size()) {
+                currentWine = wineArrayList.size();
+            }
+
+            // Обновление UI
+            refreshControls();
+        }
+    }
+
 
     private void btnNextOnClick(ActionEvent evt) {
         currentWine++;
@@ -345,5 +394,4 @@ public class FrmWine extends RootLayout {
 //    private JLabel lblEmail = new JLabel("Email:");
 //    private JLabel lblAddress = new JLabel("Address:");
 
-    FrmWineDetailsInternal panel;
 }

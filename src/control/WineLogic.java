@@ -56,6 +56,34 @@ public class WineLogic {
         return wineList;
     }
 
+    public static void removeWineById(String id) {
+        String dbURL = Consts.CONN_STR;
+
+        try (Connection conn = DriverManager.getConnection(dbURL)) {
+            conn.setAutoCommit(false); // Начинаем транзакцию
+
+            try (PreparedStatement pstmt1 = conn.prepareStatement(
+                    "DELETE FROM TBWINELSTORAGELOCATIONS WHERE wineCatalogNumber = ?")) {
+                pstmt1.setString(1, id);
+                pstmt1.executeUpdate();
+            }
+
+            try (PreparedStatement pstmt2 = conn.prepareStatement(
+                    "DELETE FROM TblWines WHERE wineCatalogNumber = ?")) {
+                pstmt2.setString(1, id);
+                int affectedRows = pstmt2.executeUpdate();
+
+                conn.commit(); // Фиксируем транзакцию
+            } catch (SQLException e) {
+                conn.rollback(); // Откатываем изменения, если ошибка
+                throw e;
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
     // Метод фильтрации через SQL или объекты
     public List<ChooseWineDTO> getFilteredWines(List<String> occasions, List<String> food, List<String> wineType) {
 
