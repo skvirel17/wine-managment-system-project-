@@ -17,6 +17,8 @@ import javax.swing.event.MenuListener;
 import javax.swing.event.MenuEvent;
 import javax.swing.filechooser.FileFilter;
 
+import static boundary.MainMenu.currentUser;
+
 public class RootLayout extends JFrame {
 	private JPanel contentPane;
 	static RootLayout frame;
@@ -66,7 +68,6 @@ public class RootLayout extends JFrame {
 		ImageIcon icon = new ImageIcon("exit.png");
 
 		JMenu file = new JMenu("File");
-
 		file.setMnemonic(KeyEvent.VK_F);
 
 		JMenuItem eMenuItem = new JMenuItem("Exit", icon);
@@ -80,6 +81,18 @@ public class RootLayout extends JFrame {
 		file.add(eMenuItem);
 
 		menuBar.add(file);
+		JMenuItem logoutItem = new JMenuItem("Logout");
+		logoutItem.setMnemonic(KeyEvent.VK_L);
+		logoutItem.setToolTipText("Log out and return to login screen");
+		logoutItem.addActionListener((ActionEvent event) -> {
+			JFrame currentFrame = (JFrame) SwingUtilities.getWindowAncestor(menuBar);
+			currentFrame.dispose();
+			new LoginFrame().setVisible(true);
+		});
+
+		file.add(logoutItem);
+
+
 
 
 		mnHome = new JMenu("Home");
@@ -92,7 +105,7 @@ public class RootLayout extends JFrame {
 			}
 
 			public void menuSelected(MenuEvent e) {
-				new MainMenu().setVisible(true);
+				new MainMenu(currentUser).setVisible(true);
 				JFrame f1 = (JFrame) SwingUtilities.windowForComponent(menuBar);
 				f1.dispose();
 			}

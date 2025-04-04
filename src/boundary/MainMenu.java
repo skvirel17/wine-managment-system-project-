@@ -15,24 +15,23 @@ import javax.swing.JLabel;
 import javax.swing.ImageIcon;
 import javax.swing.border.MatteBorder;
 import javax.swing.SwingUtilities;
+import control.auth.User;
+import control.auth.Role;
 
 public class MainMenu extends RootLayout {
 
 	private JPanel contentPane;
+	static User currentUser;
 
 	/**
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					MainMenu frame = new MainMenu();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-					//}
-				}
+		EventQueue.invokeLater(() -> {
+			try {
+				new LoginFrame().setVisible(true); // запускаем окно логина
+			} catch (Exception e) {
+				e.printStackTrace();
 			}
 		});
 	}
@@ -40,7 +39,8 @@ public class MainMenu extends RootLayout {
 	/**
 	 * Create the frame.
 	 */
-	public MainMenu() {
+	public MainMenu(User user) {
+		this.currentUser = user;
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 470, 400);
 		contentPane = new JPanel();
@@ -94,7 +94,7 @@ public class MainMenu extends RootLayout {
 
 		JButton btnNewButton = new JButton("Categories");
 		btnNewButton.setEnabled(false);
-		btnNewButton.setPreferredSize(new Dimension(100, 25));
+		btnNewButton.setPreferredSize(new Dimension(170, 25));
 
 
 
@@ -102,10 +102,10 @@ public class MainMenu extends RootLayout {
 
 		JButton btnSuppliers = new JButton("Suppliers");
 		btnSuppliers.setEnabled(false);
-		btnSuppliers.setPreferredSize(new Dimension(100, 25));
+		btnSuppliers.setPreferredSize(new Dimension(170, 25));
 
 		JButton btnOrders = new JButton("Manufacture");
-		btnOrders.setPreferredSize(new Dimension(100, 25));
+		btnOrders.setPreferredSize(new Dimension(170, 25));
 		btnOrders.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				new FrmManufacture().setVisible(true);
@@ -117,11 +117,11 @@ public class MainMenu extends RootLayout {
 
 		JButton btnProducts = new JButton("Products");
 		btnProducts.setEnabled(false);
-		btnProducts.setPreferredSize(new Dimension(100, 25));
+		btnProducts.setPreferredSize(new Dimension(170, 25));
 
 
 		JButton btnUnproductive = new JButton("Unproductive employees");
-		btnUnproductive.setPreferredSize(new Dimension(100, 25));
+		btnUnproductive.setPreferredSize(new Dimension(170, 25));
 		btnUnproductive.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				new FrmUnproductiveEmployees().setVisible(true);
@@ -132,7 +132,7 @@ public class MainMenu extends RootLayout {
 
 
 		JButton btnChoose = new JButton("Choose wine type");
-		btnChoose.setPreferredSize(new Dimension(100, 25));
+		btnChoose.setPreferredSize(new Dimension(170, 25));
 		btnChoose.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				new FrmChooseWine().setVisible(true);
@@ -143,7 +143,7 @@ public class MainMenu extends RootLayout {
 
 
 		JButton btnImport = new JButton("Import weekly report");
-		btnImport.setPreferredSize(new Dimension(100, 25));
+		btnImport.setPreferredSize(new Dimension(170, 25));
 
 
 		panel.add(btnSuppliers);
@@ -161,6 +161,22 @@ public class MainMenu extends RootLayout {
 			}
 		});
 		contentPane.setLayout(gl_contentPane);
+
+		if (currentUser.getRole() == Role.ADMIN) {
+			btnSuppliers.setEnabled(true);
+			btnProducts.setEnabled(true);
+			btnUnproductive.setEnabled(true);
+			btnImport.setEnabled(true);
+		} else {
+			btnSuppliers.setEnabled(false);
+			btnProducts.setEnabled(false);
+			btnUnproductive.setEnabled(false);
+			btnImport.setEnabled(false);
+		}
+
+// Кнопки, доступные всем
+		btnOrders.setEnabled(true);
+		btnChoose.setEnabled(true);
 	}
 
 
